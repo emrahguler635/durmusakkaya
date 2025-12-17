@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getImagePath } from "@/lib/image-path";
 
 const links = [
   { href: "/", label: "Ana Sayfa" },
@@ -19,7 +20,7 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="font-bold text-xl text-blue-900 flex items-center gap-2">
-            <Image src="/logo.png" alt="DA Logo" width={100} height={100} className="rounded" />
+            <Image src={getImagePath("/logo.png")} alt="DA Logo" width={100} height={100} className="rounded" />
             <span>Dr. Durmuş AKKAYA</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1">

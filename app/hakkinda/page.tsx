@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { GraduationCap, Briefcase, Award, Target } from "lucide-react";
+import { getImagePath } from "@/lib/image-path";
 
 export default function AboutPage() {
   return (
@@ -18,7 +19,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-xl">
               <Image
-                src="/profile.jpg"
+                src={getImagePath("/profile.jpg")}
                 alt="Dr. Durmuş AKKAYA"
                 fill
                 className="object-cover"

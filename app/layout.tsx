@@ -14,13 +14,13 @@ export const metadata: Metadata = {
   title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
   description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü. Profesyonel deneyim, haberler ve iletişim.",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon.svg"
+    icon: process.env.NODE_ENV === 'production' ? "/durmusakkaya/favicon.svg" : "/favicon.svg",
+    shortcut: process.env.NODE_ENV === 'production' ? "/durmusakkaya/favicon.svg" : "/favicon.svg"
   },
   openGraph: {
     title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
     description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü",
-    images: ["/og-image.png"]
+    images: [process.env.NODE_ENV === 'production' ? "/durmusakkaya/og-image.png" : "/og-image.png"]
   }
 };
 

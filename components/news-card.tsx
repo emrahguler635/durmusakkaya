@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Calendar, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { getImagePath } from "@/lib/image-path";
 
 interface NewsCardProps {
   id: string;
@@ -20,7 +21,7 @@ export default function NewsCard({ id, title, summary, imageUrl, createdAt, slug
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group">
       <div className="relative aspect-video bg-gray-100">
-        <Image src={imageUrl || "/og-image.png"} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+        <Image src={imageUrl || getImagePath("/og-image.png")} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
       </div>
       <div className="p-6">
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">

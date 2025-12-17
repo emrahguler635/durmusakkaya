@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Twitter, Mail } from "lucide-react";
+import { getImagePath } from "@/lib/image-path";
 
 export default function Footer() {
   return (
@@ -8,7 +9,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-4">
-            <Image src="/logo.png" alt="DA Logo" width={80} height={80} className="rounded bg-white p-2" />
+            <Image src={getImagePath("/logo.png")} alt="DA Logo" width={80} height={80} className="rounded bg-white p-2" />
             <div>
               <h3 className="font-bold text-lg">Dr. Durmuş AKKAYA</h3>
               <p className="text-blue-200 text-sm">Başak A.Ş. Genel Müdürü</p>
