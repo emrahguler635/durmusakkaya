@@ -10,12 +10,15 @@ import { getHomePageData, type HomePageData } from "@/lib/page-data";
 export default function HomePage() {
   const [homeData, setHomeData] = useState<HomePageData | null>(null);
   const [news, setNews] = useState<any[]>([]);
+  const [totalNewsCount, setTotalNewsCount] = useState(0);
 
   useEffect(() => {
     const data = getHomePageData();
     setHomeData(data);
     const newsData = getLatestNews(3);
     setNews(newsData);
+    const allNews = getAllNewsArray();
+    setTotalNewsCount(allNews.length);
   }, []);
 
   if (!homeData) {
@@ -90,7 +93,7 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900">{homeData.newsSection.title}</h2>
               <p className="text-gray-600 mt-2">
-                {homeData.newsSection.description.replace("{count}", getAllNewsArray().length.toString())}
+                {homeData.newsSection.description.replace("{count}", totalNewsCount.toString())}
               </p>
             </div>
             <Link href="/haberler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">
