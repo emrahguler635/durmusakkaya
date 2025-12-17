@@ -19,14 +19,14 @@ export default function HomePage() {
           <div className="max-w-2xl text-white">
             <p className="text-blue-200 font-medium mb-4">Hoş Geldiniz</p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Dr. Durmuş <span className="text-yellow-400">AKKAYA</span>
+              Dr. Durmuş <span className="text-white">AKKAYA</span>
             </h1>
             <p className="text-xl text-blue-100 mb-4">Başak A.Ş. Genel Müdürü</p>
             <p className="text-blue-200 mb-8 text-lg">
               Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link href="/hakkinda" className="bg-yellow-500 hover:bg-yellow-400 text-blue-900 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2">
+              <Link href="/hakkinda" className="bg-white hover:bg-white/90 text-blue-900 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2">
                 Hakkımda <ArrowRight size={18} />
               </Link>
               <Link href="/iletisim" className="bg-white/10 hover:bg-white/20 backdrop-blur text-white font-semibold px-6 py-3 rounded-lg transition-colors border border-white/30">
