@@ -3,43 +3,10 @@ import Image from "next/image";
 import { ArrowRight, Briefcase, Award, Linkedin, Twitter, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
+import { getLatestNews, allNews } from "@/lib/news-data";
 
-// Static data for GitHub Pages
-const news = [
-  {
-    id: "1",
-    title: "Yılın CEO'su Ödülü",
-    summary: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
-    content: "",
-    slug: "yilin-ceo-odu",
-    published: true,
-    imageUrl: null,
-    createdAt: "2024-11-15T00:00:00.000Z",
-    updatedAt: "2024-11-15T00:00:00.000Z"
-  },
-  {
-    id: "2",
-    title: "Yeni Stratejik Ortaklık",
-    summary: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
-    content: "",
-    slug: "yeni-stratejik-ortaklik",
-    published: true,
-    imageUrl: null,
-    createdAt: "2024-10-03T00:00:00.000Z",
-    updatedAt: "2024-10-03T00:00:00.000Z"
-  },
-  {
-    id: "3",
-    title: "Sürdürülebilirlik Zirvesi",
-    summary: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
-    content: "",
-    slug: "surdurulebilirlik-zirvesi",
-    published: true,
-    imageUrl: null,
-    createdAt: "2024-09-22T00:00:00.000Z",
-    updatedAt: "2024-09-22T00:00:00.000Z"
-  }
-];
+// Get latest 3 news for homepage
+const news = getLatestNews(3);
 
 export default function HomePage() {
 
@@ -105,7 +72,7 @@ export default function HomePage() {
           <div className="flex justify-between items-center mb-10">
             <div>
               <h2 className="text-3xl font-bold text-gray-900">Son Haberler</h2>
-              <p className="text-gray-600 mt-2">Güncel gelişmeler ve duyurular • Toplam {news.length} haber</p>
+              <p className="text-gray-600 mt-2">Güncel gelişmeler ve duyurular • Toplam {allNews.length} haber</p>
             </div>
             <Link href="/haberler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">
               Tümü <ArrowRight size={16} />

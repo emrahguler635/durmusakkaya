@@ -1,42 +1,9 @@
 import NewsCard from "@/components/news-card";
 import { Newspaper } from "lucide-react";
+import { getNewsForPage, allNews } from "@/lib/news-data";
 
-// Static data for GitHub Pages
-const news = [
-  {
-    id: "1",
-    title: "Yılın CEO'su Ödülü",
-    summary: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
-    content: "",
-    slug: "yilin-ceo-odu",
-    published: true,
-    imageUrl: null,
-    createdAt: "2024-11-15T00:00:00.000Z",
-    updatedAt: "2024-11-15T00:00:00.000Z"
-  },
-  {
-    id: "2",
-    title: "Yeni Stratejik Ortaklık",
-    summary: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
-    content: "",
-    slug: "yeni-stratejik-ortaklik",
-    published: true,
-    imageUrl: null,
-    createdAt: "2024-10-03T00:00:00.000Z",
-    updatedAt: "2024-10-03T00:00:00.000Z"
-  },
-  {
-    id: "3",
-    title: "Sürdürülebilirlik Zirvesi",
-    summary: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
-    content: "",
-    slug: "surdurulebilirlik-zirvesi",
-    published: true,
-    imageUrl: null,
-    createdAt: "2024-09-22T00:00:00.000Z",
-    updatedAt: "2024-09-22T00:00:00.000Z"
-  }
-];
+// Get first 12 news for display
+const news = getNewsForPage();
 
 export default function NewsPage() {
 
@@ -46,7 +13,7 @@ export default function NewsPage() {
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Haberler</h1>
           <p className="text-blue-200 text-lg">Güncel gelişmeler ve duyurular</p>
-          <p className="text-blue-300 text-sm mt-2">Toplam {news.length} haber</p>
+          <p className="text-blue-300 text-sm mt-2">Toplam {allNews.length} haber (12 haber gösteriliyor)</p>
         </div>
       </section>
 
