@@ -1,0 +1,40 @@
+import { prisma } from "@/lib/db";
+import NewsCard from "@/components/news-card";
+import { Newspaper } from "lucide-react";
+
+export const dynamic = "force-dynamic";
+
+export default async function NewsPage() {
+  const news = await prisma.news.findMany({
+    where: { published: true },
+    orderBy: { createdAt: "desc" }
+  });
+
+  return (
+    <div>
+      <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-20">
+        <div className="max-w-6xl mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Haberler</h1>
+          <p className="text-blue-200 text-lg">Güncel gelişmeler ve duyurular</p>
+        </div>
+      </section>
+
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          {(news ?? []).length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {(news ?? []).map((item) => (
+                <NewsCard key={item.id} {...item} createdAt={item.createdAt.toISOString()} imageUrl={item.imageUrl ?? undefined} />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <Newspaper className="mx-auto text-gray-300 mb-4" size={64} />
+              <p className="text-gray-500 text-lg">Henüz haber bulunmamaktadır.</p>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
