@@ -33,7 +33,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${inter.className} bg-gray-50`} suppressHydrationWarning>
         <Providers>
           <Navbar />
-          <main className="pt-16 min-h-screen">{children}</main>
+          <main className="pt-28 min-h-screen">{children}</main>
           <Footer />
         </Providers>
       </body>
