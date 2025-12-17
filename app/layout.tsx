@@ -10,7 +10,7 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXTAUTH_URL || "http://localhost:3000"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://emrahguler635.github.io/durmusakkaya"),
   title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
   description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü. Profesyonel deneyim, haberler ve iletişim.",
   icons: {

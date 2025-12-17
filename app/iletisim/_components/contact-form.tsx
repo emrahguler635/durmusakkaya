@@ -13,18 +13,20 @@ export default function ContactForm() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form)
+      // For static export, save to localStorage instead of API
+      const messages = JSON.parse(localStorage.getItem("contact_messages") || "[]");
+      messages.push({
+        ...form,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString()
       });
-      if (res.ok) {
-        setSuccess(true);
-        setForm({ name: "", email: "", subject: "", message: "" });
-      } else {
-        const data = await res.json();
-        setError(data.error || "Bir hata oluştu");
-      }
+      localStorage.setItem("contact_messages", JSON.stringify(messages));
+      
+      // Simulate API delay
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      setSuccess(true);
+      setForm({ name: "", email: "", subject: "", message: "" });
     } catch {
       setError("Mesaj gönderilemedi");
     }
