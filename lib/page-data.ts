@@ -1,3 +1,4 @@
+'use client';
 // Centralized page data management for admin panel
 
 export interface HomePageData {

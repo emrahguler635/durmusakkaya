@@ -1,3 +1,4 @@
+'use client';
 // Centralized news data - reads from localStorage if available, otherwise uses default
 
 interface NewsItem {
