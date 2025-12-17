@@ -5,22 +5,7 @@ import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
 
 // Static data for GitHub Pages
-const getNews = () => {
-  try {
-    // Try to use Prisma in development, fallback to static data
-    if (process.env.NODE_ENV === 'development') {
-      const { prisma } = require("@/lib/db");
-      return prisma.news.findMany({
-        where: { published: true },
-        orderBy: { createdAt: "desc" },
-        take: 3
-      }).catch(() => getStaticNews());
-    }
-  } catch {}
-  return getStaticNews();
-};
-
-const getStaticNews = () => [
+const news = [
   {
     id: "1",
     title: "Yılın CEO'su Ödülü",
@@ -56,8 +41,7 @@ const getStaticNews = () => [
   }
 ];
 
-export default async function HomePage() {
-  const news = await getNews();
+export default function HomePage() {
 
   return (
     <div>

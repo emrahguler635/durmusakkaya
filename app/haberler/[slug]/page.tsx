@@ -1,15 +1,47 @@
-import { prisma } from "@/lib/db";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { notFound } from "next/navigation";
 
-export const dynamic = "force-dynamic";
+// Static data for GitHub Pages
+const newsData = [
+  {
+    id: "1",
+    title: "Yılın CEO'su Ödülü",
+    summary: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
+    content: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi. Bu ödül, yıl boyunca gösterdiği üstün liderlik ve başarılı yönetim anlayışının bir göstergesidir.",
+    slug: "yilin-ceo-odu",
+    published: true,
+    imageUrl: null,
+    createdAt: new Date("2024-11-15"),
+    updatedAt: new Date("2024-11-15")
+  },
+  {
+    id: "2",
+    title: "Yeni Stratejik Ortaklık",
+    summary: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
+    content: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı. Bu ortaklık, şirketin gelecek hedeflerine ulaşmasında önemli bir adım olacaktır.",
+    slug: "yeni-stratejik-ortaklik",
+    published: true,
+    imageUrl: null,
+    createdAt: new Date("2024-10-03"),
+    updatedAt: new Date("2024-10-03")
+  },
+  {
+    id: "3",
+    title: "Sürdürülebilirlik Zirvesi",
+    summary: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
+    content: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi. Bu zirvede, çevre dostu uygulamalar ve sürdürülebilir kalkınma konuları ele alındı.",
+    slug: "surdurulebilirlik-zirvesi",
+    published: true,
+    imageUrl: null,
+    createdAt: new Date("2024-09-22"),
+    updatedAt: new Date("2024-09-22")
+  }
+];
 
-export default async function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const news = await prisma.news.findUnique({
-    where: { slug: params.slug }
-  });
+export default function NewsDetailPage({ params }: { params: { slug: string } }) {
+  const news = newsData.find(n => n.slug === params.slug);
 
   if (!news) notFound();
 
