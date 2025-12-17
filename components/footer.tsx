@@ -22,7 +22,7 @@ export default function Footer() {
             <a href="https://www.instagram.com/dr.durmusakkaya64/" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Instagram size={28} />
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+            <a href="https://www.linkedin.com/in/dr-durmu%C5%9F-akkaya-89080958/" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Linkedin size={28} />
             </a>
             <a href="https://x.com/drdurmusakkaya" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
