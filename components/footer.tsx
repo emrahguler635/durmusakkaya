@@ -16,16 +16,16 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex gap-5">
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+            <a href="https://www.facebook.com/DrDurmsAKKAYA" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Facebook size={28} />
             </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+            <a href="https://www.instagram.com/dr.durmusakkaya64/" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Instagram size={28} />
             </a>
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Linkedin size={28} />
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+            <a href="https://x.com/drdurmusakkaya" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Twitter size={28} />
             </a>
             <Link href="/iletisim" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
