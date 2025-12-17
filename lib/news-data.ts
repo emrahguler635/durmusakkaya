@@ -1,5 +1,19 @@
-// Centralized news data - can be extended infinitely
-export const allNews = [
+// Centralized news data - reads from localStorage if available, otherwise uses default
+
+interface NewsItem {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  slug: string;
+  published: boolean;
+  imageUrl: string | null;
+  createdAt: string;
+  updatedAt?: string;
+}
+
+// Default news data (fallback)
+const defaultNews: NewsItem[] = [
   {
     id: "1",
     title: "Yılın CEO'su Ödülü",
@@ -134,13 +148,39 @@ export const allNews = [
   }
 ];
 
+// Get news from localStorage or return default
+export function getAllNews(): NewsItem[] {
+  if (typeof window === 'undefined') return defaultNews;
+  const saved = localStorage.getItem("admin_news");
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      // Merge with defaults to ensure all fields exist
+      return parsed.length > 0 ? parsed : defaultNews;
+    } catch {
+      return defaultNews;
+    }
+  }
+  return defaultNews;
+}
+
+// Export for backward compatibility
+export const allNews = getAllNews();
+
 // Get latest news (for homepage)
-export function getLatestNews(count: number = 3) {
-  return allNews.slice(0, count);
+export function getLatestNews(count: number = 3): NewsItem[] {
+  const news = getAllNews().filter(n => n.published);
+  return news.slice(0, count);
 }
 
 // Get news for news page (first 12)
-export function getNewsForPage() {
-  return allNews.slice(0, 12);
+export function getNewsForPage(): NewsItem[] {
+  const news = getAllNews().filter(n => n.published);
+  return news.slice(0, 12);
 }
 
+// Get news by slug
+export function getNewsBySlug(slug: string): NewsItem | undefined {
+  const news = getAllNews();
+  return news.find(n => n.slug === slug && n.published);
+}

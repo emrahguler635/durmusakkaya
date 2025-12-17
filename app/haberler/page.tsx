@@ -1,11 +1,16 @@
+"use client";
+import { useState, useEffect } from "react";
 import NewsCard from "@/components/news-card";
 import { Newspaper } from "lucide-react";
-import { getNewsForPage, allNews } from "@/lib/news-data";
-
-// Get first 12 news for display
-const news = getNewsForPage();
+import { getNewsForPage, type NewsItem } from "@/lib/news-data";
 
 export default function NewsPage() {
+  const [news, setNews] = useState<NewsItem[]>([]);
+
+  useEffect(() => {
+    const newsData = getNewsForPage();
+    setNews(newsData);
+  }, []);
 
   return (
     <div>

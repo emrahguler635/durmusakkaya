@@ -1,20 +1,31 @@
+"use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
-import { notFound } from "next/navigation";
 import { getImagePath } from "@/lib/image-path";
-import { allNews } from "@/lib/news-data";
-
-export function generateStaticParams() {
-  return allNews.map((news) => ({
-    slug: news.slug,
-  }));
-}
+import { getNewsBySlug, type NewsItem } from "@/lib/news-data";
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const news = allNews.find(n => n.slug === params.slug);
+  const [news, setNews] = useState<NewsItem | null>(null);
 
-  if (!news) notFound();
+  useEffect(() => {
+    const newsData = getNewsBySlug(params.slug);
+    setNews(newsData || null);
+  }, [params.slug]);
+
+  if (!news) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-500 text-lg mb-4">Haber bulunamadı</p>
+          <Link href="/haberler" className="text-blue-600 hover:text-blue-800">
+            Haberlere Dön
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   const formattedDate = new Date(news.createdAt).toLocaleDateString("tr-TR", {
     year: "numeric", month: "long", day: "numeric"
