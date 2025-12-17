@@ -7,7 +7,7 @@ export const allNews = [
     content: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi. Bu ödül, yıl boyunca gösterdiği üstün liderlik ve başarılı yönetim anlayışının bir göstergesidir.",
     slug: "yilin-ceo-odu",
     published: true,
-    imageUrl: null,
+    imageUrl: "/haber1.jpg",
     createdAt: "2024-11-15T00:00:00.000Z",
     updatedAt: "2024-11-15T00:00:00.000Z"
   },
@@ -18,7 +18,7 @@ export const allNews = [
     content: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı. Bu ortaklık, şirketin gelecek hedeflerine ulaşmasında önemli bir adım olacaktır.",
     slug: "yeni-stratejik-ortaklik",
     published: true,
-    imageUrl: null,
+    imageUrl: "/haber2.jpg",
     createdAt: "2024-10-03T00:00:00.000Z",
     updatedAt: "2024-10-03T00:00:00.000Z"
   },
@@ -29,7 +29,7 @@ export const allNews = [
     content: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi. Bu zirvede, çevre dostu uygulamalar ve sürdürülebilir kalkınma konuları ele alındı.",
     slug: "surdurulebilirlik-zirvesi",
     published: true,
-    imageUrl: null,
+    imageUrl: "/haber3.jpg",
     createdAt: "2024-09-22T00:00:00.000Z",
     updatedAt: "2024-09-22T00:00:00.000Z"
   },
@@ -40,7 +40,7 @@ export const allNews = [
     content: "Başak A.Ş. kapsamlı dijital dönüşüm projesini başlattı. Bu proje ile şirket, teknolojik altyapısını güçlendirerek operasyonel verimliliği artırmayı hedefliyor.",
     slug: "dijital-donusum-projesi",
     published: true,
-    imageUrl: null,
+    imageUrl: "/haber4.jpg",
     createdAt: "2024-08-15T00:00:00.000Z",
     updatedAt: "2024-08-15T00:00:00.000Z"
   },

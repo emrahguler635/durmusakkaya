@@ -5,9 +5,10 @@ export const publicImages = [
   { name: "Logo", url: "/logo.png" },
   { name: "Profil Resmi", url: "/profile.jpg" },
   { name: "Slider 1", url: "/slider1.jpg" },
-  // Yeni resim eklediğinizde buraya ekleyin:
-  // { name: "Haber 1", url: "/haber1.jpg" },
-  // { name: "Haber 2", url: "/haber2.jpg" },
+  { name: "Haber 1 - Yılın CEO'su Ödülü", url: "/haber1.jpg" },
+  { name: "Haber 2 - Yeni Stratejik Ortaklık", url: "/haber2.jpg" },
+  { name: "Haber 3 - Sürdürülebilirlik Zirvesi", url: "/haber3.jpg" },
+  { name: "Haber 4 - Dijital Dönüşüm Projesi", url: "/haber4.jpg" },
 ];
 
 // Helper function to get full path with basePath
