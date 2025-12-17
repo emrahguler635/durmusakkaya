@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail } from "lucide-react";
 
 interface News {
@@ -15,6 +15,7 @@ interface News {
 }
 
 export default function AdminDashboard() {
+  const router = useRouter();
   const [news, setNews] = useState<News[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -22,43 +23,66 @@ export default function AdminDashboard() {
   const [tab, setTab] = useState<"news" | "messages">("news");
   const [messages, setMessages] = useState<any[]>([]);
 
-  const fetchNews = async () => {
-    const res = await fetch("/api/news");
-    const data = await res.json();
-    setNews(data ?? []);
+  // Load news from localStorage
+  const loadNews = () => {
+    const saved = localStorage.getItem("admin_news");
+    if (saved) {
+      setNews(JSON.parse(saved));
+    } else {
+      // Default news
+      const defaultNews: News[] = [
+        {
+          id: "1",
+          title: "Yılın CEO'su Ödülü",
+          summary: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
+          content: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
+          slug: "yilin-ceo-odu",
+          published: true,
+          imageUrl: null,
+          createdAt: new Date().toISOString()
+        }
+      ];
+      setNews(defaultNews);
+      localStorage.setItem("admin_news", JSON.stringify(defaultNews));
+    }
   };
 
-  const fetchMessages = async () => {
-    const res = await fetch("/api/contact");
-    const data = await res.json();
-    setMessages(data ?? []);
+  const loadMessages = () => {
+    const saved = localStorage.getItem("admin_messages");
+    if (saved) {
+      setMessages(JSON.parse(saved));
+    }
   };
 
   useEffect(() => {
-    fetchNews();
-    fetchMessages();
+    loadNews();
+    loadMessages();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const url = editingId ? `/api/news/${editingId}` : "/api/news";
-    const method = editingId ? "PUT" : "POST";
-    await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
+    const updatedNews = editingId
+      ? news.map(n => n.id === editingId ? { ...n, ...form, id: editingId } : n)
+      : [...news, { ...form, id: Date.now().toString(), slug: form.title.toLowerCase().replace(/\s+/g, "-"), createdAt: new Date().toISOString() }];
+    
+    setNews(updatedNews);
+    localStorage.setItem("admin_news", JSON.stringify(updatedNews));
     setShowForm(false);
     setEditingId(null);
     setForm({ title: "", summary: "", content: "", imageUrl: "", published: true });
-    fetchNews();
   };
 
   const handleDelete = async (id: string) => {
     if (confirm("Bu haberi silmek istediğinizden emin misiniz?")) {
-      await fetch(`/api/news/${id}`, { method: "DELETE" });
-      fetchNews();
+      const updatedNews = news.filter(n => n.id !== id);
+      setNews(updatedNews);
+      localStorage.setItem("admin_news", JSON.stringify(updatedNews));
     }
+  };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem("admin_authenticated");
+    router.push("/admin/login");
   };
 
   const handleEdit = (item: News) => {
@@ -72,7 +96,7 @@ export default function AdminDashboard() {
       <header className="bg-blue-900 text-white p-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Admin Panel</h1>
-          <button onClick={() => signOut({ callbackUrl: "/" })} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+          <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
             <LogOut size={18} /> Çıkış
           </button>
         </div>

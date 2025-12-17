@@ -1,6 +1,5 @@
 "use client";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Lock, Mail } from "lucide-react";
 
@@ -15,16 +14,15 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false
-    });
-    if (result?.error) {
+    
+    // Simple authentication for static export (GitHub Pages)
+    // In production, this would use API routes
+    if (email === "admin@basak.com.tr" && password === "admin123") {
+      sessionStorage.setItem("admin_authenticated", "true");
+      router.replace("/admin");
+    } else {
       setError("Geçersiz email veya şifre");
       setLoading(false);
-    } else {
-      router.replace("/admin");
     }
   };
 
