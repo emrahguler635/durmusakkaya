@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Linkedin, Twitter, Mail } from "lucide-react";
+import { Linkedin, Twitter, Mail, Facebook, Instagram } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
 
 export default function Footer() {
@@ -16,6 +16,12 @@ export default function Footer() {
             </div>
           </div>
           <div className="flex gap-5">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+              <Facebook size={28} />
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
+              <Instagram size={28} />
+            </a>
             <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="p-4 bg-blue-800 rounded-full hover:bg-blue-700 transition-colors">
               <Linkedin size={28} />
             </a>
