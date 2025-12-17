@@ -11,8 +11,8 @@ const news = [
     slug: "yilin-ceo-odu",
     published: true,
     imageUrl: null,
-    createdAt: new Date("2024-11-15"),
-    updatedAt: new Date("2024-11-15")
+    createdAt: "2024-11-15T00:00:00.000Z",
+    updatedAt: "2024-11-15T00:00:00.000Z"
   },
   {
     id: "2",
@@ -22,8 +22,8 @@ const news = [
     slug: "yeni-stratejik-ortaklik",
     published: true,
     imageUrl: null,
-    createdAt: new Date("2024-10-03"),
-    updatedAt: new Date("2024-10-03")
+    createdAt: "2024-10-03T00:00:00.000Z",
+    updatedAt: "2024-10-03T00:00:00.000Z"
   },
   {
     id: "3",
@@ -33,8 +33,8 @@ const news = [
     slug: "surdurulebilirlik-zirvesi",
     published: true,
     imageUrl: null,
-    createdAt: new Date("2024-09-22"),
-    updatedAt: new Date("2024-09-22")
+    createdAt: "2024-09-22T00:00:00.000Z",
+    updatedAt: "2024-09-22T00:00:00.000Z"
   }
 ];
 
@@ -54,7 +54,7 @@ export default function NewsPage() {
           {(news ?? []).length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {(news ?? []).map((item) => (
-                <NewsCard key={item.id} {...item} createdAt={item.createdAt.toISOString()} imageUrl={item.imageUrl ?? undefined} />
+                <NewsCard key={item.id} {...item} createdAt={item.createdAt} imageUrl={item.imageUrl ?? undefined} />
               ))}
             </div>
           ) : (
