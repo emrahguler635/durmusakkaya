@@ -40,6 +40,12 @@ const newsData = [
   }
 ];
 
+export function generateStaticParams() {
+  return newsData.map((news) => ({
+    slug: news.slug,
+  }));
+}
+
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
   const news = newsData.find(n => n.slug === params.slug);
 
