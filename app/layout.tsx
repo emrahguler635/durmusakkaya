@@ -5,7 +5,7 @@ import Providers from "@/components/providers";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 
-export const dynamic = "force-dynamic";
+// Removed dynamic export for static build
 
 const inter = Inter({ subsets: ["latin"] });
 

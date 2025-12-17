@@ -1,18 +1,63 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowRight, Briefcase, Award, Linkedin, Twitter, Mail } from "lucide-react";
-import { prisma } from "@/lib/db";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
 
-export const dynamic = "force-dynamic";
+// Static data for GitHub Pages
+const getNews = () => {
+  try {
+    // Try to use Prisma in development, fallback to static data
+    if (process.env.NODE_ENV === 'development') {
+      const { prisma } = require("@/lib/db");
+      return prisma.news.findMany({
+        where: { published: true },
+        orderBy: { createdAt: "desc" },
+        take: 3
+      }).catch(() => getStaticNews());
+    }
+  } catch {}
+  return getStaticNews();
+};
+
+const getStaticNews = () => [
+  {
+    id: "1",
+    title: "Yılın CEO'su Ödülü",
+    summary: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
+    content: "",
+    slug: "yilin-ceo-odu",
+    published: true,
+    imageUrl: null,
+    createdAt: new Date("2024-11-15"),
+    updatedAt: new Date("2024-11-15")
+  },
+  {
+    id: "2",
+    title: "Yeni Stratejik Ortaklık",
+    summary: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
+    content: "",
+    slug: "yeni-stratejik-ortaklik",
+    published: true,
+    imageUrl: null,
+    createdAt: new Date("2024-10-03"),
+    updatedAt: new Date("2024-10-03")
+  },
+  {
+    id: "3",
+    title: "Sürdürülebilirlik Zirvesi",
+    summary: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
+    content: "",
+    slug: "surdurulebilirlik-zirvesi",
+    published: true,
+    imageUrl: null,
+    createdAt: new Date("2024-09-22"),
+    updatedAt: new Date("2024-09-22")
+  }
+];
 
 export default async function HomePage() {
-  const news = await prisma.news.findMany({
-    where: { published: true },
-    orderBy: { createdAt: "desc" },
-    take: 3
-  });
+  const news = await getNews();
 
   return (
     <div>
