@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { notFound } from "next/navigation";
+import { getImagePath } from "@/lib/image-path";
 
 // Static data for GitHub Pages
 const newsData = [
@@ -72,9 +73,13 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
 
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-4">
-          {news.imageUrl && (
+          {news.imageUrl ? (
             <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
-              <Image src={news.imageUrl} alt={news.title} fill className="object-cover" />
+              <Image src={getImagePath(news.imageUrl)} alt={news.title} fill className="object-cover" />
+            </div>
+          ) : (
+            <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
+              <Image src={getImagePath("/og-image.png")} alt={news.title} fill className="object-cover" />
             </div>
           )}
           <div className="prose prose-lg max-w-none text-gray-700">

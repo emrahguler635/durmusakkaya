@@ -46,6 +46,7 @@ export default function NewsPage() {
         <div className="max-w-6xl mx-auto px-4 text-center">
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Haberler</h1>
           <p className="text-blue-200 text-lg">Güncel gelişmeler ve duyurular</p>
+          <p className="text-blue-300 text-sm mt-2">Toplam {news.length} haber</p>
         </div>
       </section>
 

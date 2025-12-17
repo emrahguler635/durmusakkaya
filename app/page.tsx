@@ -105,7 +105,7 @@ export default function HomePage() {
           <div className="flex justify-between items-center mb-10">
             <div>
               <h2 className="text-3xl font-bold text-gray-900">Son Haberler</h2>
-              <p className="text-gray-600 mt-2">Güncel gelişmeler ve duyurular</p>
+              <p className="text-gray-600 mt-2">Güncel gelişmeler ve duyurular • Toplam {news.length} haber</p>
             </div>
             <Link href="/haberler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">
               Tümü <ArrowRight size={16} />
