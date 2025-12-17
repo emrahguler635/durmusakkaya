@@ -1,5 +1,4 @@
 "use client";
-import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { useState, useEffect, ReactNode } from "react";
 
@@ -8,10 +7,8 @@ export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return <>{children}</>;
   return (
-    <SessionProvider>
-      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-        {children}
-      </ThemeProvider>
-    </SessionProvider>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+      {children}
+    </ThemeProvider>
   );
 }
