@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Image as ImageIcon } from "lucide-react";
+import { publicImages, getPublicImagePath } from "@/lib/public-images";
 
 interface News {
   id: string;
@@ -128,7 +129,50 @@ export default function AdminDashboard() {
                   <input type="text" required placeholder="Başlık" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="w-full px-4 py-3 border rounded-lg" />
                   <input type="text" required placeholder="Özet" value={form.summary} onChange={(e) => setForm({ ...form, summary: e.target.value })} className="w-full px-4 py-3 border rounded-lg" />
                   <textarea required rows={5} placeholder="İçerik" value={form.content} onChange={(e) => setForm({ ...form, content: e.target.value })} className="w-full px-4 py-3 border rounded-lg" />
-                  <input type="url" placeholder="Görsel URL (opsiyonel)" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} className="w-full px-4 py-3 border rounded-lg" />
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Görsel</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        placeholder="Görsel URL veya public klasöründen seçin" 
+                        value={form.imageUrl} 
+                        onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} 
+                        className="flex-1 px-4 py-3 border rounded-lg" 
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowImageSelector(!showImageSelector)}
+                        className="px-4 py-3 bg-gray-100 hover:bg-gray-200 rounded-lg border flex items-center gap-2"
+                      >
+                        <ImageIcon size={18} />
+                        Seç
+                      </button>
+                    </div>
+                    {showImageSelector && (
+                      <div className="mt-2 p-4 bg-gray-50 rounded-lg border max-h-60 overflow-y-auto">
+                        <p className="text-sm text-gray-600 mb-2">Public klasöründen seçin:</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {publicImages.map((img) => (
+                            <button
+                              key={img.url}
+                              type="button"
+                              onClick={() => {
+                                setForm({ ...form, imageUrl: getPublicImagePath(img.url) });
+                                setShowImageSelector(false);
+                              }}
+                              className="p-2 text-left border rounded hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                            >
+                              <div className="text-xs font-medium text-gray-700">{img.name}</div>
+                              <div className="text-xs text-gray-500 truncate">{img.url}</div>
+                            </button>
+                          ))}
+                        </div>
+                        <p className="text-xs text-gray-500 mt-3">
+                          💡 Yeni resim eklemek için: public klasörüne resim ekleyin, sonra lib/public-images.ts dosyasına ekleyin
+                        </p>
+                      </div>
+                    )}
+                  </div>
                   <label className="flex items-center gap-2"><input type="checkbox" checked={form.published} onChange={(e) => setForm({ ...form, published: e.target.checked })} /> Yayınla</label>
                   <div className="flex gap-2">
                     <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">Kaydet</button>
