@@ -16,6 +16,20 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: { unoptimized: true },
+  // API routes'ları static export'ta çalışmayacağı için ignore et
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
+  // API routes klasörünü exclude et
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;

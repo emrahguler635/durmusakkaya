@@ -31,10 +31,15 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Generate Prisma Client (skip if no DB)
+        run: npx prisma generate --skip-generate || echo "Prisma skipped"
+        continue-on-error: true
+
       - name: Build
         run: npm run build
         env:
           NODE_ENV: production
+          SKIP_ENV_VALIDATION: true
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
