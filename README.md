@@ -29,29 +29,13 @@ npm start
 
 Bu proje GitHub Pages üzerinde otomatik olarak deploy edilir.
 
-### Adımlar:
+**Site URL:** https://emrahguler635.github.io/durmusakkaya/
 
-1. **GitHub Repository Oluştur**
-   - GitHub'da yeni bir repository oluşturun
-   - Repository adını not edin (örn: `durmus-akkaya-website`)
+### Otomatik Deploy
 
-2. **next.config.js'i Güncelle**
-   - `basePath` ve `assetPrefix` değerlerini repository adınıza göre güncelleyin
-
-3. **GitHub'a Push Et**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit"
-   git branch -M main
-   git remote add origin https://github.com/KULLANICI_ADI/REPO_ADI.git
-   git push -u origin main
-   ```
-
-4. **GitHub Pages Ayarları**
-   - Repository Settings > Pages
-   - Source: "GitHub Actions" seçin
-   - Artık her push'ta otomatik deploy olacak
+- Her `main` branch'ine push yapıldığında otomatik olarak deploy edilir
+- GitHub Actions workflow'u otomatik olarak çalışır
+- Deploy durumunu "Actions" sekmesinden takip edebilirsiniz
 
 ## 🔧 Yapılandırma
 
