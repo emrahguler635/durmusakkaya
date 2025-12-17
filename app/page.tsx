@@ -4,16 +4,18 @@ import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
-import { getLatestNews, allNews } from "@/lib/news-data";
+import { getLatestNews, getAllNewsArray } from "@/lib/news-data";
 import { getHomePageData, type HomePageData } from "@/lib/page-data";
 
 export default function HomePage() {
   const [homeData, setHomeData] = useState<HomePageData | null>(null);
-  const news = getLatestNews(3);
+  const [news, setNews] = useState<any[]>([]);
 
   useEffect(() => {
     const data = getHomePageData();
     setHomeData(data);
+    const newsData = getLatestNews(3);
+    setNews(newsData);
   }, []);
 
   if (!homeData) {
@@ -88,7 +90,7 @@ export default function HomePage() {
             <div>
               <h2 className="text-3xl font-bold text-gray-900">{homeData.newsSection.title}</h2>
               <p className="text-gray-600 mt-2">
-                {homeData.newsSection.description.replace("{count}", allNews.length.toString())}
+                {homeData.newsSection.description.replace("{count}", getAllNewsArray().length.toString())}
               </p>
             </div>
             <Link href="/haberler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">

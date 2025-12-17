@@ -164,8 +164,10 @@ export function getAllNews(): NewsItem[] {
   return defaultNews;
 }
 
-// Export for backward compatibility
-export const allNews = getAllNews();
+// Export for backward compatibility (lazy evaluation)
+export function getAllNewsArray(): NewsItem[] {
+  return getAllNews();
+}
 
 // Get latest news (for homepage)
 export function getLatestNews(count: number = 3): NewsItem[] {
