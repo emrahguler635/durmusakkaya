@@ -1,40 +1,12 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
-// Static homepage data
-const staticHomeData = {
-  hero: {
-    welcomeText: "Hoş Geldiniz",
-    title: "Dr. Durmuş AKKAYA",
-    subtitle: "Başak A.Ş. Genel Müdürü",
-    description: "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
-  },
-  highlights: [
-    {
-      id: "1",
-      title: "Liderlik",
-      description: "Yılların yöneticilik deneyimi ve stratejik vizyon"
-    },
-    {
-      id: "2",
-      title: "Başarı",
-      description: "Sürdürülebilir büyüme ve kurumsal başarılar"
-    },
-    {
-      id: "3",
-      title: "İletişim",
-      description: "Açık iletişim ve iş birliği odaklı yaklaşım"
-    }
-  ],
-  newsSection: {
-    title: "Son Haberler",
-    description: "Güncel gelişmeler ve duyurular • Toplam {count} haber"
-  }
-};
+import { getHomePageData } from "@/lib/page-data";
 
-// Static news data
+// Static news data (fallback)
 const staticNews = [
   {
     id: "1",
@@ -69,8 +41,36 @@ const staticNews = [
 ];
 
 export default function HomePage() {
-  const news = staticNews.slice(0, 3);
-  const totalNewsCount = staticNews.length;
+  const [homeData, setHomeData] = useState(getHomePageData());
+  const [news, setNews] = useState<any[]>([]);
+  const [totalNewsCount, setTotalNewsCount] = useState(0);
+
+  useEffect(() => {
+    // Load home data from localStorage
+    setHomeData(getHomePageData());
+    
+    // Load news from localStorage
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const savedNews = localStorage.getItem("admin_news");
+        if (savedNews) {
+          const parsedNews = JSON.parse(savedNews);
+          const publishedNews = parsedNews.filter((n: any) => n.published);
+          setNews(publishedNews.slice(0, 3));
+          setTotalNewsCount(publishedNews.length);
+        } else {
+          setNews(staticNews.slice(0, 3));
+          setTotalNewsCount(staticNews.length);
+        }
+      } catch {
+        setNews(staticNews.slice(0, 3));
+        setTotalNewsCount(staticNews.length);
+      }
+    } else {
+      setNews(staticNews.slice(0, 3));
+      setTotalNewsCount(staticNews.length);
+    }
+  }, []);
 
   const highlightIcons = [Briefcase, Award, Mail];
   const highlightColors = [

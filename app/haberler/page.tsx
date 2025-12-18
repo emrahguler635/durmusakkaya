@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import NewsCard from "@/components/news-card";
 import { Newspaper } from "lucide-react";
 
-// Static news data
+// Static news data (fallback)
 const staticNews = [
   {
     id: "1",
@@ -48,7 +48,27 @@ const staticNews = [
 ];
 
 export default function NewsPage() {
-  const [news] = useState(staticNews.slice(0, 12));
+  const [news, setNews] = useState(staticNews.slice(0, 12));
+
+  useEffect(() => {
+    // Load news from localStorage
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const savedNews = localStorage.getItem("admin_news");
+        if (savedNews) {
+          const parsedNews = JSON.parse(savedNews);
+          const publishedNews = parsedNews.filter((n: any) => n.published);
+          setNews(publishedNews.slice(0, 12));
+        } else {
+          setNews(staticNews.slice(0, 12));
+        }
+      } catch {
+        setNews(staticNews.slice(0, 12));
+      }
+    } else {
+      setNews(staticNews.slice(0, 12));
+    }
+  }, []);
 
   return (
     <div>
