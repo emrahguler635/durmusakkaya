@@ -31,12 +31,19 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build
-        run: npm run build
+        run: npm run build 2>&1 | tee build-log.txt || (cat build-log.txt && exit 1)
         env:
           NODE_ENV: production
           SKIP_ENV_VALIDATION: true
           NEXT_TELEMETRY_DISABLED: 1
         continue-on-error: false
+      
+      - name: Upload build logs
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: build-log.txt
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
