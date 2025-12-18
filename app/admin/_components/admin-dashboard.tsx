@@ -147,7 +147,7 @@ export default function AdminDashboard() {
             title: "Sürdürülebilirlik Zirvesi",
             summary: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
             content: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi. Bu zirvede, çevre dostu uygulamalar ve sürdürülebilir kalkınma konuları ele alındı.",
-            slug: "surdurilebilirlik-zirvesi",
+            slug: "surdurulebilirlik-zirvesi",
             published: true,
             imageUrl: "/haber3.jpg",
             createdAt: "2024-09-22T00:00:00.000Z"
