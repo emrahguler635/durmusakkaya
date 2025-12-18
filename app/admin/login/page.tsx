@@ -1,10 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { Lock, Mail } from "lucide-react";
-
-export const dynamic = 'force-dynamic';
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState("");
