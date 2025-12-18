@@ -49,16 +49,32 @@ const staticNews = [
   }
 ];
 
-export default function NewsDetailPage({ params }: { params: { slug: string } }) {
+export default function NewsDetailPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
   const [news, setNews] = useState<any>(null);
+  const [slug, setSlug] = useState<string>("");
 
   useEffect(() => {
+    // Handle async params
+    const getSlug = async () => {
+      if (params && typeof params === 'object' && 'then' in params) {
+        const resolvedParams = await params;
+        setSlug(resolvedParams.slug);
+      } else {
+        setSlug((params as { slug: string }).slug);
+      }
+    };
+    getSlug();
+  }, [params]);
+
+  useEffect(() => {
+    if (!slug) return;
+
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       try {
         const savedNews = localStorage.getItem("admin_news");
         if (savedNews) {
           const parsedNews = JSON.parse(savedNews);
-          const foundNews = parsedNews.find((n: any) => n.slug === params.slug && n.published);
+          const foundNews = parsedNews.find((n: any) => n.slug === slug && n.published);
           if (foundNews) {
             setNews(foundNews);
             return;
@@ -69,11 +85,11 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
       }
     }
     // Fallback to static data
-    const staticNewsItem = staticNews.find(n => n.slug === params.slug && n.published);
+    const staticNewsItem = staticNews.find(n => n.slug === slug && n.published);
     if (staticNewsItem) {
       setNews(staticNewsItem);
     }
-  }, [params.slug]);
+  }, [slug]);
 
   if (!news) {
     return (
