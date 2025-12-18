@@ -72,7 +72,9 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
     );
   }
 
-  const formattedDate = new Date(news.createdAt).toLocaleDateString("tr-TR", {
+  // Format date safely for static export
+  const date = new Date(news.createdAt);
+  const formattedDate = date.toLocaleDateString("tr-TR", {
     year: "numeric", month: "long", day: "numeric"
   });
 
