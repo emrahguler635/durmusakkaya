@@ -1,7 +1,12 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import AdminDashboard from "./_components/admin-dashboard";
+import dynamic from "next/dynamic";
+
+// Dynamically import admin dashboard to prevent SSR
+const AdminDashboard = dynamic(() => import("./_components/admin-dashboard"), {
+  ssr: false,
+});
 
 export default function AdminPage() {
   const router = useRouter();

@@ -1,5 +1,7 @@
 // Public klasöründeki resimlerin listesi
 // Yeni resim eklediğinizde buraya ekleyin
+// This file is only used client-side in admin panel
+
 export const publicImages = [
   { name: "Varsayılan Resim", url: "/og-image.png" },
   { name: "Logo", url: "/logo.png" },
@@ -13,7 +15,8 @@ export const publicImages = [
 
 // Helper function to get full path with basePath
 export function getPublicImagePath(path: string): string {
-  const basePath = process.env.NODE_ENV === 'production' ? '/durmusakkaya' : '';
+  // Always use basePath for GitHub Pages
+  const basePath = '/durmusakkaya';
   return `${basePath}${path}`;
 }
 

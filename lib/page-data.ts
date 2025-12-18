@@ -1,4 +1,5 @@
 // Page data management - safe for static build
+// This file is only used client-side in admin panel
 
 export interface HomePageData {
   hero: {
