@@ -1,3 +1,4 @@
+"use client";
 // Page data management - safe for static build
 // This file is only used client-side in admin panel
 
@@ -173,6 +174,9 @@ export function saveHomePageData(data: HomePageData) {
   if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
   try {
     localStorage.setItem("admin_homepage", JSON.stringify(data));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('adminDataUpdated'));
+    }
   } catch {
     // Silently fail
   }

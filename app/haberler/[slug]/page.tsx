@@ -124,12 +124,3 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
     </div>
   );
 }
-
-// Keep generateStaticParams for static export
-export function generateStaticParams() {
-  return staticNews
-    .filter(news => news.published)
-    .map(news => ({
-      slug: news.slug,
-    }));
-}
