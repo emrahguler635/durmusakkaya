@@ -1,3 +1,5 @@
+"use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
@@ -57,7 +59,33 @@ export function generateStaticParams() {
 }
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const news = staticNews.find(n => n.slug === params.slug && n.published);
+  const [news, setNews] = useState<any>(null);
+
+  useEffect(() => {
+    const slug = typeof params === 'object' && 'slug' in params ? params.slug : (params as any).slug || '';
+    if (!slug) return;
+
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const savedNews = localStorage.getItem("admin_news");
+        if (savedNews) {
+          const parsedNews = JSON.parse(savedNews);
+          const foundNews = parsedNews.find((n: any) => n.slug === slug && n.published);
+          if (foundNews) {
+            setNews(foundNews);
+            return;
+          }
+        }
+      } catch (e) {
+        // Silently fail
+      }
+    }
+    // Fallback to static data
+    const staticNewsItem = staticNews.find(n => n.slug === slug && n.published);
+    if (staticNewsItem) {
+      setNews(staticNewsItem);
+    }
+  }, [params]);
 
   if (!news) {
     return (
