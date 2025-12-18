@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { Linkedin, Twitter, Mail, Facebook, Instagram } from "lucide-react";

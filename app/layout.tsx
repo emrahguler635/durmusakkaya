@@ -10,17 +10,17 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://emrahguler635.github.io/durmusakkaya"),
+  metadataBase: new URL("https://emrahguler635.github.io/durmusakkaya"),
   title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
   description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü. Profesyonel deneyim, haberler ve iletişim.",
   icons: {
-    icon: process.env.NODE_ENV === 'production' ? "/durmusakkaya/favicon.svg" : "/favicon.svg",
-    shortcut: process.env.NODE_ENV === 'production' ? "/durmusakkaya/favicon.svg" : "/favicon.svg"
+    icon: "/durmusakkaya/favicon.svg",
+    shortcut: "/durmusakkaya/favicon.svg"
   },
   openGraph: {
     title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
     description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü",
-    images: [process.env.NODE_ENV === 'production' ? "/durmusakkaya/og-image.png" : "/og-image.png"]
+    images: ["/durmusakkaya/og-image.png"]
   }
 };
 
