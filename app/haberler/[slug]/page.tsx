@@ -49,15 +49,6 @@ const staticNews = [
   }
 ];
 
-// Generate static params for all news slugs
-export function generateStaticParams() {
-  return staticNews
-    .filter(news => news.published)
-    .map(news => ({
-      slug: news.slug,
-    }));
-}
-
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
   const [news, setNews] = useState<any>(null);
 
