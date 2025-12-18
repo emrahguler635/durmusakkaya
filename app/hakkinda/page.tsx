@@ -3,20 +3,63 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { GraduationCap, Briefcase, Award, Target } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
-import { getAboutPageData, type AboutPageData } from "@/lib/page-data";
+
+// Static about page data
+const staticAboutData = {
+  header: {
+    title: "Hakkımda",
+    subtitle: "Kariyer yolculuğum ve vizyon"
+  },
+  bio: {
+    name: "Dr. Durmuş AKKAYA",
+    role: "Başak A.Ş. Genel Müdürü",
+    paragraphs: [
+      "Uzun yılların iş deneyimi ve akademik birikimle donanmış bir lider olarak, kurumsal yönetim ve stratejik planlama alanlarında geniş bir vizyona sahibim.",
+      "Başak A.Ş.'nin büyümesine ve sektörde öncü konuma gelmesine liderlik etmekten gurur duyuyorum. İnovasyon, sürdürülebilirlik ve müşteri memnuniyeti odaklı yaklaşımımız sayesinde şirketimiz istikrarlı bir büyüme süreci yaşamaktadır.",
+      "Ekip çalışmasına ve yenilikçi düşünceye olan inancım, başarılı projelerin temelini oluşturmaktadır."
+    ],
+    profileImage: "/profile.jpg"
+  },
+  career: [
+    {
+      id: "1",
+      title: "Genel Müdür",
+      company: "Başak A.Ş.",
+      period: "2018 - Günümüz",
+      description: "Şirketin genel yönetimi, stratejik planlama ve büyüme hedeflerinin belirlenmesi"
+    },
+    {
+      id: "2",
+      title: "Genel Müdür Yardımcısı",
+      company: "Başak A.Ş.",
+      period: "2014 - 2018",
+      description: "Operasyonel süreçlerin yönetimi ve iyileştirilmesi"
+    },
+    {
+      id: "3",
+      title: "Bölüm Müdürü",
+      company: "Başak A.Ş.",
+      period: "2010 - 2014",
+      description: "Satış ve pazarlama bölümünün yönetimi"
+    }
+  ],
+  education: [
+    {
+      id: "1",
+      degree: "Doktora",
+      field: "Işletme Yönetimi",
+      period: "2008 - 2012"
+    },
+    {
+      id: "2",
+      degree: "Yüksek Lisans",
+      field: "MBA - İşletme",
+      period: "2005 - 2007"
+    }
+  ]
+};
 
 export default function AboutPage() {
-  const [aboutData, setAboutData] = useState<AboutPageData | null>(null);
-
-  useEffect(() => {
-    const data = getAboutPageData();
-    setAboutData(data);
-  }, []);
-
-  if (!aboutData) {
-    return <div className="min-h-screen flex items-center justify-center">Yükleniyor...</div>;
-  }
-
   const careerIcons = [Briefcase, Target, Award];
 
   return (
@@ -24,8 +67,8 @@ export default function AboutPage() {
       {/* Header */}
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-20">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{aboutData.header.title}</h1>
-          <p className="text-blue-200 text-lg">{aboutData.header.subtitle}</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{staticAboutData.header.title}</h1>
+          <p className="text-blue-200 text-lg">{staticAboutData.header.subtitle}</p>
         </div>
       </section>
 
@@ -35,15 +78,15 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-xl">
               <Image
-                src={getImagePath(aboutData.bio.profileImage)}
-                alt={aboutData.bio.name}
+                src={getImagePath(staticAboutData.bio.profileImage)}
+                alt={staticAboutData.bio.name}
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {aboutData.bio.name.split(" ").map((word, i, arr) => 
+                {staticAboutData.bio.name.split(" ").map((word, i, arr) => 
                   i === arr.length - 1 ? (
                     <span key={i} className="text-blue-600">{word}</span>
                   ) : (
@@ -51,9 +94,9 @@ export default function AboutPage() {
                   )
                 )}
               </h2>
-              <p className="text-blue-600 font-medium mb-6">{aboutData.bio.role}</p>
+              <p className="text-blue-600 font-medium mb-6">{staticAboutData.bio.role}</p>
               <div className="space-y-4 text-gray-600 leading-relaxed">
-                {aboutData.bio.paragraphs.map((paragraph, index) => (
+                {staticAboutData.bio.paragraphs.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
@@ -70,7 +113,7 @@ export default function AboutPage() {
             <p className="text-gray-600">Profesyonel deneyim ve başarılar</p>
           </div>
           <div className="space-y-6">
-            {aboutData.career.map((career, index) => {
+            {staticAboutData.career.map((career, index) => {
               const Icon = careerIcons[index % careerIcons.length];
               const iconColors = [
                 { bg: "bg-blue-100", text: "text-blue-600" },
@@ -103,7 +146,7 @@ export default function AboutPage() {
             <p className="text-gray-600">Akademik geçmiş</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            {aboutData.education.map((education, index) => {
+            {staticAboutData.education.map((education, index) => {
               const bgColors = ["bg-blue-50", "bg-yellow-50"];
               const textColors = ["text-blue-600", "text-yellow-600"];
               const bgColor = bgColors[index % bgColors.length];
