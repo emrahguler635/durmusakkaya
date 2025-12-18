@@ -10,8 +10,16 @@ export default function AdminPage() {
   useEffect(() => {
     // In production/static build, redirect to login
     // This is a simple workaround for GitHub Pages
-    const isAuthenticated = sessionStorage.getItem("admin_authenticated");
-    if (!isAuthenticated) {
+    if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+      router.push("/admin/login");
+      return;
+    }
+    try {
+      const isAuthenticated = sessionStorage.getItem("admin_authenticated");
+      if (!isAuthenticated) {
+        router.push("/admin/login");
+      }
+    } catch {
       router.push("/admin/login");
     }
   }, [router]);

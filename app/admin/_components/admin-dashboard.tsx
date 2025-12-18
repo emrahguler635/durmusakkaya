@@ -62,20 +62,36 @@ export default function AdminDashboard() {
   }, []);
 
   const loadNews = () => {
-    const saved = localStorage.getItem("admin_news");
-    if (saved) {
-      setNews(JSON.parse(saved));
-    } else {
-      const defaultNews: News[] = [];
-      setNews(defaultNews);
-      localStorage.setItem("admin_news", JSON.stringify(defaultNews));
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      setNews([]);
+      return;
+    }
+    try {
+      const saved = localStorage.getItem("admin_news");
+      if (saved) {
+        setNews(JSON.parse(saved));
+      } else {
+        const defaultNews: News[] = [];
+        setNews(defaultNews);
+        localStorage.setItem("admin_news", JSON.stringify(defaultNews));
+      }
+    } catch {
+      setNews([]);
     }
   };
 
   const loadMessages = () => {
-    const saved = localStorage.getItem("admin_messages");
-    if (saved) {
-      setMessages(JSON.parse(saved));
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      setMessages([]);
+      return;
+    }
+    try {
+      const saved = localStorage.getItem("admin_messages");
+      if (saved) {
+        setMessages(JSON.parse(saved));
+      }
+    } catch {
+      setMessages([]);
     }
   };
 
@@ -102,7 +118,13 @@ export default function AdminDashboard() {
       : [...news, { ...newsForm, id: Date.now().toString(), slug: newsForm.title.toLowerCase().replace(/\s+/g, "-"), createdAt: new Date().toISOString() }];
     
     setNews(updatedNews);
-    localStorage.setItem("admin_news", JSON.stringify(updatedNews));
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem("admin_news", JSON.stringify(updatedNews));
+      } catch {
+        // Silently fail
+      }
+    }
     setShowNewsForm(false);
     setEditingNewsId(null);
     setNewsForm({ title: "", summary: "", content: "", imageUrl: "", published: true });
@@ -112,7 +134,13 @@ export default function AdminDashboard() {
     if (confirm("Bu haberi silmek istediğinizden emin misiniz?")) {
       const updatedNews = news.filter(n => n.id !== id);
       setNews(updatedNews);
-      localStorage.setItem("admin_news", JSON.stringify(updatedNews));
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        try {
+          localStorage.setItem("admin_news", JSON.stringify(updatedNews));
+        } catch {
+          // Silently fail
+        }
+      }
     }
   };
 

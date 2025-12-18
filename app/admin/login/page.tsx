@@ -18,7 +18,13 @@ export default function AdminLoginPage() {
     // Simple authentication for static export (GitHub Pages)
     // In production, this would use API routes
     if (email === "admin@basak.com.tr" && password === "admin123") {
-      sessionStorage.setItem("admin_authenticated", "true");
+      if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+        try {
+          sessionStorage.setItem("admin_authenticated", "true");
+        } catch {
+          // Silently fail
+        }
+      }
       router.replace("/admin");
     } else {
       setError("Geçersiz email veya şifre");

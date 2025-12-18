@@ -1,4 +1,4 @@
-// Simplified page data for static build (no localStorage)
+// Page data management - safe for static build
 
 export interface HomePageData {
   hero: {
@@ -57,7 +57,7 @@ export interface ContactPageData {
   };
 }
 
-// Static default data
+// Default data
 export const defaultHomePageData: HomePageData = {
   hero: {
     welcomeText: "Hoş Geldiniz",
@@ -155,27 +155,66 @@ export const defaultContactPageData: ContactPageData = {
   }
 };
 
-// Simple getters (no localStorage)
+// Safe getters - only work client-side
 export function getHomePageData(): HomePageData {
-  return defaultHomePageData;
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return defaultHomePageData;
+  }
+  try {
+    const saved = localStorage.getItem("admin_homepage");
+    return saved ? JSON.parse(saved) : defaultHomePageData;
+  } catch {
+    return defaultHomePageData;
+  }
 }
 
 export function saveHomePageData(data: HomePageData) {
-  // No-op for static build
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem("admin_homepage", JSON.stringify(data));
+  } catch {
+    // Silently fail
+  }
 }
 
 export function getAboutPageData(): AboutPageData {
-  return defaultAboutPageData;
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return defaultAboutPageData;
+  }
+  try {
+    const saved = localStorage.getItem("admin_aboutpage");
+    return saved ? JSON.parse(saved) : defaultAboutPageData;
+  } catch {
+    return defaultAboutPageData;
+  }
 }
 
 export function saveAboutPageData(data: AboutPageData) {
-  // No-op for static build
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem("admin_aboutpage", JSON.stringify(data));
+  } catch {
+    // Silently fail
+  }
 }
 
 export function getContactPageData(): ContactPageData {
-  return defaultContactPageData;
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return defaultContactPageData;
+  }
+  try {
+    const saved = localStorage.getItem("admin_contactpage");
+    return saved ? JSON.parse(saved) : defaultContactPageData;
+  } catch {
+    return defaultContactPageData;
+  }
 }
 
 export function saveContactPageData(data: ContactPageData) {
-  // No-op for static build
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem("admin_contactpage", JSON.stringify(data));
+  } catch {
+    // Silently fail
+  }
 }
