@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
-import { adminHomeData, adminNewsData } from "@/lib/admin-data";
 // Static homepage data
 const staticHomeData = {
   hero: {
@@ -71,12 +70,12 @@ const staticNews = [
 ];
 
 export default function HomePage() {
-  const [homeData, setHomeData] = useState(adminHomeData || staticHomeData);
-  const [news, setNews] = useState(adminNewsData ? adminNewsData.filter((n: any) => n.published).slice(0, 3) : staticNews.slice(0, 3));
-  const [totalNewsCount, setTotalNewsCount] = useState(adminNewsData ? adminNewsData.filter((n: any) => n.published).length : staticNews.length);
+  const [homeData, setHomeData] = useState(staticHomeData);
+  const [news, setNews] = useState(staticNews.slice(0, 3));
+  const [totalNewsCount, setTotalNewsCount] = useState(staticNews.length);
 
   useEffect(() => {
-    // Also check localStorage for latest changes
+    // Load from localStorage
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       try {
         const savedHome = localStorage.getItem("admin_homepage");

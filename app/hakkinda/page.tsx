@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { GraduationCap, Briefcase, Award, Target } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
-import { adminAboutData } from "@/lib/admin-data";
 
 // Static about page data
 const staticAboutData = {
@@ -61,7 +60,7 @@ const staticAboutData = {
 };
 
 export default function AboutPage() {
-  const [aboutData, setAboutData] = useState(adminAboutData || staticAboutData);
+  const [aboutData, setAboutData] = useState(staticAboutData);
   const careerIcons = [Briefcase, Target, Award];
 
   useEffect(() => {

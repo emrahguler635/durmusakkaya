@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import ContactForm from "./_components/contact-form";
-import { adminContactData } from "@/lib/admin-data";
 
 // Static contact page data
 const staticContactData = {
@@ -19,7 +18,7 @@ const staticContactData = {
 };
 
 export default function ContactPage() {
-  const [contactData, setContactData] = useState(adminContactData || staticContactData);
+  const [contactData, setContactData] = useState(staticContactData);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {

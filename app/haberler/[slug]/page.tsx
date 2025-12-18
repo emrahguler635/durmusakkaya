@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
-import { adminNewsData } from "@/lib/admin-data";
 
 // Static news data
 const staticNews = [
@@ -65,15 +64,6 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
   useEffect(() => {
     const slug = typeof params === 'object' && 'slug' in params ? params.slug : (params as any).slug || '';
     if (!slug) return;
-
-    // Try admin data first
-    if (adminNewsData) {
-      const foundNews = adminNewsData.find((n: any) => n.slug === slug && n.published);
-      if (foundNews) {
-        setNews(foundNews);
-        return;
-      }
-    }
 
     // Try localStorage
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
