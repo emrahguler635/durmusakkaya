@@ -55,6 +55,10 @@ export default function AdminDashboard() {
   // GitHub token state
   const [githubToken, setGithubToken] = useState<string>("");
   const [showTokenInput, setShowTokenInput] = useState(false);
+  
+  // GitHub token state
+  const [githubToken, setGithubToken] = useState<string>("");
+  const [showTokenInput, setShowTokenInput] = useState(false);
 
   // Load all data
   useEffect(() => {
@@ -63,6 +67,18 @@ export default function AdminDashboard() {
     loadHomeData();
     loadAboutData();
     loadContactData();
+    
+    // Load GitHub token from sessionStorage
+    if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+      try {
+        const savedToken = sessionStorage.getItem("github_token");
+        if (savedToken) {
+          setGithubToken(savedToken);
+        }
+      } catch (e) {
+        // Silently fail
+      }
+    }
   }, []);
 
   const loadNews = () => {
