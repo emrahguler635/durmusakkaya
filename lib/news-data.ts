@@ -1,4 +1,3 @@
-'use client';
 // Centralized news data - reads from localStorage if available, otherwise uses default
 
 interface NewsItem {
@@ -151,16 +150,19 @@ const defaultNews: NewsItem[] = [
 
 // Get news from localStorage or return default
 export function getAllNews(): NewsItem[] {
-  if (typeof window === 'undefined') return defaultNews;
-  const saved = localStorage.getItem("admin_news");
-  if (saved) {
-    try {
+  // Always return default during build/server-side
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+    return defaultNews;
+  }
+  try {
+    const saved = localStorage.getItem("admin_news");
+    if (saved) {
       const parsed = JSON.parse(saved);
       // Merge with defaults to ensure all fields exist
       return parsed.length > 0 ? parsed : defaultNews;
-    } catch {
-      return defaultNews;
     }
+  } catch {
+    // Silently fallback to default
   }
   return defaultNews;
 }
