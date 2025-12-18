@@ -550,9 +550,43 @@ export const adminNewsData = ${newsDataContent};
       <header className="bg-blue-900 text-white p-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Admin Panel</h1>
-          <div className="flex gap-2">
-            <button onClick={handleDeploy} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors text-white">
-              <Rocket size={18} /> Deploy Başlat
+          <div className="flex gap-2 items-center">
+            {showTokenInput && (
+              <div className="flex gap-2 items-center">
+                <input
+                  type="password"
+                  placeholder="GitHub Token"
+                  value={githubToken}
+                  onChange={(e) => setGithubToken(e.target.value)}
+                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  style={{ minWidth: '200px' }}
+                />
+                <button
+                  onClick={() => {
+                    if (githubToken && typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+                      sessionStorage.setItem("github_token", githubToken);
+                    }
+                    setShowTokenInput(false);
+                  }}
+                  className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
+                >
+                  Kaydet
+                </button>
+              </div>
+            )}
+            {!showTokenInput && !githubToken && (
+              <button
+                onClick={() => setShowTokenInput(true)}
+                className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
+              >
+                Token Ekle
+              </button>
+            )}
+            <button onClick={handleSaveToGitHub} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors text-white">
+              <Rocket size={18} /> GitHub'a Kaydet & Deploy
+            </button>
+            <button onClick={handleDeploy} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-white">
+              <Rocket size={18} /> Sadece Deploy
             </button>
             <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
               <LogOut size={18} /> Çıkış
