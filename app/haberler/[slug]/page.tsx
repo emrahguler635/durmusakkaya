@@ -1,4 +1,3 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
@@ -47,6 +46,15 @@ const staticNews = [
     createdAt: "2024-08-15T00:00:00.000Z"
   }
 ];
+
+// Generate static params for all news slugs
+export function generateStaticParams() {
+  return staticNews
+    .filter(news => news.published)
+    .map(news => ({
+      slug: news.slug,
+    }));
+}
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
   const news = staticNews.find(n => n.slug === params.slug && n.published);
