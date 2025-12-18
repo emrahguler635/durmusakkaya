@@ -51,6 +51,10 @@ export default function AdminDashboard() {
   
   // Messages state
   const [messages, setMessages] = useState<any[]>([]);
+  
+  // GitHub token state
+  const [githubToken, setGithubToken] = useState<string>("");
+  const [showTokenInput, setShowTokenInput] = useState(false);
 
   // Load all data
   useEffect(() => {
@@ -395,6 +399,106 @@ export default function AdminDashboard() {
   const handleContactSave = () => {
     saveContactPageData(contactData);
     alert("İletişim sayfası başarıyla kaydedildi!");
+  };
+
+  const handleSaveToGitHub = async () => {
+    if (!githubToken) {
+      alert("Lütfen önce GitHub Personal Access Token'ınızı girin.");
+      setShowTokenInput(true);
+      return;
+    }
+
+    if (!confirm("Değişiklikler GitHub'a kaydedilecek ve otomatik deploy başlatılacak. Devam etmek istediğinizden emin misiniz?")) {
+      return;
+    }
+
+    try {
+      // Save token to sessionStorage
+      if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem("github_token", githubToken);
+      }
+
+      // Prepare data files
+      const homeDataContent = JSON.stringify(homeData, null, 2);
+      const aboutDataContent = JSON.stringify(aboutData, null, 2);
+      const contactDataContent = JSON.stringify(contactData, null, 2);
+      const newsDataContent = JSON.stringify(news, null, 2);
+
+      // Create data file content
+      const dataFileContent = `// Auto-generated data file - DO NOT EDIT MANUALLY
+// This file is generated from admin panel changes
+export const adminHomeData = ${homeDataContent};
+export const adminAboutData = ${aboutDataContent};
+export const adminContactData = ${contactDataContent};
+export const adminNewsData = ${newsDataContent};
+`;
+
+      // GitHub API: Create or update file
+      const repo = "emrahguler635/durmusakkaya";
+      const path = "durmus_akkaya_website/nextjs_space/lib/admin-data.ts";
+      const message = `Update content from admin panel - ${new Date().toISOString()}`;
+      
+      // Get current file SHA if exists
+      let sha = null;
+      try {
+        const getFileResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+          headers: {
+            'Authorization': `token ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        if (getFileResponse.ok) {
+          const fileData = await getFileResponse.json();
+          sha = fileData.sha;
+        }
+      } catch (e) {
+        // File doesn't exist, will create new
+      }
+
+      // Encode content to base64
+      const content = btoa(unescape(encodeURIComponent(dataFileContent)));
+
+      // Create or update file
+      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `token ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message,
+          content: content,
+          sha: sha
+        })
+      });
+
+      if (response.ok) {
+        alert("Değişiklikler GitHub'a kaydedildi! Deploy otomatik olarak başlayacak.");
+        // Trigger workflow dispatch
+        try {
+          await fetch(`https://api.github.com/repos/${repo}/actions/workflows/deploy.yml/dispatches`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `token ${githubToken}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              ref: 'main'
+            })
+          });
+        } catch (e) {
+          // Workflow dispatch failed, but file was saved
+          console.error("Workflow dispatch failed:", e);
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`Hata: ${errorData.message || 'GitHub'a kaydedilemedi'}`);
+      }
+    } catch (error: any) {
+      alert(`Hata: ${error.message || 'Bir hata oluştu'}`);
+    }
   };
 
   const handleDeploy = async () => {

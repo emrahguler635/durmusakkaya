@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { GraduationCap, Briefcase, Award, Target } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
+import { adminAboutData } from "@/lib/admin-data";
 
 // Static about page data
 const staticAboutData = {
@@ -60,15 +61,29 @@ const staticAboutData = {
 };
 
 export default function AboutPage() {
+  const [aboutData, setAboutData] = useState(adminAboutData || staticAboutData);
   const careerIcons = [Briefcase, Target, Award];
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const saved = localStorage.getItem("admin_aboutpage");
+        if (saved) {
+          setAboutData(JSON.parse(saved));
+        }
+      } catch (e) {
+        // Silently fail
+      }
+    }
+  }, []);
 
   return (
     <div>
       {/* Header */}
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-20">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{staticAboutData.header.title}</h1>
-          <p className="text-blue-200 text-lg">{staticAboutData.header.subtitle}</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{aboutData.header.title}</h1>
+          <p className="text-blue-200 text-lg">{aboutData.header.subtitle}</p>
         </div>
       </section>
 
@@ -78,15 +93,15 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative aspect-[3/4] bg-gray-100 rounded-xl overflow-hidden shadow-xl">
               <Image
-                src={getImagePath(staticAboutData.bio.profileImage)}
-                alt={staticAboutData.bio.name}
+                src={getImagePath(aboutData.bio.profileImage)}
+                alt={aboutData.bio.name}
                 fill
                 className="object-cover"
               />
             </div>
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                {staticAboutData.bio.name.split(" ").map((word, i, arr) => 
+                {aboutData.bio.name.split(" ").map((word, i, arr) => 
                   i === arr.length - 1 ? (
                     <span key={i} className="text-blue-600">{word}</span>
                   ) : (
@@ -94,9 +109,9 @@ export default function AboutPage() {
                   )
                 )}
               </h2>
-              <p className="text-blue-600 font-medium mb-6">{staticAboutData.bio.role}</p>
+              <p className="text-blue-600 font-medium mb-6">{aboutData.bio.role}</p>
               <div className="space-y-4 text-gray-600 leading-relaxed">
-                {staticAboutData.bio.paragraphs.map((paragraph, index) => (
+                {aboutData.bio.paragraphs.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
@@ -113,7 +128,7 @@ export default function AboutPage() {
             <p className="text-gray-600">Profesyonel deneyim ve başarılar</p>
           </div>
           <div className="space-y-6">
-            {staticAboutData.career.map((career, index) => {
+            {aboutData.career.map((career, index) => {
               const Icon = careerIcons[index % careerIcons.length];
               const iconColors = [
                 { bg: "bg-blue-100", text: "text-blue-600" },
@@ -146,7 +161,7 @@ export default function AboutPage() {
             <p className="text-gray-600">Akademik geçmiş</p>
           </div>
           <div className="grid md:grid-cols-2 gap-6">
-            {staticAboutData.education.map((education, index) => {
+            {aboutData.education.map((education, index) => {
               const bgColors = ["bg-blue-50", "bg-yellow-50"];
               const textColors = ["text-blue-600", "text-yellow-600"];
               const bgColor = bgColors[index % bgColors.length];
