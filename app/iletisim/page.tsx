@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import ContactForm from "./_components/contact-form";
 
@@ -18,47 +17,8 @@ const staticContactData = {
 };
 
 export default function ContactPage() {
-  const [contactData, setContactData] = useState(staticContactData);
-
-  const loadData = () => {
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-      return;
-    }
-
-    try {
-      const saved = localStorage.getItem("admin_contactpage");
-      if (saved) {
-        setContactData(JSON.parse(saved));
-      }
-    } catch {
-      // Silently fail
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-
-    // Listen for storage changes (auto-update when admin panel makes changes)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "admin_contactpage") {
-        loadData();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also listen for custom events (for same-tab updates)
-    const handleCustomStorage = () => {
-      loadData();
-    };
-    
-    window.addEventListener('adminDataUpdated', handleCustomStorage);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('adminDataUpdated', handleCustomStorage);
-    };
-  }, []);
+  // Use static data only for build
+  const contactData = staticContactData;
 
   return (
     <div>

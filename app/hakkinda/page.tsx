@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import { GraduationCap, Briefcase, Award, Target } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
@@ -60,48 +59,9 @@ const staticAboutData = {
 };
 
 export default function AboutPage() {
-  const [aboutData, setAboutData] = useState(staticAboutData);
+  // Use static data only for build
+  const aboutData = staticAboutData;
   const careerIcons = [Briefcase, Target, Award];
-
-  const loadData = () => {
-    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-      return;
-    }
-
-    try {
-      const saved = localStorage.getItem("admin_aboutpage");
-      if (saved) {
-        setAboutData(JSON.parse(saved));
-      }
-    } catch {
-      // Silently fail
-    }
-  };
-
-  useEffect(() => {
-    loadData();
-
-    // Listen for storage changes (auto-update when admin panel makes changes)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === "admin_aboutpage") {
-        loadData();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also listen for custom events (for same-tab updates)
-    const handleCustomStorage = () => {
-      loadData();
-    };
-    
-    window.addEventListener('adminDataUpdated', handleCustomStorage);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('adminDataUpdated', handleCustomStorage);
-    };
-  }, []);
 
   return (
     <div>

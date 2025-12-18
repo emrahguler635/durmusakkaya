@@ -1,5 +1,4 @@
 "use client";
-import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
@@ -50,27 +49,8 @@ const staticNews = [
 ];
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const [news, setNews] = useState<any>(null);
-
-  useEffect(() => {
-    // Load news from localStorage
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      try {
-        const savedNews = localStorage.getItem("admin_news");
-        if (savedNews) {
-          const parsedNews = JSON.parse(savedNews);
-          const foundNews = parsedNews.find((n: any) => n.slug === params.slug && n.published);
-          setNews(foundNews || staticNews.find(n => n.slug === params.slug && n.published));
-        } else {
-          setNews(staticNews.find(n => n.slug === params.slug && n.published));
-        }
-      } catch {
-        setNews(staticNews.find(n => n.slug === params.slug && n.published));
-      }
-    } else {
-      setNews(staticNews.find(n => n.slug === params.slug && n.published));
-    }
-  }, [params.slug]);
+  // Use static data only for build
+  const news = staticNews.find(n => n.slug === params.slug && n.published);
 
   if (!news) {
     return (
