@@ -1,11 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
-import { getLatestNews } from "@/lib/news-data";
-
 // Static homepage data
 const staticHomeData = {
   hero: {
@@ -37,15 +34,43 @@ const staticHomeData = {
   }
 };
 
-export default function HomePage() {
-  const [news, setNews] = useState<any[]>([]);
-  const [totalNewsCount, setTotalNewsCount] = useState(0);
+// Static news data
+const staticNews = [
+  {
+    id: "1",
+    title: "Yılın CEO'su Ödülü",
+    summary: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
+    content: "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi. Bu ödül, yıl boyunca gösterdiği üstün liderlik ve başarılı yönetim anlayışının bir göstergesidir.",
+    slug: "yilin-ceo-odu",
+    published: true,
+    imageUrl: "/haber1.jpg",
+    createdAt: "2024-11-15T00:00:00.000Z"
+  },
+  {
+    id: "2",
+    title: "Yeni Stratejik Ortaklık",
+    summary: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
+    content: "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı. Bu ortaklık, şirketin gelecek hedeflerine ulaşmasında önemli bir adım olacaktır.",
+    slug: "yeni-stratejik-ortaklik",
+    published: true,
+    imageUrl: "/haber2.jpg",
+    createdAt: "2024-10-03T00:00:00.000Z"
+  },
+  {
+    id: "3",
+    title: "Sürdürülebilirlik Zirvesi",
+    summary: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
+    content: "Sürdürülebilirlik konulu önemli bir zirve düzenlendi. Bu zirvede, çevre dostu uygulamalar ve sürdürülebilir kalkınma konuları ele alındı.",
+    slug: "surdurulebilirlik-zirvesi",
+    published: true,
+    imageUrl: "/haber3.jpg",
+    createdAt: "2024-09-22T00:00:00.000Z"
+  }
+];
 
-  useEffect(() => {
-    const newsData = getLatestNews(3);
-    setNews(newsData);
-    setTotalNewsCount(newsData.length);
-  }, []);
+export default function HomePage() {
+  const news = staticNews.slice(0, 3);
+  const totalNewsCount = staticNews.length;
 
   const highlightIcons = [Briefcase, Award, Mail];
   const highlightColors = [
