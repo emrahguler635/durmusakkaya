@@ -57,7 +57,24 @@ export function generateStaticParams() {
 }
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const news = staticNews.find(n => n.slug === params.slug && n.published);
+  const [news, setNews] = useState(staticNews.find(n => n.slug === params.slug && n.published) || null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const savedNews = localStorage.getItem("admin_news");
+        if (savedNews) {
+          const parsedNews = JSON.parse(savedNews);
+          const foundNews = parsedNews.find((n: any) => n.slug === params.slug && n.published);
+          if (foundNews) {
+            setNews(foundNews);
+          }
+        }
+      } catch (e) {
+        // Silently fail, use static data
+      }
+    }
+  }, [params.slug]);
 
   if (!news) {
     return (
