@@ -4,7 +4,6 @@ import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
-import { getHomePageData } from "@/lib/page-data";
 
 // Static news data (fallback)
 const staticNews = [
@@ -40,14 +39,54 @@ const staticNews = [
   }
 ];
 
+// Default static data
+const defaultHomeData = {
+  hero: {
+    welcomeText: "Hoş Geldiniz",
+    title: "Dr. Durmuş AKKAYA",
+    subtitle: "Başak A.Ş. Genel Müdürü",
+    description: "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
+  },
+  highlights: [
+    {
+      id: "1",
+      title: "Liderlik",
+      description: "Yılların yöneticilik deneyimi ve stratejik vizyon"
+    },
+    {
+      id: "2",
+      title: "Başarı",
+      description: "Sürdürülebilir büyüme ve kurumsal başarılar"
+    },
+    {
+      id: "3",
+      title: "İletişim",
+      description: "Açık iletişim ve iş birliği odaklı yaklaşım"
+    }
+  ],
+  newsSection: {
+    title: "Son Haberler",
+    description: "Güncel gelişmeler ve duyurular • Toplam {count} haber"
+  }
+};
+
 export default function HomePage() {
-  const [homeData, setHomeData] = useState(getHomePageData());
+  const [homeData, setHomeData] = useState(defaultHomeData);
   const [news, setNews] = useState<any[]>([]);
   const [totalNewsCount, setTotalNewsCount] = useState(0);
 
   useEffect(() => {
-    // Load home data from localStorage
-    setHomeData(getHomePageData());
+    // Load home data from localStorage (client-side only)
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const saved = localStorage.getItem("admin_homepage");
+        if (saved) {
+          setHomeData(JSON.parse(saved));
+        }
+      } catch {
+        // Silently fail
+      }
+    }
     
     // Load news from localStorage
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {

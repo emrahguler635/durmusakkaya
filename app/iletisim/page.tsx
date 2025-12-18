@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import ContactForm from "./_components/contact-form";
-import { getContactPageData } from "@/lib/page-data";
 
 // Static contact page data (fallback)
 const staticContactData = {
@@ -22,7 +21,17 @@ export default function ContactPage() {
   const [contactData, setContactData] = useState(staticContactData);
 
   useEffect(() => {
-    setContactData(getContactPageData());
+    // Load contact data from localStorage (client-side only)
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const saved = localStorage.getItem("admin_contactpage");
+        if (saved) {
+          setContactData(JSON.parse(saved));
+        }
+      } catch {
+        // Silently fail
+      }
+    }
   }, []);
 
   return (

@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { GraduationCap, Briefcase, Award, Target } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
-import { getAboutPageData } from "@/lib/page-data";
 
 // Static about page data (fallback)
 const staticAboutData = {
@@ -65,7 +64,17 @@ export default function AboutPage() {
   const careerIcons = [Briefcase, Target, Award];
 
   useEffect(() => {
-    setAboutData(getAboutPageData());
+    // Load about data from localStorage (client-side only)
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const saved = localStorage.getItem("admin_aboutpage");
+        if (saved) {
+          setAboutData(JSON.parse(saved));
+        }
+      } catch {
+        // Silently fail
+      }
+    }
   }, []);
 
   return (
