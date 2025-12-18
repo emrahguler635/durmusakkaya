@@ -443,7 +443,7 @@ export const adminNewsData = ${newsDataContent};
       try {
         const getFileResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
           headers: {
-            'Authorization': `token ${githubToken}`,
+            'Authorization': `Bearer ${githubToken}`,
             'Accept': 'application/vnd.github.v3+json'
           }
         });
@@ -462,7 +462,7 @@ export const adminNewsData = ${newsDataContent};
       const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `token ${githubToken}`,
+          'Authorization': `Bearer ${githubToken}`,
           'Accept': 'application/vnd.github.v3+json',
           'Content-Type': 'application/json'
         },
