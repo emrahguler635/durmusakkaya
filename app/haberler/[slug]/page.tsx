@@ -1,10 +1,9 @@
-"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
 
-// Static news data (fallback)
+// Static news data
 const staticNews = [
   {
     id: "1",
@@ -48,8 +47,16 @@ const staticNews = [
   }
 ];
 
+// Generate static params for all news slugs
+export function generateStaticParams() {
+  return staticNews
+    .filter(news => news.published)
+    .map(news => ({
+      slug: news.slug,
+    }));
+}
+
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  // Use static data only for build
   const news = staticNews.find(n => n.slug === params.slug && n.published);
 
   if (!news) {
@@ -65,7 +72,9 @@ export default function NewsDetailPage({ params }: { params: { slug: string } })
     );
   }
 
-  const formattedDate = new Date(news.createdAt).toLocaleDateString("tr-TR", {
+  // Format date safely for static export
+  const date = new Date(news.createdAt);
+  const formattedDate = date.toLocaleDateString("tr-TR", {
     year: "numeric", month: "long", day: "numeric"
   });
 

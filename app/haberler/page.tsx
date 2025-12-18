@@ -1,8 +1,9 @@
 "use client";
+import { useState, useEffect } from "react";
 import NewsCard from "@/components/news-card";
 import { Newspaper } from "lucide-react";
 
-// Static news data (fallback)
+// Static news data
 const staticNews = [
   {
     id: "1",
@@ -47,8 +48,7 @@ const staticNews = [
 ];
 
 export default function NewsPage() {
-  // Use static data only for build
-  const news = staticNews.slice(0, 12);
+  const [news] = useState(staticNews.slice(0, 12));
 
   return (
     <div>

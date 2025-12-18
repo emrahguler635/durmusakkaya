@@ -13,12 +13,6 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
-  // Exclude admin pages from static generation
-  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  // Don't generate static pages for admin routes
-  generateBuildId: async () => {
-    return 'build-' + Date.now();
-  },
 };
 
 module.exports = nextConfig;
