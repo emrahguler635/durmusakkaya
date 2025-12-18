@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket } from "lucide-react";
 import { publicImages, getPublicImagePath } from "@/lib/public-images";
 import { 
   getHomePageData, saveHomePageData, defaultHomePageData,
@@ -397,6 +397,23 @@ export default function AdminDashboard() {
     alert("İletişim sayfası başarıyla kaydedildi!");
   };
 
+  const handleDeploy = async () => {
+    if (!confirm("GitHub Pages'e deploy başlatmak istediğinizden emin misiniz? Bu işlem birkaç dakika sürebilir.")) {
+      return;
+    }
+
+    try {
+      // GitHub Actions workflow'unu tetiklemek için GitHub API kullanıyoruz
+      // Not: Bu için GitHub Personal Access Token gerekir, ancak güvenlik nedeniyle
+      // kullanıcıyı GitHub Actions sayfasına yönlendiriyoruz
+      const repoUrl = "https://github.com/emrahguler635/durmusakkaya/actions/workflows/deploy.yml";
+      window.open(repoUrl, "_blank");
+      alert("GitHub Actions sayfası açıldı. 'Run workflow' butonuna tıklayarak deploy başlatabilirsiniz.");
+    } catch (error) {
+      alert("Deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak başlatın.");
+    }
+  };
+
   const handleLogout = () => {
     if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
       try {
@@ -413,9 +430,14 @@ export default function AdminDashboard() {
       <header className="bg-blue-900 text-white p-4">
         <div className="max-w-6xl mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Admin Panel</h1>
-          <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
-            <LogOut size={18} /> Çıkış
-          </button>
+          <div className="flex gap-2">
+            <button onClick={handleDeploy} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors text-white">
+              <Rocket size={18} /> Deploy Başlat
+            </button>
+            <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+              <LogOut size={18} /> Çıkış
+            </button>
+          </div>
         </div>
       </header>
 
