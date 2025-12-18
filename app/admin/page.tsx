@@ -14,18 +14,18 @@ export default function AdminPage() {
   // Simple client-side check (for static export)
   useEffect(() => {
     if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
-      router.push("/admin/login");
+      window.location.href = "/durmusakkaya/admin/login/";
       return;
     }
     try {
       const isAuthenticated = sessionStorage.getItem("admin_authenticated");
       if (!isAuthenticated) {
-        router.push("/admin/login");
+        window.location.href = "/durmusakkaya/admin/login/";
       }
     } catch {
-      router.push("/admin/login");
+      window.location.href = "/durmusakkaya/admin/login/";
     }
-  }, [router]);
+  }, []);
 
   return <AdminDashboard />;
 }

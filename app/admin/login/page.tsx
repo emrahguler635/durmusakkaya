@@ -20,11 +20,16 @@ export default function AdminLoginPage() {
       if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
         try {
           sessionStorage.setItem("admin_authenticated", "true");
-        } catch {
-          // Silently fail
+          // Use window.location for static export compatibility
+          window.location.href = "/durmusakkaya/admin/";
+        } catch (err) {
+          setError("Giriş yapılırken bir hata oluştu");
+          setLoading(false);
         }
+      } else {
+        setError("Tarayıcı desteği eksik");
+        setLoading(false);
       }
-      router.replace("/admin");
     } else {
       setError("Geçersiz email veya şifre");
       setLoading(false);

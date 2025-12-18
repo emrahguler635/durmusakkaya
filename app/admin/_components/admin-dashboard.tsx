@@ -310,11 +310,13 @@ export default function AdminDashboard() {
     if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
       try {
         sessionStorage.removeItem("admin_authenticated");
+        window.location.href = "/durmusakkaya/admin/login/";
       } catch {
-        // Silently fail
+        window.location.href = "/durmusakkaya/admin/login/";
       }
+    } else {
+      window.location.href = "/durmusakkaya/admin/login/";
     }
-    router.push("/admin/login");
   };
 
   return (
