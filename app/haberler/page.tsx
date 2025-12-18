@@ -50,24 +50,49 @@ const staticNews = [
 export default function NewsPage() {
   const [news, setNews] = useState(staticNews.slice(0, 12));
 
-  useEffect(() => {
-    // Load news from localStorage
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      try {
-        const savedNews = localStorage.getItem("admin_news");
-        if (savedNews) {
-          const parsedNews = JSON.parse(savedNews);
-          const publishedNews = parsedNews.filter((n: any) => n.published);
-          setNews(publishedNews.slice(0, 12));
-        } else {
-          setNews(staticNews.slice(0, 12));
-        }
-      } catch {
+  const loadData = () => {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      setNews(staticNews.slice(0, 12));
+      return;
+    }
+
+    try {
+      const savedNews = localStorage.getItem("admin_news");
+      if (savedNews) {
+        const parsedNews = JSON.parse(savedNews);
+        const publishedNews = parsedNews.filter((n: any) => n.published);
+        setNews(publishedNews.slice(0, 12));
+      } else {
         setNews(staticNews.slice(0, 12));
       }
-    } else {
+    } catch {
       setNews(staticNews.slice(0, 12));
     }
+  };
+
+  useEffect(() => {
+    loadData();
+
+    // Listen for storage changes (auto-update when admin panel makes changes)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "admin_news") {
+        loadData();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom events (for same-tab updates)
+    const handleCustomStorage = () => {
+      loadData();
+    };
+    
+    window.addEventListener('adminDataUpdated', handleCustomStorage);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('adminDataUpdated', handleCustomStorage);
+    };
   }, []);
 
   return (

@@ -75,40 +75,64 @@ export default function HomePage() {
   const [news, setNews] = useState<any[]>([]);
   const [totalNewsCount, setTotalNewsCount] = useState(0);
 
-  useEffect(() => {
-    // Load home data from localStorage (client-side only)
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      try {
-        const saved = localStorage.getItem("admin_homepage");
-        if (saved) {
-          setHomeData(JSON.parse(saved));
-        }
-      } catch {
-        // Silently fail
-      }
+  const loadData = () => {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      setNews(staticNews.slice(0, 3));
+      setTotalNewsCount(staticNews.length);
+      return;
     }
-    
-    // Load news from localStorage
-    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-      try {
-        const savedNews = localStorage.getItem("admin_news");
-        if (savedNews) {
-          const parsedNews = JSON.parse(savedNews);
-          const publishedNews = parsedNews.filter((n: any) => n.published);
-          setNews(publishedNews.slice(0, 3));
-          setTotalNewsCount(publishedNews.length);
-        } else {
-          setNews(staticNews.slice(0, 3));
-          setTotalNewsCount(staticNews.length);
-        }
-      } catch {
+
+    try {
+      // Load home data from localStorage
+      const saved = localStorage.getItem("admin_homepage");
+      if (saved) {
+        setHomeData(JSON.parse(saved));
+      }
+    } catch {
+      // Silently fail
+    }
+
+    try {
+      // Load news from localStorage
+      const savedNews = localStorage.getItem("admin_news");
+      if (savedNews) {
+        const parsedNews = JSON.parse(savedNews);
+        const publishedNews = parsedNews.filter((n: any) => n.published);
+        setNews(publishedNews.slice(0, 3));
+        setTotalNewsCount(publishedNews.length);
+      } else {
         setNews(staticNews.slice(0, 3));
         setTotalNewsCount(staticNews.length);
       }
-    } else {
+    } catch {
       setNews(staticNews.slice(0, 3));
       setTotalNewsCount(staticNews.length);
     }
+  };
+
+  useEffect(() => {
+    loadData();
+
+    // Listen for storage changes (auto-update when admin panel makes changes)
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "admin_homepage" || e.key === "admin_news") {
+        loadData();
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    
+    // Also listen for custom events (for same-tab updates)
+    const handleCustomStorage = () => {
+      loadData();
+    };
+    
+    window.addEventListener('adminDataUpdated', handleCustomStorage);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('adminDataUpdated', handleCustomStorage);
+    };
   }, []);
 
   const highlightIcons = [Briefcase, Award, Mail];

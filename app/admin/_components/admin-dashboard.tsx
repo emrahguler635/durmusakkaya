@@ -121,6 +121,7 @@ export default function AdminDashboard() {
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       try {
         localStorage.setItem("admin_news", JSON.stringify(updatedNews));
+        dispatchUpdateEvent();
       } catch {
         // Silently fail
       }
@@ -137,6 +138,7 @@ export default function AdminDashboard() {
       if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
         try {
           localStorage.setItem("admin_news", JSON.stringify(updatedNews));
+          dispatchUpdateEvent();
         } catch {
           // Silently fail
         }
@@ -150,9 +152,17 @@ export default function AdminDashboard() {
     setShowNewsForm(true);
   };
 
+  // Helper function to dispatch update event
+  const dispatchUpdateEvent = () => {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('adminDataUpdated'));
+    }
+  };
+
   // Home page handlers
   const handleHomeSave = () => {
     saveHomePageData(homeData);
+    dispatchUpdateEvent();
     alert("Ana sayfa başarıyla kaydedildi!");
   };
 
@@ -204,6 +214,7 @@ export default function AdminDashboard() {
   // About page handlers
   const handleAboutSave = () => {
     saveAboutPageData(aboutData);
+    dispatchUpdateEvent();
     alert("Hakkında sayfası başarıyla kaydedildi!");
   };
 
@@ -303,6 +314,7 @@ export default function AdminDashboard() {
   // Contact page handlers
   const handleContactSave = () => {
     saveContactPageData(contactData);
+    dispatchUpdateEvent();
     alert("İletişim sayfası başarıyla kaydedildi!");
   };
 

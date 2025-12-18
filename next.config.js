@@ -13,6 +13,8 @@ const nextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  // Exclude admin pages from static generation
+  pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
 };
 
 module.exports = nextConfig;

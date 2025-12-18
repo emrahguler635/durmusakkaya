@@ -194,6 +194,7 @@ export function saveAboutPageData(data: AboutPageData) {
   if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
   try {
     localStorage.setItem("admin_aboutpage", JSON.stringify(data));
+    window.dispatchEvent(new Event('adminDataUpdated'));
   } catch {
     // Silently fail
   }
@@ -215,6 +216,7 @@ export function saveContactPageData(data: ContactPageData) {
   if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
   try {
     localStorage.setItem("admin_contactpage", JSON.stringify(data));
+    window.dispatchEvent(new Event('adminDataUpdated'));
   } catch {
     // Silently fail
   }
