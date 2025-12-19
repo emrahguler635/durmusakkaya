@@ -56,11 +56,6 @@ export default function AdminDashboard() {
   const [githubToken, setGithubToken] = useState<string>("");
   const [showTokenInput, setShowTokenInput] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  
-  // GitHub token state
-  const [githubToken, setGithubToken] = useState<string>("");
-  const [showTokenInput, setShowTokenInput] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
 
   // Load all data
   useEffect(() => {
@@ -263,10 +258,132 @@ export default function AdminDashboard() {
     setShowNewsForm(true);
   };
 
+  // GitHub commit and deploy function
+  const commitToGitHubAndDeploy = async (dataType: string, data: any) => {
+    if (!githubToken) {
+      alert("Lütfen önce GitHub Personal Access Token'ınızı girin. Token eklemek için header'daki 'Token Ekle' butonuna tıklayın.");
+      setShowTokenInput(true);
+      return false;
+    }
+
+    setIsSaving(true);
+    try {
+      // Save token to sessionStorage
+      if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+        sessionStorage.setItem("github_token", githubToken);
+      }
+
+      // Get all current data from localStorage
+      const homeDataToSave = getHomePageData();
+      const aboutDataToSave = getAboutPageData();
+      const contactDataToSave = getContactPageData();
+      let newsToSave: News[] = [];
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        try {
+          const savedNews = localStorage.getItem("admin_news");
+          if (savedNews) {
+            newsToSave = JSON.parse(savedNews);
+          }
+        } catch (e) {
+          // Silently fail
+        }
+      }
+
+      // Create data file content
+      const dataFileContent = `// Auto-generated data file - DO NOT EDIT MANUALLY
+// This file is generated from admin panel changes
+export const adminHomeData = ${JSON.stringify(homeDataToSave, null, 2)};
+export const adminAboutData = ${JSON.stringify(aboutDataToSave, null, 2)};
+export const adminContactData = ${JSON.stringify(contactDataToSave, null, 2)};
+export const adminNewsData = ${JSON.stringify(newsToSave, null, 2)};
+`;
+
+      // GitHub API: Create or update file
+      const repo = "emrahguler635/durmusakkaya";
+      const path = "durmus_akkaya_website/nextjs_space/lib/admin-data.ts";
+      const message = `Update ${dataType} from admin panel - ${new Date().toISOString()}`;
+      
+      // Get current file SHA if exists
+      let sha = null;
+      try {
+        const getFileResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+          headers: {
+            'Authorization': `Bearer ${githubToken}`,
+            'Accept': 'application/vnd.github.v3+json'
+          }
+        });
+        if (getFileResponse.ok) {
+          const fileData = await getFileResponse.json();
+          sha = fileData.sha;
+        }
+      } catch (e) {
+        // File doesn't exist, will create new
+      }
+
+      // Encode content to base64
+      const content = btoa(unescape(encodeURIComponent(dataFileContent)));
+
+      // Create or update file
+      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message,
+          content: content,
+          sha: sha
+        })
+      });
+
+      if (response.ok) {
+        // Trigger workflow dispatch
+        try {
+          const workflowResponse = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/deploy.yml/dispatches`, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${githubToken}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              ref: 'main'
+            })
+          });
+          
+          if (workflowResponse.ok) {
+            alert("✅ Değişiklikler GitHub'a kaydedildi ve deploy başlatıldı! Birkaç dakika içinde web sitesinde görünecek.");
+            return true;
+          } else {
+            alert("✅ Değişiklikler GitHub'a kaydedildi! Ancak deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak deploy başlatın.");
+            return true;
+          }
+        } catch (e) {
+          alert("✅ Değişiklikler GitHub'a kaydedildi! Ancak deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak deploy başlatın.");
+          return true;
+        }
+      } else {
+        const errorData = await response.json();
+        alert(`❌ Hata: ${errorData.message || 'GitHub'a kaydedilemedi'}`);
+        return false;
+      }
+    } catch (error: any) {
+      alert(`❌ Hata: ${error.message || 'Bir hata oluştu'}`);
+      return false;
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   // Home page handlers
-  const handleHomeSave = () => {
+  const handleHomeSave = async () => {
     saveHomePageData(homeData);
-    alert("Ana sayfa başarıyla kaydedildi!");
+    const success = await commitToGitHubAndDeploy("home page", homeData);
+    if (!success) {
+      alert("Ana sayfa localStorage'a kaydedildi, ancak GitHub'a yüklenemedi.");
+    }
   };
 
   const handleHighlightAdd = () => {
@@ -315,9 +432,12 @@ export default function AdminDashboard() {
   };
 
   // About page handlers
-  const handleAboutSave = () => {
+  const handleAboutSave = async () => {
     saveAboutPageData(aboutData);
-    alert("Hakkında sayfası başarıyla kaydedildi!");
+    const success = await commitToGitHubAndDeploy("about page", aboutData);
+    if (!success) {
+      alert("Hakkında sayfası localStorage'a kaydedildi, ancak GitHub'a yüklenemedi.");
+    }
   };
 
   const handleCareerAdd = () => {
@@ -414,254 +534,11 @@ export default function AdminDashboard() {
   };
 
   // Contact page handlers
-  const handleContactSave = () => {
+  const handleContactSave = async () => {
     saveContactPageData(contactData);
-    alert("İletişim sayfası başarıyla kaydedildi!");
-  };
-
-  const handleSaveToGitHub = async () => {
-    if (!githubToken) {
-      alert("Lütfen önce GitHub Personal Access Token'ınızı girin. Token eklemek için 'Token Ekle' butonuna tıklayın.");
-      setShowTokenInput(true);
-      return;
-    }
-
-    if (!confirm("Değişiklikler GitHub'a kaydedilecek ve otomatik deploy başlatılacak. Devam etmek istediğinizden emin misiniz?")) {
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      // Save token to sessionStorage
-      if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
-        sessionStorage.setItem("github_token", githubToken);
-      }
-
-      // Get current data from localStorage
-      const homeDataToSave = getHomePageData();
-      const aboutDataToSave = getAboutPageData();
-      const contactDataToSave = getContactPageData();
-      let newsToSave: News[] = [];
-      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-        try {
-          const savedNews = localStorage.getItem("admin_news");
-          if (savedNews) {
-            newsToSave = JSON.parse(savedNews);
-          }
-        } catch (e) {
-          // Silently fail
-        }
-      }
-
-      // Prepare data files
-      const homeDataContent = JSON.stringify(homeDataToSave, null, 2);
-      const aboutDataContent = JSON.stringify(aboutDataToSave, null, 2);
-      const contactDataContent = JSON.stringify(contactDataToSave, null, 2);
-      const newsDataContent = JSON.stringify(newsToSave, null, 2);
-
-      // Create data file content
-      const dataFileContent = `// Auto-generated data file - DO NOT EDIT MANUALLY
-// This file is generated from admin panel changes
-export const adminHomeData = ${homeDataContent};
-export const adminAboutData = ${aboutDataContent};
-export const adminContactData = ${contactDataContent};
-export const adminNewsData = ${newsDataContent};
-`;
-
-      // GitHub API: Create or update file
-      const repo = "emrahguler635/durmusakkaya";
-      const path = "durmus_akkaya_website/nextjs_space/lib/admin-data.ts";
-      const message = `Update content from admin panel - ${new Date().toISOString()}`;
-      
-      // Get current file SHA if exists
-      let sha = null;
-      try {
-        const getFileResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-          headers: {
-            'Authorization': `Bearer ${githubToken}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
-        });
-        if (getFileResponse.ok) {
-          const fileData = await getFileResponse.json();
-          sha = fileData.sha;
-        }
-      } catch (e) {
-        // File doesn't exist, will create new
-      }
-
-      // Encode content to base64
-      const content = btoa(unescape(encodeURIComponent(dataFileContent)));
-
-      // Create or update file
-      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${githubToken}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: message,
-          content: content,
-          sha: sha
-        })
-      });
-
-      if (response.ok) {
-        // Trigger workflow dispatch
-        try {
-          const workflowResponse = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/deploy.yml/dispatches`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${githubToken}`,
-              'Accept': 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              ref: 'main'
-            })
-          });
-          
-          if (workflowResponse.ok) {
-            alert("✅ Değişiklikler GitHub'a kaydedildi ve deploy başlatıldı! Birkaç dakika içinde web sitesinde görünecek.");
-          } else {
-            alert("✅ Değişiklikler GitHub'a kaydedildi! Ancak deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak deploy başlatın.");
-          }
-        } catch (e) {
-          alert("✅ Değişiklikler GitHub'a kaydedildi! Ancak deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak deploy başlatın.");
-        }
-      } else {
-        const errorData = await response.json();
-        alert(`❌ Hata: ${errorData.message || 'GitHub'a kaydedilemedi'}`);
-      }
-    } catch (error: any) {
-      alert(`❌ Hata: ${error.message || 'Bir hata oluştu'}`);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleSaveToGitHub = async () => {
-    if (!githubToken) {
-      alert("Lütfen önce GitHub Personal Access Token'ınızı girin. Token eklemek için 'Token Ekle' butonuna tıklayın.");
-      setShowTokenInput(true);
-      return;
-    }
-
-    if (!confirm("Değişiklikler GitHub'a kaydedilecek ve otomatik deploy başlatılacak. Devam etmek istediğinizden emin misiniz?")) {
-      return;
-    }
-
-    setIsSaving(true);
-    try {
-      // Save token to sessionStorage
-      if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
-        sessionStorage.setItem("github_token", githubToken);
-      }
-
-      // Get current data from localStorage
-      const homeDataToSave = getHomePageData();
-      const aboutDataToSave = getAboutPageData();
-      const contactDataToSave = getContactPageData();
-      let newsToSave: News[] = [];
-      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
-        try {
-          const savedNews = localStorage.getItem("admin_news");
-          if (savedNews) {
-            newsToSave = JSON.parse(savedNews);
-          }
-        } catch (e) {
-          // Silently fail
-        }
-      }
-
-      // Prepare data files
-      const homeDataContent = JSON.stringify(homeDataToSave, null, 2);
-      const aboutDataContent = JSON.stringify(aboutDataToSave, null, 2);
-      const contactDataContent = JSON.stringify(contactDataToSave, null, 2);
-      const newsDataContent = JSON.stringify(newsToSave, null, 2);
-
-      // Create data file content
-      const dataFileContent = `// Auto-generated data file - DO NOT EDIT MANUALLY
-// This file is generated from admin panel changes
-export const adminHomeData = ${homeDataContent};
-export const adminAboutData = ${aboutDataContent};
-export const adminContactData = ${contactDataContent};
-export const adminNewsData = ${newsDataContent};
-`;
-
-      // GitHub API: Create or update file
-      const repo = "emrahguler635/durmusakkaya";
-      const path = "durmus_akkaya_website/nextjs_space/lib/admin-data.ts";
-      const message = `Update content from admin panel - ${new Date().toISOString()}`;
-      
-      // Get current file SHA if exists
-      let sha = null;
-      try {
-        const getFileResponse = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-          headers: {
-            'Authorization': `Bearer ${githubToken}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
-        });
-        if (getFileResponse.ok) {
-          const fileData = await getFileResponse.json();
-          sha = fileData.sha;
-        }
-      } catch (e) {
-        // File doesn't exist, will create new
-      }
-
-      // Encode content to base64
-      const content = btoa(unescape(encodeURIComponent(dataFileContent)));
-
-      // Create or update file
-      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `Bearer ${githubToken}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: message,
-          content: content,
-          sha: sha
-        })
-      });
-
-      if (response.ok) {
-        // Trigger workflow dispatch
-        try {
-          const workflowResponse = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/deploy.yml/dispatches`, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${githubToken}`,
-              'Accept': 'application/vnd.github.v3+json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              ref: 'main'
-            })
-          });
-          
-          if (workflowResponse.ok) {
-            alert("✅ Değişiklikler GitHub'a kaydedildi ve deploy başlatıldı! Birkaç dakika içinde web sitesinde görünecek.");
-          } else {
-            alert("✅ Değişiklikler GitHub'a kaydedildi! Ancak deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak deploy başlatın.");
-          }
-        } catch (e) {
-          alert("✅ Değişiklikler GitHub'a kaydedildi! Ancak deploy başlatılamadı. Lütfen GitHub Actions sayfasından manuel olarak deploy başlatın.");
-        }
-      } else {
-        const errorData = await response.json();
-        alert(`❌ Hata: ${errorData.message || 'GitHub'a kaydedilemedi'}`);
-      }
-    } catch (error: any) {
-      alert(`❌ Hata: ${error.message || 'Bir hata oluştu'}`);
-    } finally {
-      setIsSaving(false);
+    const success = await commitToGitHubAndDeploy("contact page", contactData);
+    if (!success) {
+      alert("İletişim sayfası localStorage'a kaydedildi, ancak GitHub'a yüklenemedi.");
     }
   };
 
@@ -730,15 +607,11 @@ export const adminNewsData = ${newsDataContent};
                 Token Ekle
               </button>
             )}
-            <button 
-              onClick={handleSaveToGitHub} 
-              disabled={isSaving}
-              className="flex items-center gap-2 bg-green-600 hover:bg-green-700 disabled:bg-gray-400 px-4 py-2 rounded-lg transition-colors text-white"
-            >
-              <Rocket size={18} /> {isSaving ? "Kaydediliyor..." : "GitHub'a Kaydet & Deploy"}
-            </button>
-            <button onClick={handleDeploy} className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors text-white">
-              <Rocket size={18} /> Sadece Deploy
+            {isSaving && (
+              <span className="text-sm text-yellow-300">Kaydediliyor...</span>
+            )}
+            <button onClick={handleDeploy} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors text-white">
+              <Rocket size={18} /> Deploy Başlat
             </button>
             <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
               <LogOut size={18} /> Çıkış
