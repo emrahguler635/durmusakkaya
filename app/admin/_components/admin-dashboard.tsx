@@ -59,7 +59,7 @@ export default function AdminDashboard() {
     loadHomeData();
     loadAboutData();
     loadContactData();
-  }, []);, []);
+  }, []);
 
   const loadNews = () => {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
