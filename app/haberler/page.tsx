@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import NewsCard from "@/components/news-card";
 import { Newspaper } from "lucide-react";
+import { adminNewsData } from "@/lib/admin-data";
 
 // Static news data
 const staticNews = [
@@ -48,7 +49,14 @@ const staticNews = [
 ];
 
 export default function NewsPage() {
-  const [news] = useState(staticNews.slice(0, 12));
+  const [news, setNews] = useState(adminNewsData ? adminNewsData.filter((n: any) => n.published).slice(0, 12) : staticNews.slice(0, 12));
+
+  useEffect(() => {
+    if (adminNewsData) {
+      const publishedNews = adminNewsData.filter((n: any) => n.published);
+      setNews(publishedNews.slice(0, 12));
+    }
+  }, []);
 
   return (
     <div>

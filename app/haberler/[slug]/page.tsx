@@ -1,7 +1,10 @@
+"use client";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
+import { adminNewsData } from "@/lib/admin-data";
 
 // Static news data
 const staticNews = [
@@ -57,7 +60,27 @@ export function generateStaticParams() {
 }
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const news = staticNews.find(n => n.slug === params.slug && n.published);
+  const [news, setNews] = useState<any>(null);
+
+  useEffect(() => {
+    const slug = typeof params === 'object' && 'slug' in params ? params.slug : (params as any).slug || '';
+    if (!slug) return;
+
+    // Try admin data first
+    if (adminNewsData) {
+      const foundNews = adminNewsData.find((n: any) => n.slug === slug && n.published);
+      if (foundNews) {
+        setNews(foundNews);
+        return;
+      }
+    }
+
+    // Fallback to static data
+    const staticNewsItem = staticNews.find(n => n.slug === slug && n.published);
+    if (staticNewsItem) {
+      setNews(staticNewsItem);
+    }
+  }, [params]);
 
   if (!news) {
     return (
