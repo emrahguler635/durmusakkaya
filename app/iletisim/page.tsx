@@ -1,8 +1,6 @@
 "use client";
-import { useState, useEffect } from "react";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import ContactForm from "./_components/contact-form";
-import { adminContactData } from "@/lib/admin-data";
 
 // Static contact page data
 const staticContactData = {
@@ -19,20 +17,12 @@ const staticContactData = {
 };
 
 export default function ContactPage() {
-  const [contactData, setContactData] = useState(adminContactData || staticContactData);
-
-  useEffect(() => {
-    if (adminContactData) {
-      setContactData(adminContactData);
-    }
-  }, []);
-
   return (
     <div>
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-20">
         <div className="max-w-6xl mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{contactData.header.title}</h1>
-          <p className="text-blue-200 text-lg">{contactData.header.subtitle}</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{staticContactData.header.title}</h1>
+          <p className="text-blue-200 text-lg">{staticContactData.header.subtitle}</p>
         </div>
       </section>
 
@@ -48,7 +38,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Adres</h3>
-                    <p className="text-gray-600 whitespace-pre-line">{contactData.contactInfo.address}</p>
+                    <p className="text-gray-600 whitespace-pre-line">{staticContactData.contactInfo.address}</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -57,7 +47,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Telefon</h3>
-                    <p className="text-gray-600">{contactData.contactInfo.phone}</p>
+                    <p className="text-gray-600">{staticContactData.contactInfo.phone}</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -66,7 +56,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">E-posta</h3>
-                    <p className="text-gray-600">{contactData.contactInfo.email}</p>
+                    <p className="text-gray-600">{staticContactData.contactInfo.email}</p>
                   </div>
                 </div>
                 <div className="flex gap-4">
@@ -75,7 +65,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">Çalışma Saatleri</h3>
-                    <p className="text-gray-600">{contactData.contactInfo.workingHours}</p>
+                    <p className="text-gray-600">{staticContactData.contactInfo.workingHours}</p>
                   </div>
                 </div>
               </div>

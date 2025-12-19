@@ -1,10 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
 import HeroSlider from "@/components/hero-slider";
-import { adminHomeData, adminNewsData } from "@/lib/admin-data";
 // Static homepage data
 const staticHomeData = {
   hero: {
@@ -71,21 +69,8 @@ const staticNews = [
 ];
 
 export default function HomePage() {
-  const [homeData, setHomeData] = useState(adminHomeData || staticHomeData);
-  const [news, setNews] = useState(adminNewsData ? adminNewsData.filter((n: any) => n.published).slice(0, 3) : staticNews.slice(0, 3));
-  const [totalNewsCount, setTotalNewsCount] = useState(adminNewsData ? adminNewsData.filter((n: any) => n.published).length : staticNews.length);
-
-  useEffect(() => {
-    // Update if admin data is available
-    if (adminHomeData) {
-      setHomeData(adminHomeData);
-    }
-    if (adminNewsData) {
-      const publishedNews = adminNewsData.filter((n: any) => n.published);
-      setNews(publishedNews.slice(0, 3));
-      setTotalNewsCount(publishedNews.length);
-    }
-  }, []);
+  const news = staticNews.slice(0, 3);
+  const totalNewsCount = staticNews.length;
 
   const highlightIcons = [Briefcase, Award, Mail];
   const highlightColors = [
@@ -101,9 +86,9 @@ export default function HomePage() {
         <HeroSlider />
         <div className="relative z-10 max-w-6xl mx-auto px-4 py-20">
           <div className="max-w-2xl text-white">
-            <p className="text-blue-200 font-medium mb-4">{homeData.hero.welcomeText}</p>
+            <p className="text-blue-200 font-medium mb-4">{staticHomeData.hero.welcomeText}</p>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              {homeData.hero.title.split(" ").map((word, i, arr) => 
+              {staticHomeData.hero.title.split(" ").map((word, i, arr) => 
                 i === arr.length - 1 ? (
                   <span key={i} className="text-white">{word}</span>
                 ) : (
@@ -111,9 +96,9 @@ export default function HomePage() {
                 )
               )}
             </h1>
-            <p className="text-xl text-blue-100 mb-4">{homeData.hero.subtitle}</p>
+            <p className="text-xl text-blue-100 mb-4">{staticHomeData.hero.subtitle}</p>
             <p className="text-blue-200 mb-8 text-lg">
-              {homeData.hero.description}
+              {staticHomeData.hero.description}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link href="/hakkinda" className="bg-white hover:bg-white/90 text-blue-900 font-semibold px-6 py-3 rounded-lg transition-colors inline-flex items-center gap-2">
@@ -131,7 +116,7 @@ export default function HomePage() {
       <section className="py-16 bg-white">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-3 gap-8">
-            {homeData.highlights.map((highlight, index) => {
+            {staticHomeData.highlights.map((highlight, index) => {
               const Icon = highlightIcons[index % highlightIcons.length];
               const colors = highlightColors[index % highlightColors.length];
               return (
@@ -153,9 +138,9 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex justify-between items-center mb-10">
             <div>
-              <h2 className="text-3xl font-bold text-gray-900">{homeData.newsSection.title}</h2>
+              <h2 className="text-3xl font-bold text-gray-900">{staticHomeData.newsSection.title}</h2>
               <p className="text-gray-600 mt-2">
-                {homeData.newsSection.description.replace("{count}", totalNewsCount.toString())}
+                {staticHomeData.newsSection.description.replace("{count}", totalNewsCount.toString())}
               </p>
             </div>
             <Link href="/haberler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">
