@@ -311,13 +311,20 @@ export default function AdminDashboard() {
         }
       }
 
-      // Create data file content
+      // Create data file content (build-safe: always valid TypeScript)
+      // Escape any backticks or template literals in JSON to prevent syntax errors
+      const safeStringify = (obj: any) => {
+        return JSON.stringify(obj, null, 2).replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+      };
+      
       const dataFileContent = `// Auto-generated data file - DO NOT EDIT MANUALLY
 // This file is generated from admin panel changes
-export const adminHomeData = ${JSON.stringify(homeDataToSave, null, 2)};
-export const adminAboutData = ${JSON.stringify(aboutDataToSave, null, 2)};
-export const adminContactData = ${JSON.stringify(contactDataToSave, null, 2)};
-export const adminNewsData = ${JSON.stringify(newsToSave, null, 2)};
+"use client";
+
+export const adminHomeData: any = ${safeStringify(homeDataToSave)};
+export const adminAboutData: any = ${safeStringify(aboutDataToSave)};
+export const adminContactData: any = ${safeStringify(contactDataToSave)};
+export const adminNewsData: any = ${safeStringify(newsToSave)};
 `;
 
       // GitHub API: Create or update file
@@ -388,7 +395,7 @@ export const adminNewsData = ${JSON.stringify(newsToSave, null, 2)};
         }
       } else {
         const errorData = await response.json();
-        alert(`❌ Hata: ${errorData.message || 'GitHub'a kaydedilemedi'}`);
+        alert(`❌ Hata: ${errorData.message || "GitHub'a kaydedilemedi"}`);
         return false;
       }
     } catch (error: any) {
