@@ -2,8 +2,9 @@
 import { useState, useEffect } from "react";
 import NewsCard from "@/components/news-card";
 import { Newspaper } from "lucide-react";
+import { adminNewsData } from "@/lib/admin-data";
 
-// Static news data
+// Static news data (fallback)
 const staticNews = [
   {
     id: "1",
@@ -48,7 +49,9 @@ const staticNews = [
 ];
 
 export default function NewsPage() {
-  const [news] = useState(staticNews.slice(0, 12));
+  // Use admin data if available, otherwise use static data
+  const allNews = adminNewsData || staticNews;
+  const [news] = useState(allNews.slice(0, 12));
 
   return (
     <div>
