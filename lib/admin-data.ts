@@ -136,5 +136,15 @@ export const adminNewsData: any = [
     "published": true,
     "imageUrl": "/haber4.jpg",
     "createdAt": "2024-08-15T00:00:00.000Z"
+  },
+  {
+    "title": "Ziyaretleirmiz",
+    "summary": "Uşak Valimiz Sayın Dr. Naci Aktaş Ziyaretimiz",
+    "content": "Uşak Valimiz Sayın Dr. Naci Aktaş beyefendiyi İstanbul Uşaklar eğitim ve Kültür vakfı geleneksel kahvaltı programına davet ettik. Sıcak ve samimi sohbeti için sayın valimize teşekkür ediyoruz...",
+    "imageUrl": "/profile.jpg",
+    "published": true,
+    "id": "1766253376213",
+    "slug": "ziyaretleirmiz",
+    "createdAt": "2025-12-20T17:56:16.213Z"
   }
 ];
