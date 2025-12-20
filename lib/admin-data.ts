@@ -90,9 +90,9 @@ export const adminContactData: any = {
     "subtitle": "Benimle iletişime geçin"
   },
   "contactInfo": {
-    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye",
-    "phone": "+90 (212) 000 00 00",
-    "email": "info@basak.com.tr",
+    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye ",
+    "phone": "+90 (537) 486 34 64 ",
+    "email": "admin@durmusakkaya.com",
     "workingHours": "Pazartesi - Cuma: 09:00 - 18:00"
   }
 };
@@ -102,7 +102,7 @@ export const adminNewsData: any = [
     "title": "Yılın CEO'su Ödülü",
     "summary": "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
     "content": "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi. Bu ödül, yıl boyunca gösterdiği üstün liderlik ve başarılı yönetim anlayışının bir göstergesidir.",
-    "slug": "yilin-ceo-odu",
+    "slug": "yln-ceosu-odulu",
     "published": true,
     "imageUrl": "/haber1.jpg",
     "createdAt": "2024-11-15T00:00:00.000Z"
@@ -112,7 +112,7 @@ export const adminNewsData: any = [
     "title": "Yeni Stratejik Ortaklık",
     "summary": "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
     "content": "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı. Bu ortaklık, şirketin gelecek hedeflerine ulaşmasında önemli bir adım olacaktır.",
-    "slug": "yeni-stratejik-ortaklik",
+    "slug": "yeni-stratejik-ortaklk",
     "published": true,
     "imageUrl": "/haber2.jpg",
     "createdAt": "2024-10-03T00:00:00.000Z"
@@ -138,53 +138,13 @@ export const adminNewsData: any = [
     "createdAt": "2024-08-15T00:00:00.000Z"
   },
   {
-    "title": "Ziyaretleirmiz",
-    "summary": "Uşak Valimiz Sayın Dr. Naci Aktaş Ziyaretimiz",
-    "content": "Uşak Valimiz Sayın Dr. Naci Aktaş beyefendiyi İstanbul Uşaklar eğitim ve Kültür vakfı geleneksel kahvaltı programına davet ettik. Sıcak ve samimi sohbeti için sayın valimize teşekkür ediyoruz...",
+    "title": "aaaaa",
+    "summary": "aaaaaa",
+    "content": "aaaaaaaaaaaaaaaaaaaaaaa sssssssssssssssssssssssssss",
     "imageUrl": "/profile.jpg",
     "published": true,
-    "id": "1766253376213",
-    "slug": "ziyaretleirmiz",
-    "createdAt": "2025-12-20T17:56:16.213Z"
-  },
-  {
-    "title": "test53432432",
-    "summary": "ttrt rt retergrdgrdg r",
-    "content": "ttreterk rw rhıewhrjewojrojo rj oejrrjghdfjkgkl rsjkg jdkgflkhgkldfhkg gfkjgkkghkjsdhfkfds",
-    "imageUrl": "/profile.jpg",
-    "published": true,
-    "id": "1766266764213",
-    "slug": "test53432432",
-    "createdAt": "2025-12-20T21:39:24.213Z"
-  },
-  {
-    "title": "kadshıa daıdhak\"",
-    "summary": "jwdo wqıooı dajıoajdoajsdjaosdj",
-    "content": "ıq oıwqjeıowqejoıdjaeıofjdoıadsjfojeafoıejof o fjfoıjdsof jsoşjfşsd fnsadkf klshfkjshfkhdskfhkdsfhn",
-    "imageUrl": "/profile.jpg",
-    "published": true,
-    "id": "1766267559600",
-    "slug": "kadshıa-daıdhak\"",
-    "createdAt": "2025-12-20T21:52:39.600Z"
-  },
-  {
-    "title": "şldkşladjlaf jfs fjskfjkesfkjsdfkn sjheskjn",
-    "summary": " djofjkshfksn hfkshfkjşsdafjpsfhkj fh",
-    "content": "jofj fdsjfjdddddddddddddddddddddddddddddddddddddddd  ffgggggggggggggggggggggggg ghhhhhhhhhhhhhhhhhhh",
-    "imageUrl": "/profile.jpg",
-    "published": true,
-    "id": "1766268173155",
-    "slug": "şldkşladjlaf-jfs-fjskfjkesfkjsdfkn-sjheskjn",
-    "createdAt": "2025-12-20T22:02:53.155Z"
-  },
-  {
-    "title": "a",
-    "summary": "a",
-    "content": "aaaaaaa",
-    "imageUrl": "/profile.jpg",
-    "published": true,
-    "id": "1766268729066",
-    "slug": "a",
-    "createdAt": "2025-12-20T22:12:09.066Z"
+    "id": "1766270095468",
+    "slug": "aaaaa",
+    "createdAt": "2025-12-20T22:34:55.468Z"
   }
 ];
