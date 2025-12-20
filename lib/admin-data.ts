@@ -138,13 +138,13 @@ export const adminNewsData: any = [
     "createdAt": "2024-08-15T00:00:00.000Z"
   },
   {
-    "title": "test habeer",
-    "summary": "test haberler",
-    "content": "sakjda sd odjadjaşs doasjd asjdkjask djasldj lasjdlasjdksl",
-    "imageUrl": "/slider1.jpg",
+    "title": "test52345",
+    "summary": "test1111",
+    "content": "smdljsad sasadjlsajdlasjdljaslf dsf jdso fjldsjfldsjlfjds fdfewrf refsrfsf",
+    "imageUrl": "/profile.jpg",
     "published": true,
-    "id": "1766230433602",
-    "slug": "test-habeer",
-    "createdAt": "2025-12-20T11:33:53.602Z"
+    "id": "1766231782962",
+    "slug": "test",
+    "createdAt": "2025-12-20T11:56:22.962Z"
   }
 ];
