@@ -48,21 +48,21 @@ const staticNews = [
   }
 ];
 
+// Combine static and admin news for static generation
+const allNewsForStaticGeneration = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0)
+  ? [...staticNews, ...adminNewsData]
+  : staticNews;
+
 // Generate static params for all news slugs (both static and admin data)
 export function generateStaticParams() {
-  // Use admin data if available, otherwise use static data
-  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) 
-    ? adminNewsData 
-    : staticNews;
-  
   // Get all unique slugs from both sources
   const allSlugs = [
-    ...staticNews.filter((n: any) => n.published).map((n: any) => n.slug),
-    ...(adminNewsData && Array.isArray(adminNewsData) ? adminNewsData.filter((n: any) => n.published && n.slug).map((n: any) => n.slug) : [])
+    ...staticNews.filter((n: any) => n.published && n.slug).map((n: any) => n.slug),
+    ...(adminNewsData && Array.isArray(adminNewsData) ? adminNewsData.filter((n: any) => n.published !== false && n.slug).map((n: any) => n.slug) : [])
   ];
   
-  // Remove duplicates
-  const uniqueSlugs = Array.from(new Set(allSlugs));
+  // Remove duplicates and filter out undefined/null slugs
+  const uniqueSlugs = Array.from(new Set(allSlugs.filter(slug => slug && typeof slug === 'string')));
   
   return uniqueSlugs.map(slug => ({ slug }));
 }
@@ -71,11 +71,12 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
   // Handle async params (Next.js 15)
   const resolvedParams = await Promise.resolve(params);
   
-  // Use admin data if available, otherwise use static data
-  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) 
-    ? adminNewsData 
+  // Combine static and admin data, prioritizing admin data
+  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0)
+    ? [...staticNews, ...adminNewsData]
     : staticNews;
   
+  // Find news by slug, checking both static and admin data
   const news = allNews.find((n: any) => n.slug === resolvedParams.slug && (n.published !== false));
 
   if (!news) {
