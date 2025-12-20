@@ -6,7 +6,7 @@ export const adminHomeData: any = {
   "hero": {
     "welcomeText": "Web Sitemiz",
     "title": "Dr. Durmuş AKKAYA",
-    "subtitle": "Başkan",
+    "subtitle": "Başkanı",
     "description": "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
   },
   "highlights": [
