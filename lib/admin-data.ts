@@ -136,15 +136,5 @@ export const adminNewsData: any = [
     "published": true,
     "imageUrl": "/haber4.jpg",
     "createdAt": "2024-08-15T00:00:00.000Z"
-  },
-  {
-    "title": "test52345",
-    "summary": "test1111",
-    "content": "smdljsad sasadjlsajdlasjdljaslf dsf jdso fjldsjfldsjlfjds fdfewrf refsrfsf",
-    "imageUrl": "/profile.jpg",
-    "published": true,
-    "id": "1766231782962",
-    "slug": "test",
-    "createdAt": "2025-12-20T11:56:22.962Z"
   }
 ];
