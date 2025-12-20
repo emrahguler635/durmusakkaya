@@ -146,5 +146,15 @@ export const adminNewsData: any = [
     "id": "1766253376213",
     "slug": "ziyaretleirmiz",
     "createdAt": "2025-12-20T17:56:16.213Z"
+  },
+  {
+    "title": "test53432432",
+    "summary": "ttrt rt retergrdgrdg r",
+    "content": "ttreterk rw rhıewhrjewojrojo rj oejrrjghdfjkgkl rsjkg jdkgflkhgkldfhkg gfkjgkkghkjsdhfkfds",
+    "imageUrl": "/profile.jpg",
+    "published": true,
+    "id": "1766266764213",
+    "slug": "test53432432",
+    "createdAt": "2025-12-20T21:39:24.213Z"
   }
 ];
