@@ -232,6 +232,33 @@ export default function AdminDashboard() {
       .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
   };
 
+  // Fix all news slugs (call this to clean up existing news)
+  const fixAllNewsSlugs = async () => {
+    const fixedNews = news.map((item: any) => {
+      const cleanSlug = createSlug(item.title);
+      return { ...item, slug: cleanSlug };
+    });
+    
+    setNews(fixedNews);
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem("admin_news", JSON.stringify(fixedNews));
+      } catch {
+        // Silently fail
+      }
+    }
+    
+    // Commit to GitHub
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      const success = await commitToGitHubAndDeploy("news (slug fix)");
+      if (success) {
+        alert("✅ Tüm haber slug'ları düzeltildi ve GitHub'a kaydedildi!");
+      } else {
+        alert("⚠️ Slug'lar localStorage'a kaydedildi, ancak GitHub'a yüklenemedi.");
+      }
+    }
+  };
+
   // News handlers
   const handleNewsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1084,9 +1111,14 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
           <>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900">Haberler Yönetimi</h2>
-              <button onClick={() => { setShowNewsForm(true); setEditingNewsId(null); setNewsForm({ title: "", summary: "", content: "", imageUrl: "", published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
-                <Plus size={18} /> Yeni Haber Ekle
-              </button>
+              <div className="flex gap-2">
+                <button onClick={fixAllNewsSlugs} className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                  🔧 Slug'ları Düzelt
+                </button>
+                <button onClick={() => { setShowNewsForm(true); setEditingNewsId(null); setNewsForm({ title: "", summary: "", content: "", imageUrl: "", published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                  <Plus size={18} /> Yeni Haber Ekle
+                </button>
+              </div>
             </div>
 
             {showNewsForm && (
