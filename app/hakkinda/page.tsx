@@ -62,7 +62,7 @@ const staticAboutData = {
 
 export default function AboutPage() {
   // Use admin data if available, otherwise use static data
-  const aboutData = adminAboutData || staticAboutData;
+  const aboutData = (adminAboutData && Object.keys(adminAboutData).length > 0) ? adminAboutData : staticAboutData;
   const careerIcons = [Briefcase, Target, Award];
 
   return (
