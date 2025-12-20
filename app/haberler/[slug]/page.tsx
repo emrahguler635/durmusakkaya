@@ -1,9 +1,9 @@
 import NewsDetailClient from "./news-detail-client";
 
-// For static export, we need to generate at least some static params
-// But we'll make the page work client-side for all slugs
+// Generate static params for static news only
+// New news will work via client-side rendering in NewsDetailClient
+// The client component reads from localStorage and admin-data.ts
 export function generateStaticParams() {
-  // Return static news slugs only - new news will work via client-side rendering
   return [
     { slug: "yilin-ceo-odu" },
     { slug: "yeni-stratejik-ortaklik" },
