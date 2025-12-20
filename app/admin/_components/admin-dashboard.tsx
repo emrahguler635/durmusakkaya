@@ -65,10 +65,10 @@ export default function AdminDashboard() {
     loadAboutData();
     loadContactData();
     
-    // Load GitHub token from sessionStorage (client-side only)
-    if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
+    // Load GitHub token from localStorage (persistent, client-side only)
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
       try {
-        const savedToken = sessionStorage.getItem("github_token");
+        const savedToken = localStorage.getItem("github_token");
         if (savedToken) {
           setGithubToken(savedToken);
         }
@@ -290,9 +290,9 @@ export default function AdminDashboard() {
 
     setIsSaving(true);
     try {
-      // Save token to sessionStorage
-      if (typeof sessionStorage !== 'undefined') {
-        sessionStorage.setItem("github_token", githubToken);
+      // Save token to localStorage (persistent storage)
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem("github_token", githubToken);
       }
 
       // Get all current data from localStorage
@@ -640,8 +640,8 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                 />
                 <button
                   onClick={() => {
-                    if (githubToken && typeof sessionStorage !== 'undefined') {
-                      sessionStorage.setItem("github_token", githubToken);
+                    if (githubToken && typeof localStorage !== 'undefined') {
+                      localStorage.setItem("github_token", githubToken);
                     }
                     setShowTokenInput(false);
                   }}
