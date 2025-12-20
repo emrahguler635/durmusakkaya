@@ -2,8 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
+import { adminNewsData } from "@/lib/admin-data";
 
-// Static news data
+// Static news data (fallback)
 const staticNews = [
   {
     id: "1",
@@ -47,17 +48,30 @@ const staticNews = [
   }
 ];
 
-// Generate static params for all news slugs
+// Generate static params for all news slugs (both static and admin data)
 export function generateStaticParams() {
-  return staticNews
-    .filter(news => news.published)
-    .map(news => ({
+  // Use admin data if available, otherwise use static data
+  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) 
+    ? adminNewsData 
+    : staticNews;
+  
+  return allNews
+    .filter((news: any) => news.published)
+    .map((news: any) => ({
       slug: news.slug,
     }));
 }
 
-export default function NewsDetailPage({ params }: { params: { slug: string } }) {
-  const news = staticNews.find(n => n.slug === params.slug && n.published);
+export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
+  // Handle async params (Next.js 15)
+  const resolvedParams = await Promise.resolve(params);
+  
+  // Use admin data if available, otherwise use static data
+  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) 
+    ? adminNewsData 
+    : staticNews;
+  
+  const news = allNews.find((n: any) => n.slug === resolvedParams.slug && n.published);
 
   if (!news) {
     return (
