@@ -4,9 +4,9 @@
 
 export const adminHomeData: any = {
   "hero": {
-    "welcomeText": "Web Sitemiz",
+    "welcomeText": "Hoş Geldiniz...",
     "title": "Dr. Durmuş AKKAYA",
-    "subtitle": "Başkanı",
+    "subtitle": "Başak A.Ş. Yönetim Kurulu Başkanı",
     "description": "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
   },
   "highlights": [
