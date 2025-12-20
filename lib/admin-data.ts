@@ -176,15 +176,5 @@ export const adminNewsData: any = [
     "id": "1766268173155",
     "slug": "sldksladjlaf-jfs-fjskfjkesfkjsdfkn-sjheskjn",
     "createdAt": "2025-12-20T22:02:53.155Z"
-  },
-  {
-    "title": "a",
-    "summary": "a",
-    "content": "aaaaaaa",
-    "imageUrl": "/profile.jpg",
-    "published": true,
-    "id": "1766268729066",
-    "slug": "a",
-    "createdAt": "2025-12-20T22:12:09.066Z"
   }
 ];
