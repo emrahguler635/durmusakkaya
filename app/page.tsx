@@ -72,8 +72,8 @@ const staticNews = [
 
 export default function HomePage() {
   // Use admin data if available, otherwise use static data
-  const homeData = adminHomeData || staticHomeData;
-  const allNews = adminNewsData || staticNews;
+  const homeData = (adminHomeData && Object.keys(adminHomeData).length > 0) ? adminHomeData : staticHomeData;
+  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) ? adminNewsData : staticNews;
   const news = allNews.slice(0, 3);
   const totalNewsCount = allNews.length;
 
