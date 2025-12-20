@@ -353,6 +353,7 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
       const content = btoa(unescape(encodeURIComponent(dataFileContent)));
 
       // Create or update file
+      console.log('Committing to GitHub:', { repo, path, message, hasSha: !!sha });
       const response = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
         method: 'PUT',
         headers: {
@@ -367,7 +368,11 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
         })
       });
 
+      console.log('GitHub API response status:', response.status, response.statusText);
+      
       if (response.ok) {
+        const responseData = await response.json();
+        console.log('GitHub commit successful:', responseData.commit?.sha);
         // Trigger workflow dispatch
         try {
           const workflowResponse = await fetch(`https://api.github.com/repos/${repo}/actions/workflows/deploy.yml/dispatches`, {
@@ -394,8 +399,10 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
           return true;
         }
       } else {
-        const errorData = await response.json();
-        alert(`❌ Hata: ${errorData.message || "GitHub'a kaydedilemedi"}`);
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        console.error('GitHub API error:', errorData);
+        const errorMessage = errorData.message || `HTTP ${response.status}: ${response.statusText}`;
+        alert(`❌ GitHub'a kaydedilemedi!\n\nHata: ${errorMessage}\n\nLütfen:\n1. Token'ın doğru olduğundan emin olun\n2. Browser konsolunu kontrol edin (F12)\n3. Token'ın 'repo' izinlerine sahip olduğundan emin olun`);
         return false;
       }
     } catch (error: any) {
