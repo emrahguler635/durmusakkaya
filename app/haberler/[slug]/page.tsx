@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft, Calendar } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
 import { adminNewsData } from "@/lib/admin-data";
+import NewsDetailClient from "./news-detail-client";
 
 // Static news data (fallback)
 const staticNews = [
@@ -48,11 +49,6 @@ const staticNews = [
   }
 ];
 
-// Combine static and admin news for static generation
-const allNewsForStaticGeneration = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0)
-  ? [...staticNews, ...adminNewsData]
-  : staticNews;
-
 // Generate static params for all news slugs (both static and admin data)
 export function generateStaticParams() {
   // Get all unique slugs from both sources
@@ -67,69 +63,6 @@ export function generateStaticParams() {
   return uniqueSlugs.map(slug => ({ slug }));
 }
 
-export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
-  // Handle async params (Next.js 15)
-  const resolvedParams = await Promise.resolve(params);
-  
-  // Combine static and admin data, prioritizing admin data
-  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0)
-    ? [...staticNews, ...adminNewsData]
-    : staticNews;
-  
-  // Find news by slug, checking both static and admin data
-  const news = allNews.find((n: any) => n.slug === resolvedParams.slug && (n.published !== false));
-
-  if (!news) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-gray-500 text-lg mb-4">Haber bulunamadı</p>
-          <Link href="/haberler" className="text-blue-600 hover:text-blue-800">
-            Haberlere Dön
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  // Format date safely for static export
-  const date = new Date(news.createdAt);
-  const formattedDate = date.toLocaleDateString("tr-TR", {
-    year: "numeric", month: "long", day: "numeric"
-  });
-
-  return (
-    <div>
-      <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-16">
-        <div className="max-w-4xl mx-auto px-4">
-          <Link href="/haberler" className="inline-flex items-center gap-2 text-blue-200 hover:text-white mb-6 transition-colors">
-            <ArrowLeft size={18} /> Haberlere Dön
-          </Link>
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{news.title}</h1>
-          <div className="flex items-center gap-2 text-blue-200">
-            <Calendar size={16} />
-            <span>{formattedDate}</span>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-12 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
-          {news.imageUrl ? (
-            <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
-              <Image src={getImagePath(news.imageUrl)} alt={news.title} fill className="object-cover" />
-            </div>
-          ) : (
-            <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
-              <Image src={getImagePath("/og-image.png")} alt={news.title} fill className="object-cover" />
-            </div>
-          )}
-          <div className="prose prose-lg max-w-none text-gray-700">
-            <p className="text-xl text-gray-600 mb-6 font-medium">{news.summary}</p>
-            <div className="whitespace-pre-wrap">{news.content}</div>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+export default function NewsDetailPage({ params }: { params: { slug: string } }) {
+  return <NewsDetailClient slug={params.slug} />;
 }
