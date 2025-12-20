@@ -102,7 +102,7 @@ export const adminNewsData: any = [
     "title": "Yılın CEO'su Ödülü",
     "summary": "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
     "content": "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi. Bu ödül, yıl boyunca gösterdiği üstün liderlik ve başarılı yönetim anlayışının bir göstergesidir.",
-    "slug": "yilin-ceo-odu",
+    "slug": "yln-ceosu-odulu",
     "published": true,
     "imageUrl": "/haber1.jpg",
     "createdAt": "2024-11-15T00:00:00.000Z"
@@ -112,7 +112,7 @@ export const adminNewsData: any = [
     "title": "Yeni Stratejik Ortaklık",
     "summary": "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
     "content": "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı. Bu ortaklık, şirketin gelecek hedeflerine ulaşmasında önemli bir adım olacaktır.",
-    "slug": "yeni-stratejik-ortaklik",
+    "slug": "yeni-stratejik-ortaklk",
     "published": true,
     "imageUrl": "/haber2.jpg",
     "createdAt": "2024-10-03T00:00:00.000Z"
@@ -164,7 +164,7 @@ export const adminNewsData: any = [
     "imageUrl": "/profile.jpg",
     "published": true,
     "id": "1766267559600",
-    "slug": "kadshıa-daıdhak\"",
+    "slug": "kadsha-dadhak",
     "createdAt": "2025-12-20T21:52:39.600Z"
   },
   {
@@ -174,7 +174,7 @@ export const adminNewsData: any = [
     "imageUrl": "/profile.jpg",
     "published": true,
     "id": "1766268173155",
-    "slug": "şldkşladjlaf-jfs-fjskfjkesfkjsdfkn-sjheskjn",
+    "slug": "sldksladjlaf-jfs-fjskfjkesfkjsdfkn-sjheskjn",
     "createdAt": "2025-12-20T22:02:53.155Z"
   },
   {
