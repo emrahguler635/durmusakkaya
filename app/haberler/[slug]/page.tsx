@@ -51,16 +51,34 @@ const staticNews = [
 
 // Generate static params for all news slugs (both static and admin data)
 export function generateStaticParams() {
-  // Get all unique slugs from both sources
-  const allSlugs = [
-    ...staticNews.filter((n: any) => n.published && n.slug).map((n: any) => n.slug),
-    ...(adminNewsData && Array.isArray(adminNewsData) ? adminNewsData.filter((n: any) => n.published !== false && n.slug).map((n: any) => n.slug) : [])
-  ];
-  
-  // Remove duplicates and filter out undefined/null slugs
-  const uniqueSlugs = Array.from(new Set(allSlugs.filter(slug => slug && typeof slug === 'string')));
-  
-  return uniqueSlugs.map(slug => ({ slug }));
+  try {
+    // Get all unique slugs from both sources
+    const staticSlugs = staticNews
+      .filter((n: any) => n.published && n.slug && typeof n.slug === 'string')
+      .map((n: any) => n.slug);
+    
+    const adminSlugs = (adminNewsData && Array.isArray(adminNewsData))
+      ? adminNewsData
+          .filter((n: any) => n.published !== false && n.slug && typeof n.slug === 'string')
+          .map((n: any) => n.slug)
+      : [];
+    
+    // Combine and remove duplicates
+    const allSlugs = [...staticSlugs, ...adminSlugs];
+    const uniqueSlugs = Array.from(new Set(allSlugs.filter(slug => slug && typeof slug === 'string')));
+    
+    console.log('generateStaticParams - Static slugs:', staticSlugs);
+    console.log('generateStaticParams - Admin slugs:', adminSlugs);
+    console.log('generateStaticParams - All unique slugs:', uniqueSlugs);
+    
+    return uniqueSlugs.map(slug => ({ slug }));
+  } catch (error) {
+    console.error('Error in generateStaticParams:', error);
+    // Fallback to static news only
+    return staticNews
+      .filter((n: any) => n.published && n.slug)
+      .map((n: any) => ({ slug: n.slug }));
+  }
 }
 
 export default function NewsDetailPage({ params }: { params: { slug: string } }) {
