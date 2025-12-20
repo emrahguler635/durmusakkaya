@@ -329,6 +329,7 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
 
       // GitHub API: Create or update file
       const repo = "emrahguler635/durmusakkaya";
+      // Fixed path: use lib/admin-data.ts instead of durmus_akkaya_website/nextjs_space/lib/admin-data.ts
       const path = "lib/admin-data.ts";
       const message = `Update ${dataType} from admin panel - ${new Date().toISOString()}`;
       
