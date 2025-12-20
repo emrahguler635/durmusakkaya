@@ -136,5 +136,15 @@ export const adminNewsData: any = [
     "published": true,
     "imageUrl": "/haber4.jpg",
     "createdAt": "2024-08-15T00:00:00.000Z"
+  },
+  {
+    "title": "test habeer",
+    "summary": "test haberler",
+    "content": "sakjda sd odjadjaşs doasjd asjdkjask djasldj lasjdlasjdksl",
+    "imageUrl": "/slider1.jpg",
+    "published": true,
+    "id": "1766230433602",
+    "slug": "test-habeer",
+    "createdAt": "2025-12-20T11:33:53.602Z"
   }
 ];
