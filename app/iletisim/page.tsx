@@ -19,7 +19,7 @@ const staticContactData = {
 
 export default function ContactPage() {
   // Use admin data if available, otherwise use static data
-  const contactData = adminContactData || staticContactData;
+  const contactData = (adminContactData && Object.keys(adminContactData).length > 0) ? adminContactData : staticContactData;
   
   return (
     <div>
