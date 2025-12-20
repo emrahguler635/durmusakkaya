@@ -166,5 +166,15 @@ export const adminNewsData: any = [
     "id": "1766267559600",
     "slug": "kadshıa-daıdhak\"",
     "createdAt": "2025-12-20T21:52:39.600Z"
+  },
+  {
+    "title": "şldkşladjlaf jfs fjskfjkesfkjsdfkn sjheskjn",
+    "summary": " djofjkshfksn hfkshfkjşsdafjpsfhkj fh",
+    "content": "jofj fdsjfjdddddddddddddddddddddddddddddddddddddddd  ffgggggggggggggggggggggggg ghhhhhhhhhhhhhhhhhhh",
+    "imageUrl": "/profile.jpg",
+    "published": true,
+    "id": "1766268173155",
+    "slug": "şldkşladjlaf-jfs-fjskfjkesfkjsdfkn-sjheskjn",
+    "createdAt": "2025-12-20T22:02:53.155Z"
   }
 ];
