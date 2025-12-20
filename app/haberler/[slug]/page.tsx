@@ -55,11 +55,16 @@ export function generateStaticParams() {
     ? adminNewsData 
     : staticNews;
   
-  return allNews
-    .filter((news: any) => news.published)
-    .map((news: any) => ({
-      slug: news.slug,
-    }));
+  // Get all unique slugs from both sources
+  const allSlugs = [
+    ...staticNews.filter((n: any) => n.published).map((n: any) => n.slug),
+    ...(adminNewsData && Array.isArray(adminNewsData) ? adminNewsData.filter((n: any) => n.published && n.slug).map((n: any) => n.slug) : [])
+  ];
+  
+  // Remove duplicates
+  const uniqueSlugs = Array.from(new Set(allSlugs));
+  
+  return uniqueSlugs.map(slug => ({ slug }));
 }
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ slug: string }> | { slug: string } }) {
@@ -71,7 +76,7 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ slu
     ? adminNewsData 
     : staticNews;
   
-  const news = allNews.find((n: any) => n.slug === resolvedParams.slug && n.published);
+  const news = allNews.find((n: any) => n.slug === resolvedParams.slug && (n.published !== false));
 
   if (!news) {
     return (
