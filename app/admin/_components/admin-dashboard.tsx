@@ -218,12 +218,30 @@ export default function AdminDashboard() {
     setContactData(data);
   };
 
+  // Helper function to create a clean slug from title
+  const createSlug = (title: string): string => {
+    if (!title) return "";
+    return title
+      .toLowerCase()
+      .normalize("NFD") // Normalize to decomposed form for accented characters
+      .replace(/[\u0300-\u036f]/g, "") // Remove diacritics
+      .replace(/[^a-z0-9\s-]/g, "") // Remove special characters except spaces and hyphens
+      .trim()
+      .replace(/\s+/g, "-") // Replace spaces with hyphens
+      .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+      .replace(/^-|-$/g, ""); // Remove leading/trailing hyphens
+  };
+
   // News handlers
   const handleNewsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const newSlug = editingNewsId 
+      ? news.find(n => n.id === editingNewsId)?.slug || createSlug(newsForm.title)
+      : createSlug(newsForm.title);
+    
     const updatedNews = editingNewsId
-      ? news.map(n => n.id === editingNewsId ? { ...n, ...newsForm, id: editingNewsId } : n)
-      : [...news, { ...newsForm, id: Date.now().toString(), slug: newsForm.title.toLowerCase().replace(/\s+/g, "-"), createdAt: new Date().toISOString() }];
+      ? news.map(n => n.id === editingNewsId ? { ...n, ...newsForm, slug: newSlug, id: editingNewsId } : n)
+      : [...news, { ...newsForm, id: Date.now().toString(), slug: newSlug, createdAt: new Date().toISOString() }];
     
     setNews(updatedNews);
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
