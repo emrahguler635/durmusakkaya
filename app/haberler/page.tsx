@@ -50,7 +50,7 @@ const staticNews = [
 
 export default function NewsPage() {
   // Use admin data if available, otherwise use static data
-  const allNews = adminNewsData || staticNews;
+  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) ? adminNewsData : staticNews;
   const [news] = useState(allNews.slice(0, 12));
 
   return (
