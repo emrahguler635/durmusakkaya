@@ -136,5 +136,15 @@ export const adminNewsData: any = [
     "published": true,
     "imageUrl": "/haber4.jpg",
     "createdAt": "2024-08-15T00:00:00.000Z"
+  },
+  {
+    "title": "aaaaa",
+    "summary": "aaaaaa",
+    "content": "aaaaaaaaaaaaaaaaaaaaaaa sssssssssssssssssssssssssss",
+    "imageUrl": "/profile.jpg",
+    "published": true,
+    "id": "1766270095468",
+    "slug": "aaaaa",
+    "createdAt": "2025-12-20T22:34:55.468Z"
   }
 ];
