@@ -138,9 +138,9 @@ export const adminNewsData: any = [
     "createdAt": "2024-08-15T00:00:00.000Z"
   },
   {
-    "title": "test",
+    "title": "test52345",
     "summary": "test1111",
-    "content": "smdljsad sasadjlsajdlasjdljaslf dsf jdso fjldsjfldsjlfjds f",
+    "content": "smdljsad sasadjlsajdlasjdljaslf dsf jdso fjldsjfldsjlfjds fdfewrf refsrfsf",
     "imageUrl": "/profile.jpg",
     "published": true,
     "id": "1766231782962",
