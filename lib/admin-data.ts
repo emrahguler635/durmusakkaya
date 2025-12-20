@@ -90,9 +90,9 @@ export const adminContactData: any = {
     "subtitle": "Benimle iletişime geçin"
   },
   "contactInfo": {
-    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye",
-    "phone": "+90 (212) 000 00 00",
-    "email": "info@basak.com.tr",
+    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye ",
+    "phone": "+90 (537) 486 34 64 ",
+    "email": "admin@durmusakkaya.com",
     "workingHours": "Pazartesi - Cuma: 09:00 - 18:00"
   }
 };
