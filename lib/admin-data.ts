@@ -146,5 +146,15 @@ export const adminNewsData: any = [
     "id": "1766270095468",
     "slug": "aaaaa",
     "createdAt": "2025-12-20T22:34:55.468Z"
+  },
+  {
+    "title": "aaaaabbbbbb",
+    "summary": "aaaaa",
+    "content": "bbbbb",
+    "imageUrl": "/og-image.png",
+    "published": true,
+    "id": "1766272314654",
+    "slug": "aaaaabbbbbb",
+    "createdAt": "2025-12-20T23:11:54.654Z"
   }
 ];
