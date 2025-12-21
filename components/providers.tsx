@@ -7,8 +7,8 @@ export default function Providers({ children }: { children: ReactNode }) {
   useEffect(() => { setMounted(true); }, []);
   if (!mounted) return <>{children}</>;
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-      {children}
-    </ThemeProvider>
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        {children}
+      </ThemeProvider>
   );
 }

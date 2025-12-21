@@ -25,8 +25,8 @@ export default function ContactForm() {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      setSuccess(true);
-      setForm({ name: "", email: "", subject: "", message: "" });
+        setSuccess(true);
+        setForm({ name: "", email: "", subject: "", message: "" });
     } catch {
       setError("Mesaj gönderilemedi");
     }
