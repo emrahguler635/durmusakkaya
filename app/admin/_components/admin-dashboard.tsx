@@ -418,7 +418,7 @@ export default function AdminDashboard() {
       
       const dataFileContent = `// Auto-generated data file - DO NOT EDIT MANUALLY
 // This file is generated from admin panel changes
-"use client";
+// Note: This file is used by both server and client components
 
 export const adminHomeData: any = ${safeStringify(homeDataToSave)};
 export const adminAboutData: any = ${safeStringify(aboutDataToSave)};
