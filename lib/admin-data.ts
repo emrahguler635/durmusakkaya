@@ -1,6 +1,6 @@
 // Auto-generated data file - DO NOT EDIT MANUALLY
 // This file is generated from admin panel changes
-// Note: This file is used by both server and client components
+"use client";
 
 export const adminHomeData: any = {
   "hero": {
@@ -106,5 +106,19 @@ export const adminNewsData: any = [
     "id": "1766310872714",
     "slug": "aaaaa-aaaaaa",
     "createdAt": "2025-12-21T09:54:32.714Z"
+  },
+  {
+    "title": "ccccc",
+    "summary": "ccccccc",
+    "content": "gggggggggggggg",
+    "imageUrl": "/images/news/news-1766348502661-hbobwjt.jpg",
+    "images": [
+      "/images/news/news-1766348502661-hbobwjt.jpg",
+      "/images/news/news-1766348516777-fr8xvj9.jpg"
+    ],
+    "published": true,
+    "id": "1766348531894",
+    "slug": "ccccc",
+    "createdAt": "2025-12-21T20:22:11.894Z"
   }
 ];
