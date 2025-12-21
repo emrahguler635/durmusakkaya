@@ -259,6 +259,33 @@ export default function AdminDashboard() {
     }
   };
 
+  // Delete all news (clean start)
+  const deleteAllNews = async () => {
+    if (!confirm("⚠️ TÜM HABERLERİ SİLMEK İSTEDİĞİNİZDEN EMİN MİSİNİZ?\n\nBu işlem geri alınamaz! Sadece static haberler kalacak.")) {
+      return;
+    }
+    
+    // Clear all news (keep only static news which are in the code)
+    setNews([]);
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem("admin_news", JSON.stringify([]));
+      } catch {
+        // Silently fail
+      }
+    }
+    
+    // Commit to GitHub
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      const success = await commitToGitHubAndDeploy("news (delete all)");
+      if (success) {
+        alert("✅ Tüm haberler silindi ve GitHub'a kaydedildi! Artık temiz bir başlangıç yapabilirsiniz.");
+      } else {
+        alert("⚠️ Haberler localStorage'dan silindi, ancak GitHub'a yüklenemedi.");
+      }
+    }
+  };
+
   // News handlers
   const handleNewsSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1112,6 +1139,9 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-900">Haberler Yönetimi</h2>
               <div className="flex gap-2">
+                <button onClick={deleteAllNews} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                  🗑️ Tüm Haberleri Sil
+                </button>
                 <button onClick={fixAllNewsSlugs} className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                   🔧 Slug'ları Düzelt
                 </button>
