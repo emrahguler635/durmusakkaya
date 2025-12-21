@@ -98,7 +98,7 @@ export const adminContactData: any = {
 };
 export const adminNewsData: any = [
   {
-    "title": "aaaaa aaaaaa",
+    "title": "aaaaa aaaaaa 1111111",
     "summary": "vbbbbbbb",
     "content": "bbbbbbbfddbfbdbccc xccccccccccccccccccccccccc",
     "imageUrl": "/profile.jpg",
@@ -121,5 +121,16 @@ export const adminNewsData: any = [
     "id": "1766348531894",
     "slug": "cumhurbaskanmzn-ziyareti",
     "createdAt": "2025-12-21T20:22:11.894Z"
+  },
+  {
+    "title": "test",
+    "summary": "test",
+    "content": "testtrewe ewrwewe ewfefe ",
+    "imageUrl": "/profile.jpg",
+    "images": [],
+    "published": true,
+    "id": "1766356601373",
+    "slug": "test",
+    "createdAt": "2025-12-21T22:36:41.373Z"
   }
 ];
