@@ -100,12 +100,13 @@ export const adminNewsData: any = [
   {
     "title": "aaaaa aaaaaa",
     "summary": "vbbbbbbb",
-    "content": "bbbbbbbfddbfbdb",
+    "content": "bbbbbbbfddbfbdbccc xccccccccccccccccccccccccc",
     "imageUrl": "/profile.jpg",
     "published": true,
     "id": "1766310872714",
     "slug": "aaaaa-aaaaaa",
-    "createdAt": "2025-12-21T09:54:32.714Z"
+    "createdAt": "2025-12-21T09:54:32.714Z",
+    "images": []
   },
   {
     "title": "ccccc",
