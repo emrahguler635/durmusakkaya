@@ -110,7 +110,7 @@ export const adminNewsData: any = [
   },
   {
     "title": "Cumhurbaşkanımızın Ziyareti",
-    "summary": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah",
+    "summary": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah.",
     "content": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah. Öncelikli gündemimiz Kentsel Dönüşüm…",
     "imageUrl": "/images/news/news-1766348502661-hbobwjt.jpg",
     "images": [
