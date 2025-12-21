@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket } from "lucide-react";
 import { publicImages, getPublicImagePath } from "@/lib/public-images";
+import { getImagePath } from "@/lib/image-path";
 import { 
   getHomePageData, saveHomePageData, defaultHomePageData,
   getAboutPageData, saveAboutPageData, defaultAboutPageData,
@@ -15,7 +16,8 @@ interface News {
   title: string;
   summary: string;
   content: string;
-  imageUrl: string | null;
+  imageUrl: string | null; // Ana görsel (geriye uyumluluk için)
+  images: string[]; // Birden fazla görsel için
   slug: string;
   published: boolean;
   createdAt: string;
@@ -31,8 +33,9 @@ export default function AdminDashboard() {
   const [news, setNews] = useState<News[]>([]);
   const [showNewsForm, setShowNewsForm] = useState(false);
   const [editingNewsId, setEditingNewsId] = useState<string | null>(null);
-  const [newsForm, setNewsForm] = useState({ title: "", summary: "", content: "", imageUrl: "", published: true });
+  const [newsForm, setNewsForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true });
   const [showImageSelector, setShowImageSelector] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   
   // Home page state
   const [homeData, setHomeData] = useState<HomePageData>(defaultHomePageData);
@@ -208,8 +211,8 @@ export default function AdminDashboard() {
       : createSlug(newsForm.title);
     
     const updatedNews = editingNewsId
-      ? news.map(n => n.id === editingNewsId ? { ...n, ...newsForm, slug: newSlug, id: editingNewsId } : n)
-      : [...news, { ...newsForm, id: Date.now().toString(), slug: newSlug, createdAt: new Date().toISOString() }];
+      ? news.map(n => n.id === editingNewsId ? { ...n, ...newsForm, slug: newSlug, id: editingNewsId, images: newsForm.images || [] } : n)
+      : [...news, { ...newsForm, id: Date.now().toString(), slug: newSlug, createdAt: new Date().toISOString(), images: newsForm.images || [] }];
     
     setNews(updatedNews);
     if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
@@ -230,7 +233,7 @@ export default function AdminDashboard() {
     
     setShowNewsForm(false);
     setEditingNewsId(null);
-    setNewsForm({ title: "", summary: "", content: "", imageUrl: "", published: true });
+    setNewsForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true });
   };
 
   const handleNewsDelete = async (id: string) => {
@@ -256,9 +259,119 @@ export default function AdminDashboard() {
   };
 
   const handleNewsEdit = (item: News) => {
-    setNewsForm({ title: item.title, summary: item.summary, content: item.content, imageUrl: item.imageUrl || "", published: item.published });
+    setNewsForm({ 
+      title: item.title, 
+      summary: item.summary, 
+      content: item.content, 
+      imageUrl: item.imageUrl || "", 
+      images: item.images || [],
+      published: item.published 
+    });
     setEditingNewsId(item.id);
     setShowNewsForm(true);
+  };
+
+  // Resim yükleme fonksiyonu (GitHub'a base64 olarak kaydet)
+  const uploadImageToGitHub = async (file: File): Promise<string | null> => {
+    if (typeof window === 'undefined' || typeof fetch === 'undefined' || typeof btoa === 'undefined') {
+      return null;
+    }
+
+    if (!githubToken) {
+      alert("Lütfen önce GitHub Personal Access Token'ınızı girin.");
+      setShowTokenInput(true);
+      return null;
+    }
+
+    setUploadingImage(true);
+    try {
+      // Dosyayı base64'e çevir
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const result = reader.result as string;
+          // data:image/jpeg;base64, kısmını kaldır
+          const base64 = result.split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+      });
+      reader.readAsDataURL(file);
+
+      const base64Content = await base64Promise;
+      
+      // Dosya adını oluştur (timestamp + random + extension)
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).substring(2, 9);
+      const extension = file.name.split('.').pop() || 'jpg';
+      const fileName = `news-${timestamp}-${random}.${extension}`;
+      const imagePath = `public/images/news/${fileName}`;
+      const publicUrl = `/images/news/${fileName}`;
+
+      // GitHub API: Create file
+      const repo = "emrahguler635/durmusakkaya";
+      const message = `Add news image: ${fileName}`;
+
+      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${imagePath}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message,
+          content: base64Content
+        })
+      });
+
+      if (response.ok) {
+        return publicUrl;
+      } else {
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        console.error('GitHub API error:', errorData);
+        alert(`Resim yüklenemedi: ${errorData.message || 'Bilinmeyen hata'}`);
+        return null;
+      }
+    } catch (error: any) {
+      console.error('Image upload error:', error);
+      alert(`Resim yüklenirken hata oluştu: ${error.message || 'Bilinmeyen hata'}`);
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  // Resim yükleme handler
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Dosya boyutu kontrolü (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Resim boyutu 5MB'dan küçük olmalıdır.");
+      return;
+    }
+
+    // Dosya tipi kontrolü
+    if (!file.type.startsWith('image/')) {
+      alert("Lütfen bir resim dosyası seçin.");
+      return;
+    }
+
+    const uploadedUrl = await uploadImageToGitHub(file);
+    if (uploadedUrl) {
+      // Ana görsel yoksa, yüklenen resmi ana görsel yap
+      if (!newsForm.imageUrl) {
+        setNewsForm({ ...newsForm, imageUrl: uploadedUrl });
+      }
+      // Görseller listesine ekle
+      setNewsForm({ ...newsForm, images: [...newsForm.images, uploadedUrl] });
+      alert("✅ Resim başarıyla yüklendi! Deploy işlemi otomatik başlatıldı.");
+    }
+
+    // Input'u temizle
+    e.target.value = '';
   };
 
   // GitHub commit and deploy function (ONLY called from user actions, never during build)
@@ -1059,7 +1172,7 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                 <button onClick={fixAllNewsSlugs} className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                   🔧 Slug'ları Düzelt
                 </button>
-                <button onClick={() => { setShowNewsForm(true); setEditingNewsId(null); setNewsForm({ title: "", summary: "", content: "", imageUrl: "", published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <button onClick={() => { setShowNewsForm(true); setEditingNewsId(null); setNewsForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                   <Plus size={18} /> Yeni Haber Ekle
                 </button>
               </div>
@@ -1100,7 +1213,7 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Resim URL</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Ana Görsel (URL)</label>
                     <div className="flex gap-2">
                       <input 
                         type="text" 
@@ -1127,6 +1240,118 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                         ))}
                       </div>
                     )}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Görseller (Birden Fazla)</label>
+                    <div className="space-y-3">
+                      {/* Resim Yükleme Butonu */}
+                      <div className="flex items-center gap-2">
+                        <label className="flex-1 cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleImageUpload}
+                            disabled={uploadingImage}
+                            className="hidden"
+                            id="image-upload"
+                          />
+                          <div className="px-4 py-3 border-2 border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-center">
+                            {uploadingImage ? (
+                              <span className="text-blue-600">⏳ Yükleniyor...</span>
+                            ) : (
+                              <span className="text-blue-600 flex items-center justify-center gap-2">
+                                <ImageIcon size={18} /> Yeni Resim Yükle (Max 5MB)
+                              </span>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      
+                      {/* Yüklenen Görseller Listesi */}
+                      {newsForm.images && newsForm.images.length > 0 && (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {newsForm.images.map((imgUrl, index) => (
+                            <div key={index} className="relative group">
+                              <img 
+                                src={getImagePath(imgUrl)} 
+                                alt={`Görsel ${index + 1}`}
+                                className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newImages = newsForm.images.filter((_, i) => i !== index);
+                                  setNewsForm({ ...newsForm, images: newImages });
+                                  // Eğer silinen görsel ana görsel ise, ilk görseli ana görsel yap
+                                  if (newsForm.imageUrl === imgUrl && newImages.length > 0) {
+                                    setNewsForm({ ...newsForm, images: newImages, imageUrl: newImages[0] });
+                                  } else if (newsForm.imageUrl === imgUrl) {
+                                    setNewsForm({ ...newsForm, images: newImages, imageUrl: "" });
+                                  } else {
+                                    setNewsForm({ ...newsForm, images: newImages });
+                                  }
+                                }}
+                                className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                              {newsForm.imageUrl === imgUrl && (
+                                <div className="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                                  Ana
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => setNewsForm({ ...newsForm, imageUrl: imgUrl })}
+                                className="absolute bottom-1 right-1 bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                Ana Yap
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      {/* URL ile Görsel Ekleme */}
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Görsel URL'si ekle..."
+                          className="flex-1 px-4 py-2 border rounded-lg"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              const url = (e.target as HTMLInputElement).value.trim();
+                              if (url && !newsForm.images.includes(url)) {
+                                setNewsForm({ ...newsForm, images: [...newsForm.images, url] });
+                                if (!newsForm.imageUrl) {
+                                  setNewsForm({ ...newsForm, images: [...newsForm.images, url], imageUrl: url });
+                                }
+                                (e.target as HTMLInputElement).value = '';
+                              }
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                            const url = input.value.trim();
+                            if (url && !newsForm.images.includes(url)) {
+                              setNewsForm({ ...newsForm, images: [...newsForm.images, url] });
+                              if (!newsForm.imageUrl) {
+                                setNewsForm({ ...newsForm, images: [...newsForm.images, url], imageUrl: url });
+                              }
+                              input.value = '';
+                            }
+                          }}
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                        >
+                          Ekle
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div className="flex items-center gap-2">
                     <input 
