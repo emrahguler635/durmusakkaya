@@ -2,13 +2,15 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar } from "lucide-react";
+import { ArrowLeft, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
 import { adminNewsData } from "@/lib/admin-data";
 
 export default function NewsDetailClient({ slug }: { slug: string }) {
   const [news, setNews] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   
   useEffect(() => {
     // Get news from adminNewsData or localStorage only - no static fallback
@@ -47,6 +49,26 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
     setNews(foundNews || null);
     setLoading(false);
   }, [slug]);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!news?.images || news.images.length <= 1) return;
+      
+      if (e.key === 'ArrowLeft') {
+        setLightboxIndex((prev) => (prev === 0 ? news.images.length - 1 : prev - 1));
+      } else if (e.key === 'ArrowRight') {
+        setLightboxIndex((prev) => (prev === news.images.length - 1 ? 0 : prev + 1));
+      } else if (e.key === 'Escape') {
+        setLightboxOpen(false);
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, news?.images]);
 
   if (loading) {
     return (
@@ -117,7 +139,14 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Galeri</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {news.images.map((imgUrl: string, index: number) => (
-                  <div key={index} className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer">
+                  <div 
+                    key={index} 
+                    className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer"
+                    onClick={() => {
+                      setLightboxIndex(index);
+                      setLightboxOpen(true);
+                    }}
+                  >
                     <Image 
                       src={getImagePath(imgUrl)} 
                       alt={`${news.title} - Görsel ${index + 1}`} 
@@ -128,6 +157,91 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
                 ))}
               </div>
             </div>
+          )}
+          
+          {/* Lightbox Modal */}
+          {lightboxOpen && news.images && news.images.length > 0 && (
+            <div 
+              className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+              onClick={() => setLightboxOpen(false)}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setLightboxOpen(false)}
+                className="absolute top-4 right-4 text-white hover:text-gray-300 transition-colors z-10"
+                aria-label="Kapat"
+              >
+                <X size={32} />
+              </button>
+              
+              {/* Previous Button */}
+              {news.images.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev === 0 ? news.images.length - 1 : prev - 1));
+                  }}
+                  className="absolute left-4 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-2"
+                  aria-label="Önceki"
+                >
+                  <ChevronLeft size={32} />
+                </button>
+              )}
+              
+              {/* Image Container */}
+              <div 
+                className="relative max-w-7xl max-h-[90vh] w-full h-full flex items-center justify-center"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={getImagePath(news.images[lightboxIndex])}
+                    alt={`${news.title} - Görsel ${lightboxIndex + 1}`}
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+                
+                {/* Image Counter */}
+                {news.images.length > 1 && (
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black bg-opacity-50 text-white px-4 py-2 rounded-full text-sm">
+                    {lightboxIndex + 1} / {news.images.length}
+                  </div>
+                )}
+              </div>
+              
+              {/* Next Button */}
+              {news.images.length > 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setLightboxIndex((prev) => (prev === news.images.length - 1 ? 0 : prev + 1));
+                  }}
+                  className="absolute right-4 text-white hover:text-gray-300 transition-colors z-10 bg-black bg-opacity-50 rounded-full p-2"
+                  aria-label="Sonraki"
+                >
+                  <ChevronRight size={32} />
+                </button>
+              )}
+            </div>
+          )}
+          
+          {/* Keyboard Navigation */}
+          {lightboxOpen && news.images && news.images.length > 1 && (
+            <div
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowLeft') {
+                  setLightboxIndex((prev) => (prev === 0 ? news.images.length - 1 : prev - 1));
+                } else if (e.key === 'ArrowRight') {
+                  setLightboxIndex((prev) => (prev === news.images.length - 1 ? 0 : prev + 1));
+                } else if (e.key === 'Escape') {
+                  setLightboxOpen(false);
+                }
+              }}
+              tabIndex={0}
+              className="outline-none"
+            />
           )}
         </div>
       </section>
