@@ -25,19 +25,18 @@ export function generateStaticParams() {
     
     // CRITICAL: Always return at least one slug to enable dynamic routing in static export
     // Next.js requires at least one slug to create the dynamic route structure
-    // We return all found slugs PLUS a catch-all placeholder to ensure any slug works
+    // IMPORTANT: We return all found slugs, but if none found, return a placeholder
     // The client component (NewsDetailClient) will handle loading news from localStorage
-    // for any slug, including ones not in admin-data.ts
+    // for ANY slug, including ones not in admin-data.ts or added after build
     if (slugs.length === 0) {
-      // Return a catch-all slug - client component will handle loading
-      return [{ slug: "news" }];
+      // Return a placeholder slug to ensure Next.js creates dynamic route structure
+      return [{ slug: "placeholder" }];
     }
     
     // Return all found slugs from admin-data.ts
-    // IMPORTANT: We also add a catch-all placeholder to ensure Next.js creates
-    // the dynamic route structure that can handle any slug
-    // The client component will check localStorage for news with slugs not in this list
-    return [...slugs, { slug: "new" }];
+    // The client component will check localStorage for news with any slug,
+    // allowing new news to work even if not in admin-data.ts at build time
+    return slugs;
   } catch (error) {
     // Fallback: return catch-all slug to ensure dynamic routing works
     console.error("Error in generateStaticParams:", error);
