@@ -1,6 +1,6 @@
 // Auto-generated data file - DO NOT EDIT MANUALLY
 // This file is generated from admin panel changes
-// Note: This file is used by both server and client components
+"use client";
 
 export const adminHomeData: any = {
   "hero": {
@@ -109,17 +109,16 @@ export const adminNewsData: any = [
     "images": []
   },
   {
-    "title": "ccccc",
-    "summary": "ccccccc",
-    "content": "gggggggggggggg",
+    "title": "Cumhurbaşkanımızın Ziyareti",
+    "summary": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah",
+    "content": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah. Öncelikli gündemimiz Kentsel Dönüşüm… Bu ekip bu işi yapar.",
     "imageUrl": "/images/news/news-1766348502661-hbobwjt.jpg",
     "images": [
-      "/images/news/news-1766348502661-hbobwjt.jpg",
-      "/images/news/news-1766348516777-fr8xvj9.jpg"
+      "/images/news/news-1766348502661-hbobwjt.jpg"
     ],
     "published": true,
     "id": "1766348531894",
-    "slug": "ccccc",
+    "slug": "cumhurbaskanmzn-ziyareti",
     "createdAt": "2025-12-21T20:22:11.894Z"
   }
 ];
