@@ -118,7 +118,7 @@ export const adminNewsData: any = [
     ],
     "published": true,
     "id": "1766348531894",
-    "slug": "ccccc",
+    "slug": "cumhurbaskanmzn-ziyareti",
     "createdAt": "2025-12-21T20:22:11.894Z"
   }
 ];
