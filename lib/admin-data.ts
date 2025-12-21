@@ -98,9 +98,9 @@ export const adminContactData: any = {
 };
 export const adminNewsData: any = [
   {
-    "title": "aaaaa aaaaaa 1111111",
-    "summary": "vbbbbbbb",
-    "content": "bbbbbbbfddbfbdbccc xccccccccccccccccccccccccc",
+    "title": "aaaaa aaaaaa 1111111 222222",
+    "summary": "vbbbbbbb 22222",
+    "content": "bbbbbbbfddbfbdbccc xccccccccccccccccccccccccc 22222",
     "imageUrl": "/profile.jpg",
     "published": true,
     "id": "1766310872714",
