@@ -1,23 +1,11 @@
-import { adminNewsData } from "@/lib/admin-data";
 import NewsDetailClient from "./news-detail-client";
 
-// Generate static params from adminNewsData
-// This ensures all news items have static pages generated
+// Generate static params - return empty array to allow all dynamic routes
+// All news will be client-side rendered via NewsDetailClient
+// This prevents build errors when adminNewsData is not available at build time
 export function generateStaticParams() {
-  try {
-    if (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) {
-      const slugs = adminNewsData
-        .filter((n: any) => n.published !== false && n.slug && typeof n.slug === 'string' && n.slug.length > 0)
-        .map((n: any) => n.slug)
-        .filter((slug: string) => /^[a-z0-9-]+$/.test(slug)); // Only valid slugs
-      
-      return slugs.map(slug => ({ slug }));
-    }
-  } catch (error) {
-    console.error('Error in generateStaticParams:', error);
-  }
-  
-  // Return empty array if no admin data
+  // Return empty array - Next.js will create a catch-all page
+  // The client component will handle all news loading from localStorage and admin-data.ts
   return [];
 }
 
