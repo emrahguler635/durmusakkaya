@@ -94,6 +94,7 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
 
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-4">
+          {/* Ana Görsel */}
           {news.imageUrl ? (
             <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
               <Image src={getImagePath(news.imageUrl)} alt={news.title} fill className="object-cover" />
@@ -103,10 +104,31 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
               <Image src={getImagePath("/og-image.png")} alt={news.title} fill className="object-cover" />
             </div>
           )}
+          
+          {/* İçerik */}
           <div className="prose prose-lg max-w-none text-gray-700">
             <p className="text-xl text-gray-600 mb-6 font-medium">{news.summary}</p>
             <div className="whitespace-pre-wrap">{news.content}</div>
           </div>
+          
+          {/* Birden Fazla Görsel Galerisi */}
+          {news.images && Array.isArray(news.images) && news.images.length > 0 && (
+            <div className="mt-12">
+              <h2 className="text-2xl font-bold text-gray-900 mb-6">Galeri</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {news.images.map((imgUrl: string, index: number) => (
+                  <div key={index} className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer">
+                    <Image 
+                      src={getImagePath(imgUrl)} 
+                      alt={`${news.title} - Görsel ${index + 1}`} 
+                      fill 
+                      className="object-cover group-hover:scale-105 transition-transform duration-300" 
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </section>
     </div>
