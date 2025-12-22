@@ -128,7 +128,7 @@ export const adminNewsData: any = [
     "title": "İstanbul Uşaklılar Vakfı’ndan Vali Dr. Naci Aktaş’a Davet Ziyareti",
     "summary": "İstanbul Uşaklılar Eğitim ve Kültür Vakfı heyeti, Uşak Valisi Sayın Dr. Naci Aktaş’ı makamında ziyaret ederek vakfın geleneksel hale gelen kahvaltı programına davet etti. Uşaklıların birlik ve beraberliğini pekiştirmeyi amaçlayan etkinlik hakkında Sayın Vali’ye bilgi sunulan ziyarette, vakfın yürüttüğü eğitim ve kültür faaliyetleri de ele alındı.",
     "content": "İstanbul Uşaklılar Eğitim ve Kültür Vakfı heyeti, Uşak Valisi Sayın Dr. Naci Aktaş’ı makamında ziyaret ederek vakfın geleneksel hale gelen kahvaltı programına davet etti. Uşaklıların birlik ve beraberliğini pekiştirmeyi amaçlayan etkinlik hakkında Sayın Vali’ye bilgi sunulan ziyarette, vakfın yürüttüğü eğitim ve kültür faaliyetleri de ele alındı.\n\nZiyaret sırasında gerçekleşen sıcak ve samimi sohbetten dolayı memnuniyetlerini dile getiren vakıf temsilcileri, nazik kabulleri ve yakın ilgisi için Vali Dr. Naci Aktaş’a teşekkürlerini sundu. Programın, İstanbul’daki Uşaklılar ile memleket bağlarını güçlendirmek adına önemli bir buluşma noktası olacağı vurgulandı.",
-    "imageUrl": "/og-image.png",
+    "imageUrl": "/images/news/news-1766419250388-ehj9476.jpg",
     "images": [
       "/images/news/news-1766419250388-ehj9476.jpg"
     ],
