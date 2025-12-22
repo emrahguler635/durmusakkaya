@@ -12,8 +12,8 @@ export const adminHomeData: any = {
   "highlights": [
     {
       "id": "1",
-      "title": "Liderlik",
-      "description": "Yılların yöneticilik deneyimi ve stratejik vizyon"
+      "title": "Çevre Koruma",
+      "description": "Enerji verimliliği, atık yönetimi ve yeşil alanların korunması önceliğimizdir."
     },
     {
       "id": "2",
