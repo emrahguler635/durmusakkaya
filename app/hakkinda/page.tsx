@@ -65,6 +65,44 @@ export default function AboutPage() {
   const aboutData = (adminAboutData && Object.keys(adminAboutData).length > 0) ? adminAboutData : staticAboutData;
   const careerIcons = [Briefcase, Target, Award];
 
+  // Sort career by date (newest first)
+  const sortedCareer = [...(aboutData.career || [])].sort((a: any, b: any) => {
+    const parseDate = (dateStr: string): number => {
+      if (!dateStr || dateStr === "Halen" || dateStr === "Günümüz" || dateStr.toLowerCase().includes("halen")) {
+        return Infinity; // Current positions get highest priority
+      }
+      
+      // Parse Turkish month names
+      const monthMap: { [key: string]: number } = {
+        "oca": 1, "şub": 2, "mar": 3, "nis": 4, "may": 5, "haz": 6,
+        "tem": 7, "ağu": 8, "eyl": 9, "eki": 10, "kas": 11, "ara": 12
+      };
+      
+      const parts = dateStr.trim().split(" ");
+      if (parts.length === 2) {
+        const month = monthMap[parts[0].toLowerCase()] || 0;
+        const year = parseInt(parts[1]) || 0;
+        return year * 12 + month;
+      }
+      return 0;
+    };
+
+    const aEndDate = a.endDate || a.period?.split(" - ")[1] || "";
+    const bEndDate = b.endDate || b.period?.split(" - ")[1] || "";
+    
+    const aDate = parseDate(aEndDate);
+    const bDate = parseDate(bEndDate);
+    
+    // If both are current (Infinity), compare start dates
+    if (aDate === Infinity && bDate === Infinity) {
+      const aStartDate = a.startDate || a.period?.split(" - ")[0] || "";
+      const bStartDate = b.startDate || b.period?.split(" - ")[0] || "";
+      return parseDate(bStartDate) - parseDate(aStartDate);
+    }
+    
+    return bDate - aDate; // Descending order (newest first)
+  });
+
   return (
     <div>
       {/* Header */}
@@ -116,7 +154,7 @@ export default function AboutPage() {
             <p className="text-gray-600">Profesyonel deneyim ve başarılar</p>
           </div>
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
-            {aboutData.career.map((career: any, index: number) => {
+            {sortedCareer.map((career: any, index: number) => {
               const Icon = careerIcons[index % careerIcons.length];
               const iconColors = [
                 { bg: "bg-blue-100", text: "text-blue-600" },
@@ -154,14 +192,19 @@ export default function AboutPage() {
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <h3 className="font-bold text-gray-900 text-lg mb-1">{career.title}</h3>
-                      <p className="text-gray-700 font-medium mb-2">{career.company}</p>
-                      
-                      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-2">
+                      <p className="text-gray-700 font-medium mb-2">
+                        {career.company}
                         {career.employmentType && (
-                          <span className="bg-gray-100 px-2 py-1 rounded">{career.employmentType}</span>
+                          <span className="text-gray-500 font-normal"> · {career.employmentType}</span>
                         )}
+                      </p>
+                      
+                      <div className="flex flex-wrap items-center gap-1 text-sm text-gray-600 mb-2">
                         {period && (
                           <span>{period}</span>
+                        )}
+                        {career.duration && period && (
+                          <span> · </span>
                         )}
                         {career.duration && (
                           <span>{career.duration}</span>
@@ -177,7 +220,7 @@ export default function AboutPage() {
                       )}
                     </div>
                   </div>
-                  {index < aboutData.career.length - 1 && (
+                  {index < sortedCareer.length - 1 && (
                     <div className="border-t border-gray-200 mx-6"></div>
                   )}
                 </div>
