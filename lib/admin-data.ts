@@ -136,5 +136,22 @@ export const adminNewsData: any = [
     "id": "1766356601373",
     "slug": "test",
     "createdAt": "2025-12-21T22:36:41.373Z"
+  },
+  {
+    "title": "KentFest’te Kentsel Dönüşüm ve Dirençli Şehirler Vizyonunu Anlattı",
+    "summary": "Kentsel Dönüşüm ve Şehircilik Vakfı olarak, doğru planlama ile daha dayanıklı ve yaşanabilir şehirler oluşturma hedefiyle düzenlenen #KentFest organizasyonuna katılarak, kentsel dönüşüm odaklı planlama ve uygulama çalışmalarımızı anlattık. Etkinlikte, kentsel dönüşümün yalnızca fiziki yenilemeden ibaret olmadığı, aynı zamanda sosyal, ekonomik ve çevresel boyutlarıyla ele alınması gereken bütüncül bir süreç olduğu vurgulandı.\n",
+    "content": "Kentsel Dönüşüm ve Şehircilik Vakfı olarak, doğru planlama ile daha dayanıklı ve yaşanabilir şehirler oluşturma hedefiyle düzenlenen #KentFest organizasyonuna katılarak, kentsel dönüşüm odaklı planlama ve uygulama çalışmalarımızı anlattık. Etkinlikte, kentsel dönüşümün yalnızca fiziki yenilemeden ibaret olmadığı, aynı zamanda sosyal, ekonomik ve çevresel boyutlarıyla ele alınması gereken bütüncül bir süreç olduğu vurgulandı.\n\nKentsev olarak; riskli yapıların yenilenmesi, afetlere dirençli kent dokusunun oluşturulması, yaşam kalitesini artıran sosyal donatı alanları, yeşil alanlar ve sürdürülebilir ulaşım çözümleri gibi başlıklarda yürüttüğümüz proje ve çalışmalar katılımcılarla paylaşıldı.\n\nProgram kapsamında ayrıca, yerel yönetimler, sivil toplum kuruluşları, akademi dünyası ve şehir plancılarıyla iş birliğinin önemine dikkat çekilerek, ortak akıl ve bilim temelli yaklaşımlarla şehirlerin geleceğini inşa etmenin Kentsev’in temel öncelikleri arasında olduğu ifade edildi.\n\nBir şehrin her yönüyle doğru ve planlı yönetiminin vazgeçilmez olduğunun altını çizen Kentsev – Kentsel Dönüşüm ve Şehircilik Vakfı, daha güvenli, dirençli, kapsayıcı ve sürdürülebilir şehirler için çalışmalarını kararlılıkla sürdüreceğini kamuoyu ile paylaştı.",
+    "imageUrl": "/images/news/news-1766430063225-zt47arg.jpg",
+    "images": [
+      "/images/news/news-1766429968175-p5l6iaj.jpg",
+      "/images/news/news-1766429979337-cwfy9y2.jpg",
+      "/images/news/news-1766430000369-enxsej5.jpg",
+      "/images/news/news-1766430063225-zt47arg.jpg",
+      "/images/news/news-1766430081124-gvjp97f.jpg"
+    ],
+    "published": true,
+    "id": "1766430151083",
+    "slug": "kentfestte-kentsel-donusum-ve-direncli-sehirler-vizyonunu-anlatt",
+    "createdAt": "2025-12-22T19:02:31.083Z"
   }
 ];
