@@ -29,3 +29,4 @@ Eğer resimleri başka bir serviste (Imgur, Cloudinary, vs) barındırıyorsanı
 - Tam URL'yi kullanın: `https://example.com/resim.jpg`
 - Yönetim panelinde "Görsel URL" alanına direkt yapıştırın
 
+
