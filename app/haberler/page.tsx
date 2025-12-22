@@ -23,7 +23,15 @@ export default function NewsPage() {
         if (savedNews) {
           const parsedNews = JSON.parse(savedNews);
           if (parsedNews && Array.isArray(parsedNews) && parsedNews.length > 0) {
-            allNews = parsedNews;
+            // Merge with existing news, prioritizing localStorage data
+            const newsMap = new Map();
+            allNews.forEach(n => newsMap.set(n.slug || n.id, n));
+            parsedNews.forEach((n: any) => {
+              if (n.slug || n.id) {
+                newsMap.set(n.slug || n.id, n);
+              }
+            });
+            allNews = Array.from(newsMap.values());
           }
         }
       } catch (e) {
@@ -31,7 +39,14 @@ export default function NewsPage() {
       }
     }
     
-    setNews(allNews.slice(0, 12));
+    // Sort news by createdAt date (newest first)
+    const sortedNews = [...allNews].sort((a: any, b: any) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA; // Descending order (newest first)
+    });
+    
+    setNews(sortedNews.slice(0, 12));
   }, []);
 
   return (
