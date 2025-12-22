@@ -45,7 +45,17 @@ export default function AdminDashboard() {
   // About page state
   const [aboutData, setAboutData] = useState<AboutPageData>(defaultAboutPageData);
   const [editingCareerId, setEditingCareerId] = useState<string | null>(null);
-  const [careerForm, setCareerForm] = useState({ title: "", company: "", period: "", description: "" });
+  const [careerForm, setCareerForm] = useState({ 
+    title: "", 
+    company: "", 
+    employmentType: "Tam zamanlı", 
+    startDate: "", 
+    endDate: "", 
+    duration: "", 
+    location: "", 
+    description: "",
+    logo: ""
+  });
   const [editingEducationId, setEditingEducationId] = useState<string | null>(null);
   const [educationForm, setEducationForm] = useState({ degree: "", field: "", period: "" });
   
@@ -54,7 +64,7 @@ export default function AdminDashboard() {
   
   // Messages state
   const [messages, setMessages] = useState<any[]>([]);
-  
+
   // GitHub token state (client-side only, never accessed during build)
   const [githubToken, setGithubToken] = useState<string>("");
   const [showTokenInput, setShowTokenInput] = useState(false);
@@ -591,20 +601,45 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
       id: Date.now().toString(),
       title: careerForm.title,
       company: careerForm.company,
-      period: careerForm.period,
-      description: careerForm.description
+      employmentType: careerForm.employmentType,
+      startDate: careerForm.startDate,
+      endDate: careerForm.endDate,
+      duration: careerForm.duration,
+      location: careerForm.location || undefined,
+      description: careerForm.description || undefined,
+      logo: careerForm.logo || undefined
     };
     setAboutData({
       ...aboutData,
       career: [...aboutData.career, newCareer]
     });
-    setCareerForm({ title: "", company: "", period: "", description: "" });
+    setCareerForm({ 
+      title: "", 
+      company: "", 
+      employmentType: "Tam zamanlı", 
+      startDate: "", 
+      endDate: "", 
+      duration: "", 
+      location: "", 
+      description: "",
+      logo: ""
+    });
   };
 
   const handleCareerEdit = (id: string) => {
     const career = aboutData.career.find(c => c.id === id);
     if (career) {
-      setCareerForm({ title: career.title, company: career.company, period: career.period, description: career.description });
+      setCareerForm({ 
+        title: career.title || "", 
+        company: career.company || "", 
+        employmentType: career.employmentType || "Tam zamanlı",
+        startDate: career.startDate || career.period?.split(" - ")[0] || "",
+        endDate: career.endDate || (career.period?.includes("Günümüz") || career.period?.includes("Halen") ? "Halen" : career.period?.split(" - ")[1] || ""),
+        duration: career.duration || "",
+        location: career.location || "",
+        description: career.description || "",
+        logo: career.logo || ""
+      });
       setEditingCareerId(id);
     }
   };
@@ -615,12 +650,33 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
         ...aboutData,
         career: aboutData.career.map(c => 
           c.id === editingCareerId 
-            ? { ...c, ...careerForm }
+            ? { 
+                ...c, 
+                title: careerForm.title,
+                company: careerForm.company,
+                employmentType: careerForm.employmentType,
+                startDate: careerForm.startDate,
+                endDate: careerForm.endDate,
+                duration: careerForm.duration,
+                location: careerForm.location || undefined,
+                description: careerForm.description || undefined,
+                logo: careerForm.logo || undefined
+              }
             : c
         )
       });
       setEditingCareerId(null);
-      setCareerForm({ title: "", company: "", period: "", description: "" });
+      setCareerForm({ 
+        title: "", 
+        company: "", 
+        employmentType: "Tam zamanlı", 
+        startDate: "", 
+        endDate: "", 
+        duration: "", 
+        location: "", 
+        description: "",
+        logo: ""
+      });
     }
   };
 
@@ -765,8 +821,8 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
               <Rocket size={18} /> Deploy Başlat
             </button>
             <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
-              <LogOut size={18} /> Çıkış
-            </button>
+            <LogOut size={18} /> Çıkış
+          </button>
           </div>
         </div>
       </header>
@@ -1019,12 +1075,18 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
             <div className="bg-white p-6 rounded-xl shadow-md">
               <h3 className="text-lg font-semibold mb-4">Kariyer Geçmişi</h3>
               <div className="space-y-4 mb-4">
-                {aboutData.career.map((career) => (
+                {aboutData.career.map((career: any) => (
                   <div key={career.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                     <div className="flex-1">
                       <div className="font-medium">{career.title}</div>
-                      <div className="text-sm text-blue-600">{career.company} | {career.period}</div>
-                      <div className="text-sm text-gray-600 mt-1">{career.description}</div>
+                      <div className="text-sm text-blue-600">
+                        {career.company}
+                        {career.employmentType && ` • ${career.employmentType}`}
+                        {career.startDate && career.endDate && ` • ${career.startDate} - ${career.endDate}`}
+                        {career.duration && ` • ${career.duration}`}
+                      </div>
+                      {career.location && <div className="text-sm text-gray-500 mt-1">{career.location}</div>}
+                      {career.description && <div className="text-sm text-gray-600 mt-1">{career.description}</div>}
                     </div>
                     <div className="flex gap-2">
                       <button onClick={() => handleCareerEdit(career.id)} className="p-2 hover:bg-blue-50 rounded">
@@ -1039,21 +1101,43 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
               </div>
               {editingCareerId ? (
                 <div className="p-4 bg-blue-50 rounded-lg space-y-3">
-                  <input type="text" placeholder="Pozisyon" value={careerForm.title} onChange={(e) => setCareerForm({ ...careerForm, title: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
-                  <input type="text" placeholder="Şirket" value={careerForm.company} onChange={(e) => setCareerForm({ ...careerForm, company: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
-                  <input type="text" placeholder="Dönem (örn: 2018 - Günümüz)" value={careerForm.period} onChange={(e) => setCareerForm({ ...careerForm, period: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
-                  <textarea placeholder="Açıklama" value={careerForm.description} onChange={(e) => setCareerForm({ ...careerForm, description: e.target.value })} className="w-full px-4 py-2 border rounded-lg" rows={2} />
+                  <input type="text" placeholder="Pozisyon (örn: Öğretim Üyesi)" value={careerForm.title} onChange={(e) => setCareerForm({ ...careerForm, title: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <input type="text" placeholder="Organizasyon (örn: İstanbul Arel Üniversitesi)" value={careerForm.company} onChange={(e) => setCareerForm({ ...careerForm, company: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <select value={careerForm.employmentType} onChange={(e) => setCareerForm({ ...careerForm, employmentType: e.target.value })} className="w-full px-4 py-2 border rounded-lg">
+                    <option value="Tam zamanlı">Tam zamanlı</option>
+                    <option value="Yarı zamanlı">Yarı zamanlı</option>
+                    <option value="Dönemsel">Dönemsel</option>
+                  </select>
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="text" placeholder="Başlangıç (örn: Eyl 2024)" value={careerForm.startDate} onChange={(e) => setCareerForm({ ...careerForm, startDate: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                    <input type="text" placeholder="Bitiş (örn: Halen veya Mar 2023)" value={careerForm.endDate} onChange={(e) => setCareerForm({ ...careerForm, endDate: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  </div>
+                  <input type="text" placeholder="Süre (örn: 1 yıl 4 ay)" value={careerForm.duration} onChange={(e) => setCareerForm({ ...careerForm, duration: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <input type="text" placeholder="Konum (opsiyonel, örn: İstanbul, Türkiye)" value={careerForm.location} onChange={(e) => setCareerForm({ ...careerForm, location: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <input type="text" placeholder="Logo URL (opsiyonel)" value={careerForm.logo} onChange={(e) => setCareerForm({ ...careerForm, logo: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <textarea placeholder="Açıklama (opsiyonel)" value={careerForm.description} onChange={(e) => setCareerForm({ ...careerForm, description: e.target.value })} className="w-full px-4 py-2 border rounded-lg" rows={3} />
                   <div className="flex gap-2">
                     <button onClick={handleCareerUpdate} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">Güncelle</button>
-                    <button onClick={() => { setEditingCareerId(null); setCareerForm({ title: "", company: "", period: "", description: "" }); }} className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg">İptal</button>
+                    <button onClick={() => { setEditingCareerId(null); setCareerForm({ title: "", company: "", employmentType: "Tam zamanlı", startDate: "", endDate: "", duration: "", location: "", description: "", logo: "" }); }} className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-lg">İptal</button>
                   </div>
                 </div>
               ) : (
                 <div className="p-4 bg-gray-50 rounded-lg space-y-3">
-                  <input type="text" placeholder="Pozisyon" value={careerForm.title} onChange={(e) => setCareerForm({ ...careerForm, title: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
-                  <input type="text" placeholder="Şirket" value={careerForm.company} onChange={(e) => setCareerForm({ ...careerForm, company: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
-                  <input type="text" placeholder="Dönem" value={careerForm.period} onChange={(e) => setCareerForm({ ...careerForm, period: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
-                  <textarea placeholder="Açıklama" value={careerForm.description} onChange={(e) => setCareerForm({ ...careerForm, description: e.target.value })} className="w-full px-4 py-2 border rounded-lg" rows={2} />
+                  <input type="text" placeholder="Pozisyon (örn: Öğretim Üyesi)" value={careerForm.title} onChange={(e) => setCareerForm({ ...careerForm, title: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <input type="text" placeholder="Organizasyon (örn: İstanbul Arel Üniversitesi)" value={careerForm.company} onChange={(e) => setCareerForm({ ...careerForm, company: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <select value={careerForm.employmentType} onChange={(e) => setCareerForm({ ...careerForm, employmentType: e.target.value })} className="w-full px-4 py-2 border rounded-lg">
+                    <option value="Tam zamanlı">Tam zamanlı</option>
+                    <option value="Yarı zamanlı">Yarı zamanlı</option>
+                    <option value="Dönemsel">Dönemsel</option>
+                  </select>
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="text" placeholder="Başlangıç (örn: Eyl 2024)" value={careerForm.startDate} onChange={(e) => setCareerForm({ ...careerForm, startDate: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                    <input type="text" placeholder="Bitiş (örn: Halen veya Mar 2023)" value={careerForm.endDate} onChange={(e) => setCareerForm({ ...careerForm, endDate: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  </div>
+                  <input type="text" placeholder="Süre (örn: 1 yıl 4 ay)" value={careerForm.duration} onChange={(e) => setCareerForm({ ...careerForm, duration: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <input type="text" placeholder="Konum (opsiyonel, örn: İstanbul, Türkiye)" value={careerForm.location} onChange={(e) => setCareerForm({ ...careerForm, location: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <input type="text" placeholder="Logo URL (opsiyonel)" value={careerForm.logo} onChange={(e) => setCareerForm({ ...careerForm, logo: e.target.value })} className="w-full px-4 py-2 border rounded-lg" />
+                  <textarea placeholder="Açıklama (opsiyonel)" value={careerForm.description} onChange={(e) => setCareerForm({ ...careerForm, description: e.target.value })} className="w-full px-4 py-2 border rounded-lg" rows={3} />
                   <button onClick={handleCareerAdd} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg">
                     <Plus size={18} className="inline mr-2" /> Yeni Kariyer Ekle
                   </button>
@@ -1174,7 +1258,7 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                 </button>
                 <button onClick={() => { setShowNewsForm(true); setEditingNewsId(null); setNewsForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                   <Plus size={18} /> Yeni Haber Ekle
-                </button>
+              </button>
               </div>
             </div>
 
