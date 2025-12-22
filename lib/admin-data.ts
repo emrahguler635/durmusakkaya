@@ -1,6 +1,6 @@
 // Auto-generated data file - DO NOT EDIT MANUALLY
 // This file is generated from admin panel changes
-"use client";
+// Note: This file is used by both server and client components
 
 export const adminHomeData: any = {
   "hero": {
@@ -125,7 +125,7 @@ export const adminNewsData: any = [
   {
     "title": "test",
     "summary": "test",
-    "content": "testtrewe ewrwewe ewfefe ",
+    "content": "testtrewe ewrwewe ewfefe dsdwqe wqewqewqeqw",
     "imageUrl": "/profile.jpg",
     "images": [],
     "published": true,
