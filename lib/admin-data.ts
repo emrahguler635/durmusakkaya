@@ -101,7 +101,7 @@ export const adminNewsData: any = [
     "title": "Uşak Üniversitesi Rektörü Prof. Dr. Ahmet Demir’e Ziyaret",
     "summary": "Uşak Üniversitesi Rektörlüğü görevine atanan Prof. Dr. Ahmet Demir’e hayırlı olsun ziyaretinde bulunduk. Yeni görevinde kendisini tebrik ederek muvaffakiyetler dilediğimiz ziyarette, Prof. Dr. Demir’in göstermiş olduğu samimi ve sıcakkanlı misafirperverlikten büyük memnuniyet duyduk.",
     "content": "Uşak Üniversitesi Rektörlüğü görevine atanan Prof. Dr. Ahmet Demir’e hayırlı olsun ziyaretinde bulunduk. Yeni görevinde kendisini tebrik ederek muvaffakiyetler dilediğimiz ziyarette, Prof. Dr. Demir’in göstermiş olduğu samimi ve sıcakkanlı misafirperverlikten büyük memnuniyet duyduk.\n\nZiyaret kapsamında, Uşak Üniversitesi’nin gelecek döneme ilişkin hedefleri ve yürütülmesi planlanan akademik çalışmalar hakkında da istişarelerde bulunuldu. Misafirperverliği ve nazik ev sahipliği için Uşak Üniversitesi Rektörü Prof. Dr. Ahmet Demir’e teşekkür ediyor, yeni görevinde başarılarının devamını diliyoruz.",
-    "imageUrl": "/profile.jpg",
+    "imageUrl": "/images/news/news-1766418935119-30og3os.jpg",
     "published": true,
     "id": "1766310872714",
     "slug": "aaaaa-aaaaaa",
