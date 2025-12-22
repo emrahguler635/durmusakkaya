@@ -11,15 +11,15 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://emrahguler635.github.io/durmusakkaya"),
-  title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
-  description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü. Profesyonel deneyim, haberler ve iletişim.",
+  title: "Dr. Durmuş AKKAYA | Başak A.Ş. Yönetim Kurulu Başkanı",
+  description: "Dr. Durmuş AKKAYA - Başak A.Ş. Yönetim Kurulu Başkanı. Profesyonel deneyim, haberler ve iletişim.",
   icons: {
     icon: "/durmusakkaya/favicon.svg",
     shortcut: "/durmusakkaya/favicon.svg"
   },
   openGraph: {
-    title: "Dr. Durmuş AKKAYA | Başak A.Ş. Genel Müdürü",
-    description: "Dr. Durmuş AKKAYA - Başak A.Ş. Genel Müdürü",
+    title: "Dr. Durmuş AKKAYA | Başak A.Ş. Yönetim Kurulu Başkanı",
+    description: "Dr. Durmuş AKKAYA - Başak A.Ş. Yönetim Kurulu Başkanı",
     images: ["/durmusakkaya/og-image.png"]
   }
 };
