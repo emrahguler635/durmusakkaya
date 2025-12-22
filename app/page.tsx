@@ -10,7 +10,7 @@ const staticHomeData = {
   hero: {
     welcomeText: "Hoş Geldiniz",
     title: "Dr. Durmuş AKKAYA",
-    subtitle: "Başak A.Ş. Genel Müdürü",
+    subtitle: "Başak A.Ş. Yönetim Kurulu Başkanı",
     description: "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
   },
   highlights: [
@@ -110,9 +110,6 @@ export default function HomePage() {
           <div className="flex justify-between items-center mb-10">
             <div>
               <h2 className="text-3xl font-bold text-gray-900">{homeData.newsSection.title}</h2>
-              <p className="text-gray-600 mt-2">
-                {homeData.newsSection.description.replace("{count}", totalNewsCount.toString())}
-              </p>
             </div>
             <Link href="/haberler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">
               Tümü <ArrowRight size={16} />
