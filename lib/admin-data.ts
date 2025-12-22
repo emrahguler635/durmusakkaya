@@ -101,7 +101,7 @@ export const adminNewsData: any = [
     "title": "Uşak Üniversitesi Rektörü Prof. Dr. Ahmet Demir’e Ziyaret",
     "summary": "Uşak Üniversitesi Rektörlüğü görevine atanan Prof. Dr. Ahmet Demir’e hayırlı olsun ziyaretinde bulunduk. Yeni görevinde kendisini tebrik ederek muvaffakiyetler dilediğimiz ziyarette, Prof. Dr. Demir’in göstermiş olduğu samimi ve sıcakkanlı misafirperverlikten büyük memnuniyet duyduk.",
     "content": "Uşak Üniversitesi Rektörlüğü görevine atanan Prof. Dr. Ahmet Demir’e hayırlı olsun ziyaretinde bulunduk. Yeni görevinde kendisini tebrik ederek muvaffakiyetler dilediğimiz ziyarette, Prof. Dr. Demir’in göstermiş olduğu samimi ve sıcakkanlı misafirperverlikten büyük memnuniyet duyduk.\n\nZiyaret kapsamında, Uşak Üniversitesi’nin gelecek döneme ilişkin hedefleri ve yürütülmesi planlanan akademik çalışmalar hakkında da istişarelerde bulunuldu. Misafirperverliği ve nazik ev sahipliği için Uşak Üniversitesi Rektörü Prof. Dr. Ahmet Demir’e teşekkür ediyor, yeni görevinde başarılarının devamını diliyoruz.",
-    "imageUrl": "/profile.jpg",
+    "imageUrl": "/images/news/news-1766418935119-30og3os.jpg",
     "published": true,
     "id": "1766310872714",
     "slug": "aaaaa-aaaaaa",
@@ -128,7 +128,7 @@ export const adminNewsData: any = [
     "title": "İstanbul Uşaklılar Vakfı’ndan Vali Dr. Naci Aktaş’a Davet Ziyareti",
     "summary": "İstanbul Uşaklılar Eğitim ve Kültür Vakfı heyeti, Uşak Valisi Sayın Dr. Naci Aktaş’ı makamında ziyaret ederek vakfın geleneksel hale gelen kahvaltı programına davet etti. Uşaklıların birlik ve beraberliğini pekiştirmeyi amaçlayan etkinlik hakkında Sayın Vali’ye bilgi sunulan ziyarette, vakfın yürüttüğü eğitim ve kültür faaliyetleri de ele alındı.",
     "content": "İstanbul Uşaklılar Eğitim ve Kültür Vakfı heyeti, Uşak Valisi Sayın Dr. Naci Aktaş’ı makamında ziyaret ederek vakfın geleneksel hale gelen kahvaltı programına davet etti. Uşaklıların birlik ve beraberliğini pekiştirmeyi amaçlayan etkinlik hakkında Sayın Vali’ye bilgi sunulan ziyarette, vakfın yürüttüğü eğitim ve kültür faaliyetleri de ele alındı.\n\nZiyaret sırasında gerçekleşen sıcak ve samimi sohbetten dolayı memnuniyetlerini dile getiren vakıf temsilcileri, nazik kabulleri ve yakın ilgisi için Vali Dr. Naci Aktaş’a teşekkürlerini sundu. Programın, İstanbul’daki Uşaklılar ile memleket bağlarını güçlendirmek adına önemli bir buluşma noktası olacağı vurgulandı.",
-    "imageUrl": "/og-image.png",
+    "imageUrl": "/images/news/news-1766419250388-ehj9476.jpg",
     "images": [
       "/images/news/news-1766419250388-ehj9476.jpg"
     ],
@@ -136,5 +136,22 @@ export const adminNewsData: any = [
     "id": "1766356601373",
     "slug": "test",
     "createdAt": "2025-12-21T22:36:41.373Z"
+  },
+  {
+    "title": "KentFest’te Kentsel Dönüşüm ve Dirençli Şehirler Vizyonunu Anlattı",
+    "summary": "Kentsel Dönüşüm ve Şehircilik Vakfı olarak, doğru planlama ile daha dayanıklı ve yaşanabilir şehirler oluşturma hedefiyle düzenlenen #KentFest organizasyonuna katılarak, kentsel dönüşüm odaklı planlama ve uygulama çalışmalarımızı anlattık. Etkinlikte, kentsel dönüşümün yalnızca fiziki yenilemeden ibaret olmadığı, aynı zamanda sosyal, ekonomik ve çevresel boyutlarıyla ele alınması gereken bütüncül bir süreç olduğu vurgulandı.\n",
+    "content": "Kentsel Dönüşüm ve Şehircilik Vakfı olarak, doğru planlama ile daha dayanıklı ve yaşanabilir şehirler oluşturma hedefiyle düzenlenen #KentFest organizasyonuna katılarak, kentsel dönüşüm odaklı planlama ve uygulama çalışmalarımızı anlattık. Etkinlikte, kentsel dönüşümün yalnızca fiziki yenilemeden ibaret olmadığı, aynı zamanda sosyal, ekonomik ve çevresel boyutlarıyla ele alınması gereken bütüncül bir süreç olduğu vurgulandı.\n\nKentsev olarak; riskli yapıların yenilenmesi, afetlere dirençli kent dokusunun oluşturulması, yaşam kalitesini artıran sosyal donatı alanları, yeşil alanlar ve sürdürülebilir ulaşım çözümleri gibi başlıklarda yürüttüğümüz proje ve çalışmalar katılımcılarla paylaşıldı.\n\nProgram kapsamında ayrıca, yerel yönetimler, sivil toplum kuruluşları, akademi dünyası ve şehir plancılarıyla iş birliğinin önemine dikkat çekilerek, ortak akıl ve bilim temelli yaklaşımlarla şehirlerin geleceğini inşa etmenin Kentsev’in temel öncelikleri arasında olduğu ifade edildi.\n\nBir şehrin her yönüyle doğru ve planlı yönetiminin vazgeçilmez olduğunun altını çizen Kentsev – Kentsel Dönüşüm ve Şehircilik Vakfı, daha güvenli, dirençli, kapsayıcı ve sürdürülebilir şehirler için çalışmalarını kararlılıkla sürdüreceğini kamuoyu ile paylaştı.",
+    "imageUrl": "/images/news/news-1766430063225-zt47arg.jpg",
+    "images": [
+      "/images/news/news-1766429968175-p5l6iaj.jpg",
+      "/images/news/news-1766429979337-cwfy9y2.jpg",
+      "/images/news/news-1766430000369-enxsej5.jpg",
+      "/images/news/news-1766430063225-zt47arg.jpg",
+      "/images/news/news-1766430081124-gvjp97f.jpg"
+    ],
+    "published": true,
+    "id": "1766430151083",
+    "slug": "kentfestte-kentsel-donusum-ve-direncli-sehirler-vizyonunu-anlatt",
+    "createdAt": "2025-12-22T19:02:31.083Z"
   }
 ];
