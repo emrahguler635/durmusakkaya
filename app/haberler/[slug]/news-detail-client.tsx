@@ -99,6 +99,30 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
     year: "numeric", month: "long", day: "numeric"
   });
 
+  // Determine cover image
+  const coverImage = news.imageUrl || (news.images && news.images.length > 0 ? news.images[0] : null);
+  
+  // Filter gallery images (exclude cover image if it's in images array)
+  const galleryImages = news.images && Array.isArray(news.images) 
+    ? news.images.filter((img: string, index: number) => {
+        // If imageUrl exists and matches this image, exclude it from gallery
+        if (news.imageUrl && img === news.imageUrl) return false;
+        // If no imageUrl but this is the first image (used as cover), exclude it
+        if (!news.imageUrl && index === 0) return false;
+        return true;
+      })
+    : [];
+
+  // Helper function to open lightbox with correct index
+  const openLightboxWithImage = (imgUrl: string) => {
+    if (!news.images || news.images.length === 0) return;
+    const index = news.images.indexOf(imgUrl);
+    if (index !== -1) {
+      setLightboxIndex(index);
+      setLightboxOpen(true);
+    }
+  };
+
   return (
     <div>
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-16">
@@ -116,13 +140,34 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
 
       <section className="py-12 bg-white">
         <div className="max-w-4xl mx-auto px-4">
-          {/* Ana Görsel */}
-          {news.imageUrl ? (
-            <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
-              <Image src={getImagePath(news.imageUrl)} alt={news.title} fill className="object-cover" />
+          {/* Kapak Resmi */}
+          {coverImage ? (
+            <div 
+              className="relative aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden mb-8 shadow-lg cursor-pointer group"
+              onClick={() => {
+                if (news.images && news.images.length > 0) {
+                  const index = news.images.indexOf(coverImage);
+                  if (index !== -1) {
+                    setLightboxIndex(index);
+                    setLightboxOpen(true);
+                  }
+                }
+              }}
+            >
+              <Image 
+                src={getImagePath(coverImage)} 
+                alt={news.title} 
+                fill 
+                className="object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-opacity duration-300 flex items-center justify-center">
+                <span className="text-white text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  Büyütmek için tıklayın
+                </span>
+              </div>
             </div>
           ) : (
-            <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden mb-8">
+            <div className="relative aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden mb-8 shadow-lg">
               <Image src={getImagePath("/og-image.png")} alt={news.title} fill className="object-cover" />
             </div>
           )}
@@ -133,28 +178,32 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
             <div className="whitespace-pre-wrap">{news.content}</div>
           </div>
           
-          {/* Birden Fazla Görsel Galerisi */}
-          {news.images && Array.isArray(news.images) && news.images.length > 0 && (
+          {/* Galeri (Kapak resmi hariç diğer görseller) */}
+          {galleryImages.length > 0 && (
             <div className="mt-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Galeri</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {news.images.map((imgUrl: string, index: number) => (
-                  <div 
-                    key={index} 
-                    className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer"
-                    onClick={() => {
-                      setLightboxIndex(index);
-                      setLightboxOpen(true);
-                    }}
-                  >
-                    <Image 
-                      src={getImagePath(imgUrl)} 
-                      alt={`${news.title} - Görsel ${index + 1}`} 
-                      fill 
-                      className="object-cover group-hover:scale-105 transition-transform duration-300" 
-                    />
-                  </div>
-                ))}
+                {galleryImages.map((imgUrl: string, index: number) => {
+                  // Find original index in news.images array for lightbox
+                  const originalIndex = news.images.indexOf(imgUrl);
+                  return (
+                    <div 
+                      key={index} 
+                      className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer"
+                      onClick={() => {
+                        setLightboxIndex(originalIndex);
+                        setLightboxOpen(true);
+                      }}
+                    >
+                      <Image 
+                        src={getImagePath(imgUrl)} 
+                        alt={`${news.title} - Görsel ${index + 1}`} 
+                        fill 
+                        className="object-cover group-hover:scale-105 transition-transform duration-300" 
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
