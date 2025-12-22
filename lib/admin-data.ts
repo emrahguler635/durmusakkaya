@@ -22,8 +22,8 @@ export const adminHomeData: any = {
     },
     {
       "id": "3",
-      "title": "İletişim",
-      "description": "Açık iletişim ve iş birliği odaklı yaklaşım"
+      "title": "Teknoloji ve İnovasyon",
+      "description": "Yenilikçi teknolojileri kullanarak verimliliği ve hizmet kalitesini artırıyoruz."
     }
   ],
   "newsSection": {
