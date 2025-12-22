@@ -10,19 +10,29 @@ interface NewsCardProps {
   title: string;
   summary: string;
   imageUrl?: string;
+  images?: string[];
   createdAt: string;
   slug: string;
 }
 
-export default function NewsCard({ id, title, summary, imageUrl, createdAt, slug }: NewsCardProps) {
+export default function NewsCard({ id, title, summary, imageUrl, images, createdAt, slug }: NewsCardProps) {
   const formattedDate = new Date(createdAt).toLocaleDateString("tr-TR", {
     year: "numeric", month: "long", day: "numeric"
   });
+  
+  // Determine cover image: use imageUrl if available, otherwise use first image from images array
+  const coverImage = imageUrl || (images && images.length > 0 ? images[0] : null);
+  
   return (
     <Link href={`/haberler/${slug}`}>
       <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
       <div className="relative aspect-video bg-gray-100">
-          <Image src={imageUrl ? getImagePath(imageUrl) : getImagePath("/og-image.png")} alt={title} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+          <Image 
+            src={coverImage ? getImagePath(coverImage) : getImagePath("/og-image.png")} 
+            alt={title} 
+            fill 
+            className="object-cover group-hover:scale-105 transition-transform duration-500" 
+          />
       </div>
       <div className="p-6">
         <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
