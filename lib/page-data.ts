@@ -63,7 +63,7 @@ export const defaultHomePageData: HomePageData = {
   hero: {
     welcomeText: "Hoş Geldiniz",
     title: "Dr. Durmuş AKKAYA",
-    subtitle: "Başak A.Ş. Genel Müdürü",
+    subtitle: "Başak A.Ş. Yönetim Kurulu Başkanı",
     description: "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
   },
   highlights: [
@@ -96,7 +96,7 @@ export const defaultAboutPageData: AboutPageData = {
   },
   bio: {
     name: "Dr. Durmuş AKKAYA",
-    role: "Başak A.Ş. Genel Müdürü",
+    role: "Başak A.Ş. Yönetim Kurulu Başkanı",
     paragraphs: [
       "Uzun yılların iş deneyimi ve akademik birikimle donanmış bir lider olarak, kurumsal yönetim ve stratejik planlama alanlarında geniş bir vizyona sahibim.",
       "Başak A.Ş.'nin büyümesine ve sektörde öncü konuma gelmesine liderlik etmekten gurur duyuyorum. İnovasyon, sürdürülebilirlik ve müşteri memnuniyeti odaklı yaklaşımımız sayesinde şirketimiz istikrarlı bir büyüme süreci yaşamaktadır.",
