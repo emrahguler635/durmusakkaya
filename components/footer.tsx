@@ -13,7 +13,7 @@ export default function Footer() {
             <Image src={getImagePath("/logo.png")} alt="DA Logo" width={80} height={80} className="rounded bg-white p-2" />
             <div>
               <h3 className="font-bold text-lg">Dr. Durmuş AKKAYA</h3>
-              <p className="text-blue-200 text-sm">Başak A.Ş. Genel Müdürü</p>
+              <p className="text-blue-200 text-sm">Başak A.Ş. Yönetim Kurulu Başkanı</p>
             </div>
           </div>
           <div className="flex gap-5">
