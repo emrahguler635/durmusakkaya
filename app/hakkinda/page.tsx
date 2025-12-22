@@ -110,30 +110,76 @@ export default function AboutPage() {
 
       {/* Career */}
       <section className="py-16 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-4xl mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Kariyer Geçmişi</h2>
             <p className="text-gray-600">Profesyonel deneyim ve başarılar</p>
           </div>
-          <div className="space-y-6">
-            {aboutData.career.map((career, index) => {
+          <div className="bg-white rounded-xl shadow-md overflow-hidden">
+            {aboutData.career.map((career: any, index: number) => {
               const Icon = careerIcons[index % careerIcons.length];
               const iconColors = [
                 { bg: "bg-blue-100", text: "text-blue-600" },
                 { bg: "bg-yellow-100", text: "text-yellow-600" },
-                { bg: "bg-blue-100", text: "text-blue-600" }
+                { bg: "bg-green-100", text: "text-green-600" },
+                { bg: "bg-purple-100", text: "text-purple-600" }
               ];
               const colors = iconColors[index % iconColors.length];
+              const period = career.startDate && career.endDate 
+                ? `${career.startDate} - ${career.endDate}` 
+                : career.period || "";
+              
               return (
-                <div key={career.id} className="bg-white p-6 rounded-xl shadow-md flex gap-4">
-                  <div className={`w-12 h-12 ${colors.bg} rounded-full flex items-center justify-center flex-shrink-0`}>
-                    <Icon className={colors.text} size={24} />
+                <div key={career.id}>
+                  <div className="flex gap-4 p-6 hover:bg-gray-50 transition-colors">
+                    {/* Logo/Icon */}
+                    <div className="flex-shrink-0">
+                      {career.logo ? (
+                        <div className="w-14 h-14 rounded-full overflow-hidden bg-gray-100 flex items-center justify-center">
+                          <Image
+                            src={getImagePath(career.logo)}
+                            alt={career.company}
+                            width={56}
+                            height={56}
+                            className="object-cover"
+                          />
+                        </div>
+                      ) : (
+                        <div className={`w-14 h-14 ${colors.bg} rounded-full flex items-center justify-center`}>
+                          <Icon className={colors.text} size={28} />
+                        </div>
+                      )}
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="font-bold text-gray-900 text-lg mb-1">{career.title}</h3>
+                      <p className="text-gray-700 font-medium mb-2">{career.company}</p>
+                      
+                      <div className="flex flex-wrap items-center gap-2 text-sm text-gray-600 mb-2">
+                        {career.employmentType && (
+                          <span className="bg-gray-100 px-2 py-1 rounded">{career.employmentType}</span>
+                        )}
+                        {period && (
+                          <span>{period}</span>
+                        )}
+                        {career.duration && (
+                          <span>{career.duration}</span>
+                        )}
+                      </div>
+                      
+                      {career.location && (
+                        <p className="text-sm text-gray-500 mb-2">{career.location}</p>
+                      )}
+                      
+                      {career.description && (
+                        <p className="text-sm text-gray-600 mt-2 leading-relaxed">{career.description}</p>
+                      )}
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{career.title}</h3>
-                    <p className="text-blue-600">{career.company} | {career.period}</p>
-                    <p className="text-gray-600 mt-2">{career.description}</p>
-                  </div>
+                  {index < aboutData.career.length - 1 && (
+                    <div className="border-t border-gray-200 mx-6"></div>
+                  )}
                 </div>
               );
             })}
