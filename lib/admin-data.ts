@@ -48,25 +48,77 @@ export const adminAboutData: any = {
   },
   "career": [
     {
-      "id": "1",
-      "title": "Genel Müdür",
-      "company": "Başak A.Ş.",
-      "period": "2018 - Günümüz",
-      "description": "Şirketin genel yönetimi, stratejik planlama ve büyüme hedeflerinin belirlenmesi"
+      "id": "7",
+      "title": "Öğretim Üyesi",
+      "company": "İstanbul Arel Üniversitesi",
+      "employmentType": "Dönemsel",
+      "startDate": "Eyl 2024",
+      "endDate": "Halen",
+      "duration": "1 yıl 4 ay",
+      "description": ""
     },
     {
-      "id": "2",
-      "title": "Genel Müdür Yardımcısı",
-      "company": "Başak A.Ş.",
-      "period": "2014 - 2018",
-      "description": "Operasyonel süreçlerin yönetimi ve iyileştirilmesi"
+      "id": "6",
+      "title": "Yönetim Kurulu Başkanı",
+      "company": "BAŞAK KENTSEL DÖNÜŞÜM AŞ",
+      "employmentType": "Tam zamanlı",
+      "startDate": "May 2023",
+      "endDate": "Halen",
+      "duration": "2 yıl 8 ay",
+      "description": ""
+    },
+    {
+      "id": "5",
+      "title": "Öğretim Üyesi",
+      "company": "Uşak Üniversitesi",
+      "employmentType": "Yarı zamanlı",
+      "startDate": "Eyl 2022",
+      "endDate": "Mar 2023",
+      "duration": "7 ay",
+      "description": ""
+    },
+    {
+      "id": "4",
+      "title": "Belediye Başkan Yardımcısı",
+      "company": "Uşak Belediyesi",
+      "employmentType": "Tam zamanlı",
+      "startDate": "May 2020",
+      "endDate": "Mar 2023",
+      "duration": "2 yıl 11 ay",
+      "location": "Uşak, Türkiye",
+      "description": "Uşak Teknik Belediye Başkan Yardımcılığı Görevini Yürütmekteyim"
     },
     {
       "id": "3",
-      "title": "Bölüm Müdürü",
-      "company": "Başak A.Ş.",
-      "period": "2010 - 2014",
-      "description": "Satış ve pazarlama bölümünün yönetimi"
+      "title": "Dr. Öğretim Görevlisi",
+      "company": "İstanbul Aydın Üniversitesi",
+      "employmentType": "Yarı zamanlı",
+      "startDate": "Eyl 2015",
+      "endDate": "Kas 2022",
+      "duration": "7 yıl 3 ay",
+      "description": "İstanbul Aydın Üniversitesi, Fen Bilimleri Enstitüsü, İnşaat Mühendisliği Anabilim Dalında, Yapım ve Proje yönetimi Tezsiz Yüksek Lisans programında yarı zamanlı öğretim görevlisi olarak ders vermekteyim."
+    },
+    {
+      "id": "2",
+      "title": "Mühendis (Civil Engineer) -Project Management/ Urban Regeneration/ Earthquake Prevention",
+      "company": "İstanbul Büyükşehir Belediyesi",
+      "employmentType": "Tam zamanlı",
+      "startDate": "Oca 2013",
+      "endDate": "May 2020",
+      "duration": "7 yıl 5 ay",
+      "location": "İstanbul, Türkiye",
+      "description": "İstanbul Büyükşehir Belediyesi Bünyesinde Kentsel dönüşüm müdürlüğü ve İŞAT (İstanbul Şehircilik Atölyesi) Müdürlüğü bünyelerinde proje yönetimi, planlama, projelendirme, yapım, tespit ve deprem konularında çalışmaktayım. Özel olarak da BIM ( Building Information Modelling) ve İş sağlığı ve Güvenliği konularında çalışmalarım bulunmaktadır."
+    },
+    {
+      "id": "1",
+      "title": "Öğretim Görevlisi",
+      "company": "Yıldız Teknik Üniversitesi",
+      "employmentType": "",
+      "startDate": "Ara 2010",
+      "endDate": "Oca 2013",
+      "duration": "2 yıl 2 ay",
+      "location": "Istanbul, Turkey",
+      "description": "İnşaat Mühendisliği Bölümü, Yapı İşletmesi Anabilim Dalında öğretim görevlisi olarak 2 yıl"
     }
   ],
   "education": [
