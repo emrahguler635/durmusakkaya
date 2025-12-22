@@ -17,8 +17,8 @@ export const adminHomeData: any = {
     },
     {
       "id": "2",
-      "title": "Başarı",
-      "description": "Sürdürülebilir büyüme ve kurumsal başarılar"
+      "title": "Sürdürülebilir Şehir",
+      "description": "Uzun vadeli ve katılımcı şehir planlama süreçlerini destekliyor, dengeli büyümeyi hedefliyoruz."
     },
     {
       "id": "3",
