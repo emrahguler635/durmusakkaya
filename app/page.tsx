@@ -118,7 +118,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {(news ?? []).length > 0 ? (
               (news ?? []).map((item) => (
-                <NewsCard key={item.id} {...item} createdAt={item.createdAt} imageUrl={item.imageUrl ?? undefined} />
+                <NewsCard key={item.id} {...item} createdAt={item.createdAt} imageUrl={item.imageUrl ?? undefined} images={item.images} />
               ))
             ) : (
               <p className="text-gray-500 col-span-3 text-center py-8">Henüz haber bulunmamaktadır.</p>
