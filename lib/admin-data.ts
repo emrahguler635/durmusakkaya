@@ -112,12 +112,11 @@ export const adminNewsData: any = [
   },
   {
     "title": "Cumhurbaşkanımızın Ziyareti",
-    "summary": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah.",
-    "content": "Cumhurbaşkanımızın desteği ile Bağcılar Belediyesi güzel çalışmalara imza atacak İnşallah. Öncelikli gündemimiz Kentsel Dönüşüm…",
+    "summary": "Cumhurbaşkanımızın güçlü destekleriyle Bağcılar Belediyesi, ilçede önemli çalışmalara imza atmaya hazırlanıyor. Bağcılar’ın geleceğini güvenli, modern ve yaşanabilir bir kent kimliğiyle buluşturmayı hedefleyen belediye yönetimi, öncelikli gündemini kentsel dönüşüm olarak belirledi.",
+    "content": "Cumhurbaşkanımızın güçlü destekleriyle Bağcılar Belediyesi, ilçede önemli çalışmalara imza atmaya hazırlanıyor. Bağcılar’ın geleceğini güvenli, modern ve yaşanabilir bir kent kimliğiyle buluşturmayı hedefleyen belediye yönetimi, öncelikli gündemini kentsel dönüşüm olarak belirledi.\n\nİlçede riskli yapı stokunun yenilenmesi, afetlere dayanıklı konut ve yaşam alanlarının oluşturulması, sosyal donatı alanlarının artırılması ve altyapı çalışmalarının güçlendirilmesi doğrultusunda kapsamlı projelerin hayata geçirileceği ifade edildi.\n\nBağcılar Belediyesi tarafından yapılan açıklamada, “Cumhurbaşkanımızın desteği ile Bağcılar’da çok güzel çalışmalara imza atacağız inşallah. Öncelikli gündemimiz kentsel dönüşüm. Bu ekip bu işi yapar.” denilerek, sürecin kararlılıkla sürdürüleceği ve ilçe halkının desteğiyle Bağcılar’ın örnek bir dönüşüm modeli ortaya koyacağı vurgulandı.",
     "imageUrl": "/images/news/news-1766348502661-hbobwjt.jpg",
     "images": [
-      "/images/news/news-1766348502661-hbobwjt.jpg",
-      "/images/news/news-1766355822512-43krin1.jpg"
+      "/images/news/news-1766348502661-hbobwjt.jpg"
     ],
     "published": true,
     "id": "1766348531894",
