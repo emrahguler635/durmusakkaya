@@ -182,14 +182,14 @@ export default function NewsDetailClient({ slug }: { slug: string }) {
           {galleryImages.length > 0 && (
             <div className="mt-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Galeri</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="flex flex-wrap gap-4 overflow-x-auto pb-2">
                 {galleryImages.map((imgUrl: string, index: number) => {
                   // Find original index in news.images array for lightbox
                   const originalIndex = news.images.indexOf(imgUrl);
                   return (
                     <div 
                       key={index} 
-                      className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer"
+                      className="relative w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] lg:w-[calc(25%-0.75rem)] aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer flex-shrink-0"
                       onClick={() => {
                         setLightboxIndex(originalIndex);
                         setLightboxOpen(true);
