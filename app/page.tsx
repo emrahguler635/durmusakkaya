@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
@@ -39,9 +40,50 @@ const staticHomeData = {
 export default function HomePage() {
   // Use admin data only - no static fallback
   const homeData = (adminHomeData && Object.keys(adminHomeData).length > 0) ? adminHomeData : staticHomeData;
-  const allNews = (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) ? adminNewsData : [];
-  const news = allNews.slice(0, 3);
-  const totalNewsCount = allNews.length;
+  const [news, setNews] = useState<any[]>([]);
+  const [totalNewsCount, setTotalNewsCount] = useState(0);
+  
+  useEffect(() => {
+    // Get news from adminNewsData or localStorage
+    let allNews: any[] = [];
+    
+    if (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) {
+      allNews = adminNewsData;
+    }
+    
+    // Also check localStorage for latest data
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const savedNews = localStorage.getItem("admin_news");
+        if (savedNews) {
+          const parsedNews = JSON.parse(savedNews);
+          if (parsedNews && Array.isArray(parsedNews) && parsedNews.length > 0) {
+            // Merge with existing news, prioritizing localStorage data
+            const newsMap = new Map();
+            allNews.forEach(n => newsMap.set(n.slug || n.id, n));
+            parsedNews.forEach((n: any) => {
+              if (n.slug || n.id) {
+                newsMap.set(n.slug || n.id, n);
+              }
+            });
+            allNews = Array.from(newsMap.values());
+          }
+        }
+      } catch (e) {
+        // Silently fail
+      }
+    }
+    
+    // Sort news by createdAt date (newest first)
+    const sortedNews = [...allNews].sort((a: any, b: any) => {
+      const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+      const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+      return dateB - dateA; // Descending order (newest first)
+    });
+    
+    setNews(sortedNews.slice(0, 3));
+    setTotalNewsCount(sortedNews.length);
+  }, []);
 
   const highlightIcons = [Briefcase, Award, Mail];
   const highlightColors = [
