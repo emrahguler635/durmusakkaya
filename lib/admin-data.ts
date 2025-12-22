@@ -4,7 +4,7 @@
 
 export const adminHomeData: any = {
   "hero": {
-    "welcomeText": "Hoş Geldiniz...",
+    "welcomeText": "\"İnsan Odaklı, Sürdürülebilir Şehirler\"",
     "title": "Dr. Durmuş AKKAYA",
     "subtitle": "Başak A.Ş. Yönetim Kurulu Başkanı",
     "description": "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
