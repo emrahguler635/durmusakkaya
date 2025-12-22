@@ -4,7 +4,7 @@
 
 export const adminHomeData: any = {
   "hero": {
-    "welcomeText": "Hoş Geldiniz...",
+    "welcomeText": "\"İnsan Odaklı, Sürdürülebilir Şehirler\"",
     "title": "Dr. Durmuş AKKAYA",
     "subtitle": "Başak A.Ş. Yönetim Kurulu Başkanı",
     "description": "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
@@ -12,18 +12,18 @@ export const adminHomeData: any = {
   "highlights": [
     {
       "id": "1",
-      "title": "Liderlik",
-      "description": "Yılların yöneticilik deneyimi ve stratejik vizyon"
+      "title": "Çevre Koruma",
+      "description": "Enerji verimliliği, atık yönetimi ve yeşil alanların korunması önceliğimizdir."
     },
     {
       "id": "2",
-      "title": "Başarı",
-      "description": "Sürdürülebilir büyüme ve kurumsal başarılar"
+      "title": "Sürdürülebilir Şehir",
+      "description": "Uzun vadeli ve katılımcı şehir planlama süreçlerini destekliyor, dengeli büyümeyi hedefliyoruz."
     },
     {
       "id": "3",
-      "title": "İletişim",
-      "description": "Açık iletişim ve iş birliği odaklı yaklaşım"
+      "title": "Teknoloji ve İnovasyon",
+      "description": "Yenilikçi teknolojileri kullanarak verimliliği ve hizmet kalitesini artırıyoruz."
     }
   ],
   "newsSection": {
