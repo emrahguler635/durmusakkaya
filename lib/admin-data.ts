@@ -4,7 +4,7 @@
 
 export const adminHomeData: any = {
   "hero": {
-    "welcomeText": "\"İnsan Odaklı, Sürdürülebilir Şehirler\"",
+    "welcomeText": "Hoş Geldiniz",
     "title": "Dr. Durmuş AKKAYA",
     "subtitle": "Başak A.Ş. Yönetim Kurulu Başkanı",
     "description": "Yılların deneyimi ve vizyoner liderlik anlayışıyla kurumsal başarıyı hedefleyen bir yönetici."
@@ -12,18 +12,18 @@ export const adminHomeData: any = {
   "highlights": [
     {
       "id": "1",
-      "title": "Çevre Koruma",
-      "description": "Enerji verimliliği, atık yönetimi ve yeşil alanların korunması önceliğimizdir."
+      "title": "Liderlik",
+      "description": "Yılların yöneticilik deneyimi ve stratejik vizyon"
     },
     {
       "id": "2",
-      "title": "Sürdürülebilir Şehir",
-      "description": "Uzun vadeli ve katılımcı şehir planlama süreçlerini destekliyor, dengeli büyümeyi hedefliyoruz."
+      "title": "Başarı",
+      "description": "Sürdürülebilir büyüme ve kurumsal başarılar"
     },
     {
       "id": "3",
-      "title": "Teknoloji ve İnovasyon",
-      "description": "Yenilikçi teknolojileri kullanarak verimliliği ve hizmet kalitesini artırıyoruz."
+      "title": "İletişim",
+      "description": "Açık iletişim ve iş birliği odaklı yaklaşım"
     }
   ],
   "newsSection": {
@@ -49,24 +49,71 @@ export const adminAboutData: any = {
   "career": [
     {
       "id": "1",
-      "title": "Genel Müdür",
-      "company": "Başak A.Ş.",
+      "title": "Öğretim Üyesi",
+      "company": "İstanbul Arel Üniversitesi ",
       "period": "2018 - Günümüz",
-      "description": "Şirketin genel yönetimi, stratejik planlama ve büyüme hedeflerinin belirlenmesi"
+      "employmentType": "Dönemsel",
+      "startDate": "2024",
+      "endDate": "-",
+      "duration": "1 Yıl 5 Ay"
     },
     {
       "id": "2",
-      "title": "Genel Müdür Yardımcısı",
-      "company": "Başak A.Ş.",
+      "title": "Yönetim Kurulu Başkanı",
+      "company": "Başak Kentsel Dönüşüm A.Ş.",
       "period": "2014 - 2018",
-      "description": "Operasyonel süreçlerin yönetimi ve iyileştirilmesi"
+      "employmentType": "Tam zamanlı",
+      "startDate": "2023",
+      "endDate": "-",
+      "duration": "2 Yıl 9 Ay "
     },
     {
       "id": "3",
-      "title": "Bölüm Müdürü",
-      "company": "Başak A.Ş.",
+      "title": "Belediye Başkan Yardımcılığı",
+      "company": "Uşak Belediyesi",
       "period": "2010 - 2014",
-      "description": "Satış ve pazarlama bölümünün yönetimi"
+      "employmentType": "Tam zamanlı",
+      "startDate": "2020",
+      "endDate": "2023",
+      "duration": "2 Yıl 11 Ay"
+    },
+    {
+      "id": "1767294256833",
+      "title": "",
+      "company": "",
+      "employmentType": "Tam zamanlı",
+      "startDate": "",
+      "endDate": "",
+      "duration": ""
+    },
+    {
+      "id": "1767294363829",
+      "title": "Dr. Öğretim Görevlisi",
+      "company": "Uşak Üniversitesi",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2015",
+      "endDate": "2022",
+      "duration": "7 Yıl 3 Ay",
+      "description": "İstanbul Aydın Üniversitesi, Fen Bilimleri Enstitüsü, İnşaat Mühendisliği Anabilim Dalında, Yapım ve Proje yönetimi Tezsiz Yüksek Lisans programında yarı zamanlı öğretim görevlisi olarak ders vermekteyim."
+    },
+    {
+      "id": "1767294391082",
+      "title": "",
+      "company": "",
+      "employmentType": "Tam zamanlı",
+      "startDate": "",
+      "endDate": "",
+      "duration": ""
+    },
+    {
+      "id": "1767294456697",
+      "title": "Mühendis",
+      "company": "İstanbul Büyükşehir Belediyesi",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2015",
+      "endDate": "2022",
+      "duration": "7 Yıl 3 Ay",
+      "description": "İstanbul Büyükşehir Belediyesi Bünyesinde Kentsel dönüşüm müdürlüğü ve İŞAT (İstanbul Şehircilik Atölyesi) Müdürlüğü bünyelerinde proje yönetimi, planlama, projelendirme, yapım, tespit ve deprem konularında çalışmaktayım.\nÖzel olarak da BIM ( Building Information Modelling) ve İş sağlığı ve Güvenliği konularında çalışmalarım bulunmaktadır."
     }
   ],
   "education": [
@@ -90,67 +137,51 @@ export const adminContactData: any = {
     "subtitle": "Benimle iletişime geçin"
   },
   "contactInfo": {
-    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye ",
-    "phone": "+90 (537) 486 34 64 ",
-    "email": "admin@durmusakkaya.com",
+    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye",
+    "phone": "+90 (212) 000 00 00",
+    "email": "info@basak.com.tr",
     "workingHours": "Pazartesi - Cuma: 09:00 - 18:00"
   }
 };
 export const adminNewsData: any = [
   {
-    "title": "Uşak Üniversitesi Rektörü Prof. Dr. Ahmet Demir’e Ziyaret",
-    "summary": "Uşak Üniversitesi Rektörlüğü görevine atanan Prof. Dr. Ahmet Demir’e hayırlı olsun ziyaretinde bulunduk. Yeni görevinde kendisini tebrik ederek muvaffakiyetler dilediğimiz ziyarette, Prof. Dr. Demir’in göstermiş olduğu samimi ve sıcakkanlı misafirperverlikten büyük memnuniyet duyduk.",
-    "content": "Uşak Üniversitesi Rektörlüğü görevine atanan Prof. Dr. Ahmet Demir’e hayırlı olsun ziyaretinde bulunduk. Yeni görevinde kendisini tebrik ederek muvaffakiyetler dilediğimiz ziyarette, Prof. Dr. Demir’in göstermiş olduğu samimi ve sıcakkanlı misafirperverlikten büyük memnuniyet duyduk.\n\nZiyaret kapsamında, Uşak Üniversitesi’nin gelecek döneme ilişkin hedefleri ve yürütülmesi planlanan akademik çalışmalar hakkında da istişarelerde bulunuldu. Misafirperverliği ve nazik ev sahipliği için Uşak Üniversitesi Rektörü Prof. Dr. Ahmet Demir’e teşekkür ediyor, yeni görevinde başarılarının devamını diliyoruz.",
-    "imageUrl": "/images/news/news-1766418935119-30og3os.jpg",
+    "id": "1",
+    "title": "Yılın CEO'su Ödülü",
+    "summary": "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi.",
+    "content": "Dr. Durmuş AKKAYA, yılın en başarılı CEO'su seçildi. Bu ödül, yıl boyunca gösterdiği üstün liderlik ve başarılı yönetim anlayışının bir göstergesidir.",
+    "slug": "yilin-ceo-odu",
     "published": true,
-    "id": "1766310872714",
-    "slug": "aaaaa-aaaaaa",
-    "createdAt": "2025-12-21T09:54:32.714Z",
-    "images": [
-      "/images/news/news-1766418935119-30og3os.jpg"
-    ]
+    "imageUrl": "/haber1.jpg",
+    "createdAt": "2024-11-15T00:00:00.000Z"
   },
   {
-    "title": "Cumhurbaşkanımızın Ziyareti",
-    "summary": "Cumhurbaşkanımızın güçlü destekleriyle Bağcılar Belediyesi, ilçede önemli çalışmalara imza atmaya hazırlanıyor. Bağcılar’ın geleceğini güvenli, modern ve yaşanabilir bir kent kimliğiyle buluşturmayı hedefleyen belediye yönetimi, öncelikli gündemini kentsel dönüşüm olarak belirledi.",
-    "content": "Cumhurbaşkanımızın güçlü destekleriyle Bağcılar Belediyesi, ilçede önemli çalışmalara imza atmaya hazırlanıyor. Bağcılar’ın geleceğini güvenli, modern ve yaşanabilir bir kent kimliğiyle buluşturmayı hedefleyen belediye yönetimi, öncelikli gündemini kentsel dönüşüm olarak belirledi.\n\nİlçede riskli yapı stokunun yenilenmesi, afetlere dayanıklı konut ve yaşam alanlarının oluşturulması, sosyal donatı alanlarının artırılması ve altyapı çalışmalarının güçlendirilmesi doğrultusunda kapsamlı projelerin hayata geçirileceği ifade edildi.\n\nBağcılar Belediyesi tarafından yapılan açıklamada, “Cumhurbaşkanımızın desteği ile Bağcılar’da çok güzel çalışmalara imza atacağız inşallah. Öncelikli gündemimiz kentsel dönüşüm. Bu ekip bu işi yapar.” denilerek, sürecin kararlılıkla sürdürüleceği ve ilçe halkının desteğiyle Bağcılar’ın örnek bir dönüşüm modeli ortaya koyacağı vurgulandı.",
-    "imageUrl": "/images/news/news-1766348502661-hbobwjt.jpg",
-    "images": [
-      "/images/news/news-1766348502661-hbobwjt.jpg"
-    ],
+    "id": "2",
+    "title": "Yeni Stratejik Ortaklık",
+    "summary": "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı.",
+    "content": "Başak A.Ş. yeni stratejik ortaklık anlaşması imzaladı. Bu ortaklık, şirketin gelecek hedeflerine ulaşmasında önemli bir adım olacaktır.",
+    "slug": "yeni-stratejik-ortaklik",
     "published": true,
-    "id": "1766348531894",
-    "slug": "cumhurbaskanmzn-ziyareti",
-    "createdAt": "2025-12-21T20:22:11.894Z"
+    "imageUrl": "/haber2.jpg",
+    "createdAt": "2024-10-03T00:00:00.000Z"
   },
   {
-    "title": "İstanbul Uşaklılar Vakfı’ndan Vali Dr. Naci Aktaş’a Davet Ziyareti",
-    "summary": "İstanbul Uşaklılar Eğitim ve Kültür Vakfı heyeti, Uşak Valisi Sayın Dr. Naci Aktaş’ı makamında ziyaret ederek vakfın geleneksel hale gelen kahvaltı programına davet etti. Uşaklıların birlik ve beraberliğini pekiştirmeyi amaçlayan etkinlik hakkında Sayın Vali’ye bilgi sunulan ziyarette, vakfın yürüttüğü eğitim ve kültür faaliyetleri de ele alındı.",
-    "content": "İstanbul Uşaklılar Eğitim ve Kültür Vakfı heyeti, Uşak Valisi Sayın Dr. Naci Aktaş’ı makamında ziyaret ederek vakfın geleneksel hale gelen kahvaltı programına davet etti. Uşaklıların birlik ve beraberliğini pekiştirmeyi amaçlayan etkinlik hakkında Sayın Vali’ye bilgi sunulan ziyarette, vakfın yürüttüğü eğitim ve kültür faaliyetleri de ele alındı.\n\nZiyaret sırasında gerçekleşen sıcak ve samimi sohbetten dolayı memnuniyetlerini dile getiren vakıf temsilcileri, nazik kabulleri ve yakın ilgisi için Vali Dr. Naci Aktaş’a teşekkürlerini sundu. Programın, İstanbul’daki Uşaklılar ile memleket bağlarını güçlendirmek adına önemli bir buluşma noktası olacağı vurgulandı.",
-    "imageUrl": "/images/news/news-1766419250388-ehj9476.jpg",
-    "images": [
-      "/images/news/news-1766419250388-ehj9476.jpg"
-    ],
+    "id": "3",
+    "title": "Sürdürülebilirlik Zirvesi",
+    "summary": "Sürdürülebilirlik konulu önemli bir zirve düzenlendi.",
+    "content": "Sürdürülebilirlik konulu önemli bir zirve düzenlendi. Bu zirvede, çevre dostu uygulamalar ve sürdürülebilir kalkınma konuları ele alındı.",
+    "slug": "surdurulebilirlik-zirvesi",
     "published": true,
-    "id": "1766356601373",
-    "slug": "test",
-    "createdAt": "2025-12-21T22:36:41.373Z"
+    "imageUrl": "/haber3.jpg",
+    "createdAt": "2024-09-22T00:00:00.000Z"
   },
   {
-    "title": "KentFest’te Kentsel Dönüşüm ve Dirençli Şehirler Vizyonunu Anlattı",
-    "summary": "Kentsel Dönüşüm ve Şehircilik Vakfı olarak, doğru planlama ile daha dayanıklı ve yaşanabilir şehirler oluşturma hedefiyle düzenlenen #KentFest organizasyonuna katılarak, kentsel dönüşüm odaklı planlama ve uygulama çalışmalarımızı anlattık. Etkinlikte, kentsel dönüşümün yalnızca fiziki yenilemeden ibaret olmadığı, aynı zamanda sosyal, ekonomik ve çevresel boyutlarıyla ele alınması gereken bütüncül bir süreç olduğu vurgulandı.\n",
-    "content": "Kentsel Dönüşüm ve Şehircilik Vakfı olarak, doğru planlama ile daha dayanıklı ve yaşanabilir şehirler oluşturma hedefiyle düzenlenen #KentFest organizasyonuna katılarak, kentsel dönüşüm odaklı planlama ve uygulama çalışmalarımızı anlattık. Etkinlikte, kentsel dönüşümün yalnızca fiziki yenilemeden ibaret olmadığı, aynı zamanda sosyal, ekonomik ve çevresel boyutlarıyla ele alınması gereken bütüncül bir süreç olduğu vurgulandı.\n\nKentsev olarak; riskli yapıların yenilenmesi, afetlere dirençli kent dokusunun oluşturulması, yaşam kalitesini artıran sosyal donatı alanları, yeşil alanlar ve sürdürülebilir ulaşım çözümleri gibi başlıklarda yürüttüğümüz proje ve çalışmalar katılımcılarla paylaşıldı.\n\nProgram kapsamında ayrıca, yerel yönetimler, sivil toplum kuruluşları, akademi dünyası ve şehir plancılarıyla iş birliğinin önemine dikkat çekilerek, ortak akıl ve bilim temelli yaklaşımlarla şehirlerin geleceğini inşa etmenin Kentsev’in temel öncelikleri arasında olduğu ifade edildi.\n\nBir şehrin her yönüyle doğru ve planlı yönetiminin vazgeçilmez olduğunun altını çizen Kentsev – Kentsel Dönüşüm ve Şehircilik Vakfı, daha güvenli, dirençli, kapsayıcı ve sürdürülebilir şehirler için çalışmalarını kararlılıkla sürdüreceğini kamuoyu ile paylaştı.",
-    "imageUrl": "/images/news/news-1766430063225-zt47arg.jpg",
-    "images": [
-      "/images/news/news-1766429968175-p5l6iaj.jpg",
-      "/images/news/news-1766429979337-cwfy9y2.jpg",
-      "/images/news/news-1766430000369-enxsej5.jpg",
-      "/images/news/news-1766430063225-zt47arg.jpg",
-      "/images/news/news-1766430081124-gvjp97f.jpg"
-    ],
+    "id": "4",
+    "title": "Dijital Dönüşüm Projesi",
+    "summary": "Başak A.Ş. kapsamlı dijital dönüşüm projesini başlattı.",
+    "content": "Başak A.Ş. kapsamlı dijital dönüşüm projesini başlattı. Bu proje ile şirket, teknolojik altyapısını güçlendirerek operasyonel verimliliği artırmayı hedefliyor.",
+    "slug": "dijital-donusum-projesi",
     "published": true,
-    "id": "1766430151083",
-    "slug": "kentfestte-kentsel-donusum-ve-direncli-sehirler-vizyonunu-anlatt",
-    "createdAt": "2025-12-22T19:02:31.083Z"
+    "imageUrl": "/haber4.jpg",
+    "createdAt": "2024-08-15T00:00:00.000Z"
   }
 ];
