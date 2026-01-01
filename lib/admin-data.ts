@@ -160,7 +160,8 @@ export const adminNewsData: any = [
     "imageUrl": "/images/news/news-1767299181476-ezne6xw.jpg",
     "images": [
       "/images/news/news-1767299181476-ezne6xw.jpg",
-      "/images/news/news-1767299195361-6sx3nij.jpg"
+      "/images/news/news-1767299195361-6sx3nij.jpg",
+      "/images/news/news-1767299819137-hwm6he4.jpg"
     ],
     "published": true,
     "id": "1767298707575",
