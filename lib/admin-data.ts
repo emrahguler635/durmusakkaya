@@ -78,15 +78,6 @@ export const adminAboutData: any = {
       "duration": "2 Yıl 11 Ay"
     },
     {
-      "id": "1767294256833",
-      "title": "",
-      "company": "",
-      "employmentType": "Tam zamanlı",
-      "startDate": "",
-      "endDate": "",
-      "duration": ""
-    },
-    {
       "id": "1767294363829",
       "title": "Dr. Öğretim Görevlisi",
       "company": "Uşak Üniversitesi",
@@ -95,15 +86,6 @@ export const adminAboutData: any = {
       "endDate": "2022",
       "duration": "7 Yıl 3 Ay",
       "description": "İstanbul Aydın Üniversitesi, Fen Bilimleri Enstitüsü, İnşaat Mühendisliği Anabilim Dalında, Yapım ve Proje yönetimi Tezsiz Yüksek Lisans programında yarı zamanlı öğretim görevlisi olarak ders vermekteyim."
-    },
-    {
-      "id": "1767294391082",
-      "title": "",
-      "company": "",
-      "employmentType": "Tam zamanlı",
-      "startDate": "",
-      "endDate": "",
-      "duration": ""
     },
     {
       "id": "1767294456697",
