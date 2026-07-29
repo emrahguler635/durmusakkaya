@@ -1,6 +1,7 @@
 "use client";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
 import ContactForm from "./_components/contact-form";
+import SocialFeeds from "@/components/social-feeds";
 import { adminContactData } from "@/lib/admin-data";
 
 // Static contact page data (fallback)
@@ -81,6 +82,8 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      <SocialFeeds />
     </div>
   );
 }
