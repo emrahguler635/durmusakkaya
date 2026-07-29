@@ -28,6 +28,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if(window.top!==window.self){try{window.top.location.replace(window.location.href);}catch(e){}}`,
+          }}
+        />
         <script src="https://apps.abacus.ai/chatllm/appllm-lib.js" />
       </head>
       <body className={`${inter.className} bg-gray-50`} suppressHydrationWarning>

@@ -138,13 +138,6 @@ export default function SocialFeeds() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 mb-4">
-                <div className="text-sm font-semibold text-gray-900 mb-1">X Hesabını Aç</div>
-                <div className="text-sm text-gray-600">
-                  Güncel paylasimlari dogrudan hesap uzerinden inceleyebilirsiniz.
-                </div>
-              </div>
-
               <div className="mt-auto space-y-3">
                 <a
                   href={X_URL}
