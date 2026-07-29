@@ -29,6 +29,10 @@ export const adminHomeData: any = {
   "newsSection": {
     "title": "Son Haberler",
     "description": "Güncel gelişmeler ve duyurular • Toplam {count} haber"
+  },
+  "projectsSection": {
+    "title": "Projeler",
+    "description": "Yürütülen ve tamamlanan projeler • Toplam {count} proje"
   }
 };
 export const adminAboutData: any = {
@@ -169,3 +173,4 @@ export const adminNewsData: any = [
     "createdAt": "2026-01-01T20:18:27.575Z"
   }
 ];
+export const adminProjectsData: any = [];

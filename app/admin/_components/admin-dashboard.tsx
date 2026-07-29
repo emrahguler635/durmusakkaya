@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket, Briefcase } from "lucide-react";
 import { publicImages, getPublicImagePath } from "@/lib/public-images";
 import { getImagePath } from "@/lib/image-path";
 import { 
@@ -10,6 +10,7 @@ import {
   getContactPageData, saveContactPageData, defaultContactPageData,
   type HomePageData, type AboutPageData, type ContactPageData
 } from "@/lib/page-data";
+import { adminProjectsData, adminNewsData } from "@/lib/admin-data";
 
 interface News {
   id: string;
@@ -23,7 +24,19 @@ interface News {
   createdAt: string;
 }
 
-type TabType = "home" | "about" | "news" | "contact" | "messages";
+interface Project {
+  id: string;
+  title: string;
+  summary: string;
+  content: string;
+  imageUrl: string | null;
+  images: string[];
+  slug: string;
+  published: boolean;
+  createdAt: string;
+}
+
+type TabType = "home" | "about" | "news" | "projects" | "contact" | "messages";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -36,6 +49,13 @@ export default function AdminDashboard() {
   const [newsForm, setNewsForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true });
   const [showImageSelector, setShowImageSelector] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  // Projects state
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [showProjectForm, setShowProjectForm] = useState(false);
+  const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
+  const [projectForm, setProjectForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true });
+  const [showProjectImageSelector, setShowProjectImageSelector] = useState(false);
   
   // Home page state
   const [homeData, setHomeData] = useState<HomePageData>(defaultHomePageData);
@@ -73,6 +93,7 @@ export default function AdminDashboard() {
   // Load all data
   useEffect(() => {
     loadNews();
+    loadProjects();
     loadMessages();
     loadHomeData();
     loadAboutData();
@@ -102,16 +123,41 @@ export default function AdminDashboard() {
         const parsedNews = JSON.parse(saved);
         if (parsedNews.length > 0) {
           setNews(parsedNews);
-        } else {
-          // No default news - start with empty array
-          setNews([]);
+          return;
         }
+      }
+      // Fallback to published admin data
+      if (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) {
+        setNews(adminNewsData);
       } else {
-        // No saved data - start with empty array
         setNews([]);
       }
     } catch {
       setNews([]);
+    }
+  };
+
+  const loadProjects = () => {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      setProjects([]);
+      return;
+    }
+    try {
+      const saved = localStorage.getItem("admin_projects");
+      if (saved) {
+        const parsedProjects = JSON.parse(saved);
+        if (parsedProjects.length > 0) {
+          setProjects(parsedProjects);
+          return;
+        }
+      }
+      if (adminProjectsData && Array.isArray(adminProjectsData) && adminProjectsData.length > 0) {
+        setProjects(adminProjectsData);
+      } else {
+        setProjects([]);
+      }
+    } catch {
+      setProjects([]);
     }
   };
 
@@ -281,8 +327,98 @@ export default function AdminDashboard() {
     setShowNewsForm(true);
   };
 
+  // Project handlers
+  const handleProjectSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newSlug = editingProjectId 
+      ? projects.find(p => p.id === editingProjectId)?.slug || createSlug(projectForm.title)
+      : createSlug(projectForm.title);
+    
+    const updatedProjects = editingProjectId
+      ? projects.map(p => p.id === editingProjectId ? { ...p, ...projectForm, slug: newSlug, id: editingProjectId, images: projectForm.images || [] } : p)
+      : [...projects, { ...projectForm, id: Date.now().toString(), slug: newSlug, createdAt: new Date().toISOString(), images: projectForm.images || [] }];
+    
+    setProjects(updatedProjects);
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem("admin_projects", JSON.stringify(updatedProjects));
+      } catch {
+        // Silently fail
+      }
+    }
+    
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      const success = await commitToGitHubAndDeploy("projects");
+      if (!success) {
+        alert("Proje localStorage'a kaydedildi, ancak GitHub'a yüklenemedi.");
+      }
+    }
+    
+    setShowProjectForm(false);
+    setEditingProjectId(null);
+    setProjectForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true });
+  };
+
+  const handleProjectDelete = async (id: string) => {
+    if (confirm("Bu projeyi silmek istediğinizden emin misiniz?")) {
+      const updatedProjects = projects.filter(p => p.id !== id);
+      setProjects(updatedProjects);
+      if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+        try {
+          localStorage.setItem("admin_projects", JSON.stringify(updatedProjects));
+        } catch {
+          // Silently fail
+        }
+      }
+      
+      if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+        const success = await commitToGitHubAndDeploy("projects (delete)");
+        if (!success) {
+          alert("Proje localStorage'dan silindi, ancak GitHub'a yüklenemedi.");
+        }
+      }
+    }
+  };
+
+  const handleProjectEdit = (item: Project) => {
+    setProjectForm({ 
+      title: item.title, 
+      summary: item.summary, 
+      content: item.content, 
+      imageUrl: item.imageUrl || "", 
+      images: item.images || [],
+      published: item.published 
+    });
+    setEditingProjectId(item.id);
+    setShowProjectForm(true);
+  };
+
+  const deleteAllProjects = async () => {
+    if (!confirm("⚠️ TÜM PROJELERİ SİLMEK İSTEDİĞİNİZDEN EMİN MİSİNİZ?\n\nBu işlem geri alınamaz!")) {
+      return;
+    }
+    
+    setProjects([]);
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        localStorage.setItem("admin_projects", JSON.stringify([]));
+      } catch {
+        // Silently fail
+      }
+    }
+    
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      const success = await commitToGitHubAndDeploy("projects (delete all)");
+      if (success) {
+        alert("✅ Tüm projeler silindi ve GitHub'a kaydedildi!");
+      } else {
+        alert("⚠️ Projeler localStorage'dan silindi, ancak GitHub'a yüklenemedi.");
+      }
+    }
+  };
+
   // Resim yükleme fonksiyonu (GitHub'a base64 olarak kaydet)
-  const uploadImageToGitHub = async (file: File): Promise<string | null> => {
+  const uploadImageToGitHub = async (file: File, folder: "news" | "projects" = "news"): Promise<string | null> => {
     if (typeof window === 'undefined' || typeof fetch === 'undefined' || typeof btoa === 'undefined') {
       return null;
     }
@@ -314,13 +450,13 @@ export default function AdminDashboard() {
       const timestamp = Date.now();
       const random = Math.random().toString(36).substring(2, 9);
       const extension = file.name.split('.').pop() || 'jpg';
-      const fileName = `news-${timestamp}-${random}.${extension}`;
-      const imagePath = `public/images/news/${fileName}`;
-      const publicUrl = `/images/news/${fileName}`;
+      const fileName = `${folder === "projects" ? "project" : "news"}-${timestamp}-${random}.${extension}`;
+      const imagePath = `public/images/${folder}/${fileName}`;
+      const publicUrl = `/images/${folder}/${fileName}`;
 
       // GitHub API: Create file
       const repo = "emrahguler635/durmusakkaya";
-      const message = `Add news image: ${fileName}`;
+      const message = `Add ${folder === "projects" ? "project" : "news"} image: ${fileName}`;
 
       const response = await fetch(`https://api.github.com/repos/${repo}/contents/${imagePath}`, {
         method: 'PUT',
@@ -369,18 +505,46 @@ export default function AdminDashboard() {
       return;
     }
 
-    const uploadedUrl = await uploadImageToGitHub(file);
+    const uploadedUrl = await uploadImageToGitHub(file, "news");
     if (uploadedUrl) {
       // Ana görsel yoksa, yüklenen resmi ana görsel yap
       if (!newsForm.imageUrl) {
-        setNewsForm({ ...newsForm, imageUrl: uploadedUrl });
+        setNewsForm({ ...newsForm, imageUrl: uploadedUrl, images: [...newsForm.images, uploadedUrl] });
+      } else {
+        setNewsForm({ ...newsForm, images: [...newsForm.images, uploadedUrl] });
       }
-      // Görseller listesine ekle
-      setNewsForm({ ...newsForm, images: [...newsForm.images, uploadedUrl] });
       alert("✅ Resim başarıyla yüklendi! Deploy işlemi otomatik başlatıldı.");
     }
 
     // Input'u temizle
+    e.target.value = '';
+  };
+
+  // Proje resim yükleme handler
+  const handleProjectImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Resim boyutu 5MB'dan küçük olmalıdır.");
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert("Lütfen bir resim dosyası seçin.");
+      return;
+    }
+
+    const uploadedUrl = await uploadImageToGitHub(file, "projects");
+    if (uploadedUrl) {
+      if (!projectForm.imageUrl) {
+        setProjectForm({ ...projectForm, imageUrl: uploadedUrl, images: [...projectForm.images, uploadedUrl] });
+      } else {
+        setProjectForm({ ...projectForm, images: [...projectForm.images, uploadedUrl] });
+      }
+      alert("✅ Resim başarıyla yüklendi!");
+    }
+
     e.target.value = '';
   };
 
@@ -409,11 +573,16 @@ export default function AdminDashboard() {
       const aboutDataToSave = getAboutPageData();
       const contactDataToSave = getContactPageData();
       let newsToSave: News[] = [];
+      let projectsToSave: Project[] = [];
       if (typeof localStorage !== 'undefined') {
         try {
           const savedNews = localStorage.getItem("admin_news");
           if (savedNews) {
             newsToSave = JSON.parse(savedNews);
+          }
+          const savedProjects = localStorage.getItem("admin_projects");
+          if (savedProjects) {
+            projectsToSave = JSON.parse(savedProjects);
           }
         } catch (e) {
           // Silently fail
@@ -434,6 +603,7 @@ export const adminHomeData: any = ${safeStringify(homeDataToSave)};
 export const adminAboutData: any = ${safeStringify(aboutDataToSave)};
 export const adminContactData: any = ${safeStringify(contactDataToSave)};
 export const adminNewsData: any = ${safeStringify(newsToSave)};
+export const adminProjectsData: any = ${safeStringify(projectsToSave)};
 `;
 
       // GitHub API: Create or update file
@@ -838,6 +1008,9 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
           <button onClick={() => setTab("news")} className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${tab === "news" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
             <Newspaper size={18} /> Haberler
           </button>
+          <button onClick={() => setTab("projects")} className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${tab === "projects" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
+            <Briefcase size={18} /> Projeler
+          </button>
           <button onClick={() => setTab("contact")} className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${tab === "contact" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
             <Phone size={18} /> İletişim
           </button>
@@ -985,6 +1158,32 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                     onChange={(e) => setHomeData({ ...homeData, newsSection: { ...homeData.newsSection, description: e.target.value } })}
                     className="w-full px-4 py-3 border rounded-lg"
                     placeholder="Güncel gelişmeler ve duyurular • Toplam {count} haber"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Projects Section */}
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              <h3 className="text-lg font-semibold mb-4">Projeler Bölümü</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Başlık</label>
+                  <input 
+                    type="text" 
+                    value={homeData.projectsSection?.title || "Projeler"}
+                    onChange={(e) => setHomeData({ ...homeData, projectsSection: { ...homeData.projectsSection, title: e.target.value, description: homeData.projectsSection?.description || "" } })}
+                    className="w-full px-4 py-3 border rounded-lg"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Açıklama</label>
+                  <input 
+                    type="text" 
+                    value={homeData.projectsSection?.description || ""}
+                    onChange={(e) => setHomeData({ ...homeData, projectsSection: { ...homeData.projectsSection, title: homeData.projectsSection?.title || "Projeler", description: e.target.value } })}
+                    className="w-full px-4 py-3 border rounded-lg"
+                    placeholder="Yürütülen ve tamamlanan projeler • Toplam {count} proje"
                   />
                 </div>
               </div>
@@ -1491,6 +1690,252 @@ export const adminNewsData: any = ${safeStringify(newsToSave)};
                 </table>
               ) : (
                 <p className="text-gray-500 text-center py-8">Henüz haber eklenmemiş.</p>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Projects Tab */}
+        {tab === "projects" && (
+          <>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Projeler Yönetimi</h2>
+              <div className="flex gap-2">
+                <button onClick={deleteAllProjects} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                  🗑️ Tüm Projeleri Sil
+                </button>
+                <button onClick={() => { setShowProjectForm(true); setEditingProjectId(null); setProjectForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                  <Plus size={18} /> Yeni Proje Ekle
+                </button>
+              </div>
+            </div>
+
+            {showProjectForm && (
+              <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 className="text-lg font-semibold mb-4">{editingProjectId ? "Proje Düzenle" : "Yeni Proje Ekle"}</h3>
+                <form onSubmit={handleProjectSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Başlık</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={projectForm.title}
+                      onChange={(e) => setProjectForm({ ...projectForm, title: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Özet</label>
+                    <textarea 
+                      rows={2}
+                      required
+                      value={projectForm.summary}
+                      onChange={(e) => setProjectForm({ ...projectForm, summary: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">İçerik</label>
+                    <textarea 
+                      rows={6}
+                      required
+                      value={projectForm.content}
+                      onChange={(e) => setProjectForm({ ...projectForm, content: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Ana Görsel (URL)</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        value={projectForm.imageUrl}
+                        onChange={(e) => setProjectForm({ ...projectForm, imageUrl: e.target.value })}
+                        className="flex-1 px-4 py-3 border rounded-lg"
+                        placeholder="/proje1.jpg"
+                      />
+                      <button type="button" onClick={() => setShowProjectImageSelector(!showProjectImageSelector)} className="px-4 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg">
+                        <ImageIcon size={18} />
+                      </button>
+                    </div>
+                    {showProjectImageSelector && (
+                      <div className="mt-2 p-4 bg-gray-50 rounded-lg grid grid-cols-2 gap-2">
+                        {publicImages.map((img) => (
+                          <button
+                            key={img.url}
+                            type="button"
+                            onClick={() => { setProjectForm({ ...projectForm, imageUrl: img.url }); setShowProjectImageSelector(false); }}
+                            className="p-2 text-left hover:bg-blue-50 rounded"
+                          >
+                            {img.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Görseller (Birden Fazla)</label>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <label className="flex-1 cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleProjectImageUpload}
+                            disabled={uploadingImage}
+                            className="hidden"
+                            id="project-image-upload"
+                          />
+                          <div className="px-4 py-3 border-2 border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-center">
+                            {uploadingImage ? (
+                              <span className="text-blue-600">⏳ Yükleniyor...</span>
+                            ) : (
+                              <span className="text-blue-600 flex items-center justify-center gap-2">
+                                <ImageIcon size={18} /> Yeni Resim Yükle (Max 5MB)
+                              </span>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      
+                      {projectForm.images && projectForm.images.length > 0 && (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {projectForm.images.map((imgUrl, index) => (
+                            <div key={index} className="relative group">
+                              <img 
+                                src={getImagePath(imgUrl)} 
+                                alt={`Görsel ${index + 1}`}
+                                className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newImages = projectForm.images.filter((_, i) => i !== index);
+                                  if (projectForm.imageUrl === imgUrl && newImages.length > 0) {
+                                    setProjectForm({ ...projectForm, images: newImages, imageUrl: newImages[0] });
+                                  } else if (projectForm.imageUrl === imgUrl) {
+                                    setProjectForm({ ...projectForm, images: newImages, imageUrl: "" });
+                                  } else {
+                                    setProjectForm({ ...projectForm, images: newImages });
+                                  }
+                                }}
+                                className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                              {projectForm.imageUrl === imgUrl && (
+                                <div className="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                                  Ana
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => setProjectForm({ ...projectForm, imageUrl: imgUrl })}
+                                className="absolute bottom-1 right-1 bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                Ana Yap
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          placeholder="Görsel URL'si ekle..."
+                          className="flex-1 px-4 py-2 border rounded-lg"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              const url = (e.target as HTMLInputElement).value.trim();
+                              if (url && !projectForm.images.includes(url)) {
+                                if (!projectForm.imageUrl) {
+                                  setProjectForm({ ...projectForm, images: [...projectForm.images, url], imageUrl: url });
+                                } else {
+                                  setProjectForm({ ...projectForm, images: [...projectForm.images, url] });
+                                }
+                                (e.target as HTMLInputElement).value = '';
+                              }
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            const input = e.currentTarget.previousElementSibling as HTMLInputElement;
+                            const url = input.value.trim();
+                            if (url && !projectForm.images.includes(url)) {
+                              if (!projectForm.imageUrl) {
+                                setProjectForm({ ...projectForm, images: [...projectForm.images, url], imageUrl: url });
+                              } else {
+                                setProjectForm({ ...projectForm, images: [...projectForm.images, url] });
+                              }
+                              input.value = '';
+                            }
+                          }}
+                          className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+                        >
+                          Ekle
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="checkbox" 
+                      checked={projectForm.published}
+                      onChange={(e) => setProjectForm({ ...projectForm, published: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <label className="text-sm font-medium text-gray-700">Yayınla</label>
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                      {editingProjectId ? "Güncelle" : "Ekle"}
+                    </button>
+                    <button type="button" onClick={() => { setShowProjectForm(false); setEditingProjectId(null); }} className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded-lg">
+                      İptal
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              {projects.length > 0 ? (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4">Başlık</th>
+                      <th className="text-left py-3 px-4">Durum</th>
+                      <th className="text-right py-3 px-4">İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.map((item) => (
+                      <tr key={item.id} className="border-b">
+                        <td className="py-3 px-4">{item.title}</td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-1 rounded text-sm ${item.published ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                            {item.published ? "Yayında" : "Taslak"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <button onClick={() => handleProjectEdit(item)} className="p-2 hover:bg-blue-50 rounded mr-2">
+                            <Edit2 size={16} className="text-blue-600" />
+                          </button>
+                          <button onClick={() => handleProjectDelete(item.id)} className="p-2 hover:bg-red-50 rounded">
+                            <Trash2 size={16} className="text-red-600" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-gray-500 text-center py-8">Henüz proje eklenmemiş.</p>
               )}
             </div>
           </>

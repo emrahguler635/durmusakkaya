@@ -17,6 +17,10 @@ export interface HomePageData {
     title: string;
     description: string;
   };
+  projectsSection: {
+    title: string;
+    description: string;
+  };
 }
 
 export interface AboutPageData {
@@ -86,6 +90,10 @@ export const defaultHomePageData: HomePageData = {
   newsSection: {
     title: "Son Haberler",
     description: "Güncel gelişmeler ve duyurular • Toplam {count} haber"
+  },
+  projectsSection: {
+    title: "Projeler",
+    description: "Yürütülen ve tamamlanan projeler • Toplam {count} proje"
   }
 };
 
@@ -163,7 +171,13 @@ export function getHomePageData(): HomePageData {
   }
   try {
     const saved = localStorage.getItem("admin_homepage");
-    return saved ? JSON.parse(saved) : defaultHomePageData;
+    if (!saved) return defaultHomePageData;
+    const parsed = JSON.parse(saved);
+    // Ensure projectsSection exists for older saved data
+    if (!parsed.projectsSection) {
+      parsed.projectsSection = defaultHomePageData.projectsSection;
+    }
+    return parsed;
   } catch {
     return defaultHomePageData;
   }

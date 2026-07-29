@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ArrowRight, Briefcase, Award, Mail } from "lucide-react";
 import NewsCard from "@/components/news-card";
+import ProjectCard from "@/components/project-card";
 import HeroSlider from "@/components/hero-slider";
-import { adminHomeData, adminNewsData } from "@/lib/admin-data";
+import { adminHomeData, adminNewsData, adminProjectsData } from "@/lib/admin-data";
 
 // Static homepage data (fallback)
 const staticHomeData = {
@@ -34,6 +35,10 @@ const staticHomeData = {
   newsSection: {
     title: "Son Haberler",
     description: "Güncel gelişmeler ve duyurular • Toplam {count} haber"
+  },
+  projectsSection: {
+    title: "Projeler",
+    description: "Yürütülen ve tamamlanan projeler • Toplam {count} proje"
   }
 };
 
@@ -41,6 +46,7 @@ export default function HomePage() {
   // Use admin data only - no static fallback
   const homeData = (adminHomeData && Object.keys(adminHomeData).length > 0) ? adminHomeData : staticHomeData;
   const [news, setNews] = useState<any[]>([]);
+  const [projects, setProjects] = useState<any[]>([]);
   const [totalNewsCount, setTotalNewsCount] = useState(0);
   
   useEffect(() => {
@@ -83,6 +89,44 @@ export default function HomePage() {
     
     setNews(sortedNews.slice(0, 3));
     setTotalNewsCount(sortedNews.length);
+
+    // Get projects from adminProjectsData or localStorage
+    let allProjects: any[] = [];
+    
+    if (adminProjectsData && Array.isArray(adminProjectsData) && adminProjectsData.length > 0) {
+      allProjects = adminProjectsData;
+    }
+    
+    if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+      try {
+        const savedProjects = localStorage.getItem("admin_projects");
+        if (savedProjects) {
+          const parsedProjects = JSON.parse(savedProjects);
+          if (parsedProjects && Array.isArray(parsedProjects) && parsedProjects.length > 0) {
+            const projectsMap = new Map();
+            allProjects.forEach(p => projectsMap.set(p.slug || p.id, p));
+            parsedProjects.forEach((p: any) => {
+              if (p.slug || p.id) {
+                projectsMap.set(p.slug || p.id, p);
+              }
+            });
+            allProjects = Array.from(projectsMap.values());
+          }
+        }
+      } catch (e) {
+        // Silently fail
+      }
+    }
+    
+    const sortedProjects = [...allProjects]
+      .filter((p: any) => p.published !== false)
+      .sort((a: any, b: any) => {
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
+      });
+    
+    setProjects(sortedProjects.slice(0, 3));
   }, []);
 
   const highlightIcons = [Briefcase, Award, Mail];
@@ -164,6 +208,29 @@ export default function HomePage() {
               ))
             ) : (
               <p className="text-gray-500 col-span-3 text-center py-8">Henüz haber bulunmamaktadır.</p>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Projects */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex justify-between items-center mb-10">
+            <div>
+              <h2 className="text-3xl font-bold text-gray-900">{homeData.projectsSection?.title || "Projeler"}</h2>
+            </div>
+            <Link href="/projeler" className="text-blue-600 font-medium hover:text-blue-800 inline-flex items-center gap-1">
+              Tümü <ArrowRight size={16} />
+            </Link>
+          </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {(projects ?? []).length > 0 ? (
+              (projects ?? []).map((item) => (
+                <ProjectCard key={item.id} {...item} createdAt={item.createdAt} imageUrl={item.imageUrl ?? undefined} images={item.images} />
+              ))
+            ) : (
+              <p className="text-gray-500 col-span-3 text-center py-8">Henüz proje bulunmamaktadır.</p>
             )}
           </div>
         </div>
