@@ -108,24 +108,24 @@ export default function SocialFeeds() {
             </div>
 
             <div className="bg-white flex-1 p-5 flex flex-col min-h-[560px]">
-              <div className="h-24 rounded-xl bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 mb-4" />
+              <div className="h-20 rounded-xl bg-gradient-to-r from-gray-900 via-gray-800 to-gray-700 mb-4" />
 
-              <div className="-mt-12 mb-4 flex justify-center">
-                <div className="w-20 h-20 rounded-full bg-black border-4 border-white text-white flex items-center justify-center shadow-md">
-                  <Twitter size={32} />
+              <div className="-mt-10 mb-3 flex justify-center">
+                <div className="w-16 h-16 rounded-full bg-black border-4 border-white text-white flex items-center justify-center shadow-md">
+                  <Twitter size={26} />
                 </div>
               </div>
 
-              <div className="text-center mb-5">
-                <h4 className="text-xl font-bold text-gray-900">Dr. Durmuş AKKAYA</h4>
-                <p className="text-gray-500 text-sm mb-3">@DrDurmusAkkaya</p>
+              <div className="text-center mb-4">
+                <h4 className="text-lg font-bold text-gray-900">Dr. Durmuş AKKAYA</h4>
+                <p className="text-gray-500 text-sm mb-2">@DrDurmusAkkaya</p>
                 <p className="text-gray-700 text-sm leading-relaxed">
                   Bağcılar Belediyesi BAŞAK A.Ş. Yönetim Kurulu Başkanı.
                   Önceden Uşak Belediye Başkan Yardımcısı.
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-2 gap-3 mb-4">
                 <div className="rounded-xl bg-gray-50 border border-gray-100 p-3 text-center">
                   <Users className="mx-auto text-gray-700 mb-1" size={18} />
                   <div className="text-sm font-semibold text-gray-900">Takipçiler</div>
@@ -138,10 +138,11 @@ export default function SocialFeeds() {
                 </div>
               </div>
 
-              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 mb-6 text-sm text-gray-600 leading-relaxed">
-                X, web sitelerinde ücretsiz paylaşım akışını sınırladığı için gönderiler
-                burada canlı listelenemiyor. Tüm güncel paylaşımları X hesabından
-                görüntüleyebilirsiniz.
+              <div className="rounded-xl border border-gray-200 bg-gray-50 p-4 mb-4">
+                <div className="text-sm font-semibold text-gray-900 mb-1">X Hesabını Aç</div>
+                <div className="text-sm text-gray-600">
+                  Güncel paylasimlari dogrudan hesap uzerinden inceleyebilirsiniz.
+                </div>
               </div>
 
               <div className="mt-auto space-y-3">
