@@ -1,7 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  // Custom domain (durmusakkaya.com) kök dizinde yayınlanır; basePath kullanılmaz
+  // github.io/durmusakkaya ve mevcut frame yönlendirmesi için gerekli
+  basePath: '/durmusakkaya',
+  assetPrefix: '/durmusakkaya',
   eslint: {
     ignoreDuringBuilds: true,
   },

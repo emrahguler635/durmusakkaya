@@ -1,6 +1,8 @@
 // Helper function for image paths in static export
 export function getImagePath(path: string): string {
-  if (!path) return "/og-image.png";
+  const basePath = '/durmusakkaya';
+  if (!path) return `${basePath}/og-image.png`;
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  return path.startsWith("/") ? path : `/${path}`;
+  const cleanPath = path.startsWith('/') ? path : `/${path}`;
+  return `${basePath}${cleanPath}`;
 }
