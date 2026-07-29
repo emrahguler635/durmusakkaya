@@ -181,7 +181,8 @@ export const adminProjectsData: any = [
     "imageUrl": "/images/projects/project-1785308969279-llbtr6e.webp",
     "images": [
       "/images/projects/project-1785308969279-llbtr6e.webp",
-      "/images/projects/project-1785308978233-cym7xx1.webp"
+      "/images/projects/project-1785308978233-cym7xx1.webp",
+      "/images/projects/project-1785315011355-qsmwby6.webp"
     ],
     "published": true,
     "id": "1785308989595",
