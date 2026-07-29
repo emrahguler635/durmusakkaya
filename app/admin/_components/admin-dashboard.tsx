@@ -569,8 +569,9 @@ export default function AdminDashboard() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 300 * 1024 * 1024) {
-      alert("Video boyutu 100MB'dan küçük olmalıdır. Daha büyük videolar için YouTube/Vimeo kullanın.");
+    // GitHub Contents API large binary uploads become unreliable above ~90MB.
+    if (file.size > 90 * 1024 * 1024) {
+      alert("Video boyutu 90MB'dan küçük olmalıdır. Daha büyük videolar için YouTube veya Vimeo linki kullanın.");
       return;
     }
 
@@ -629,7 +630,15 @@ export default function AdminDashboard() {
         alert("✅ Video başarıyla yüklendi!");
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
-        alert(`Video yüklenemedi: ${errorData.message || 'Bilinmeyen hata'}`);
+        const errorMessage = errorData.message || "Bilinmeyen hata";
+        if (response.status === 401 || String(errorMessage).toLowerCase().includes("bad credentials")) {
+          setShowTokenInput(true);
+          alert("Video yüklenemedi: GitHub token geçersiz veya süresi dolmuş. Lütfen tokenı yenileyip tekrar deneyin.");
+        } else if (response.status === 413 || response.status === 422) {
+          alert("Video yüklenemedi: Dosya GitHub API için çok büyük. Lütfen videoyu 90MB altına düşürün veya YouTube/Vimeo linki kullanın.");
+        } else {
+          alert(`Video yüklenemedi: ${errorMessage}`);
+        }
       }
     } catch (error: any) {
       alert(`Video yüklenirken hata oluştu: ${error.message || 'Bilinmeyen hata'}`);
@@ -1905,7 +1914,7 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
 
                   <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
                     <h4 className="text-sm font-semibold text-gray-900 mb-1">Proje Tanıtım Videosu</h4>
-                    <p className="text-xs text-gray-600 mb-3">YouTube/Vimeo linki yapıştırın veya doğrudan video dosyası yükleyin (max 300MB).</p>
+                    <p className="text-xs text-gray-600 mb-3">YouTube/Vimeo linki yapıştırın veya doğrudan video dosyası yükleyin (GitHub API sınırı nedeniyle max 90MB).</p>
                     <div className="space-y-3">
                       <input 
                         type="text" 
@@ -1929,7 +1938,7 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                               <span className="text-gray-600">⏳ Video yükleniyor...</span>
                             ) : (
                               <span className="text-gray-700 flex items-center justify-center gap-2">
-                                🎬 Video Dosyası Yükle (mp4, webm - Max 300MB)
+                                🎬 Video Dosyası Yükle (mp4, webm, ogg - Max 90MB)
                               </span>
                             )}
                           </div>
