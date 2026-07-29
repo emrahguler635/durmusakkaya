@@ -1,8 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  basePath: '/durmusakkaya',
-  assetPrefix: '/durmusakkaya',
+  // Custom domain (durmusakkaya.com) kök dizinde yayınlanır; basePath kullanılmaz
   eslint: {
     ignoreDuringBuilds: true,
   },

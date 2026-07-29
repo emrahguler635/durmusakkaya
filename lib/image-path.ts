@@ -1,9 +1,6 @@
 // Helper function for image paths in static export
 export function getImagePath(path: string): string {
-  // Always use basePath for GitHub Pages
-  const basePath = '/durmusakkaya';
-  // Remove leading slash from path if it exists to avoid double slashes
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${basePath}${cleanPath}`;
+  if (!path) return "/og-image.png";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return path.startsWith("/") ? path : `/${path}`;
 }
-

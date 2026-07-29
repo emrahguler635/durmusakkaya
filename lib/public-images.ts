@@ -13,9 +13,9 @@ export const publicImages = [
   { name: "Haber 4 - Dijital Dönüşüm Projesi", url: "/haber4.jpg" },
 ];
 
-// Helper function to get full path with basePath
+// Helper for public image paths
 export function getPublicImagePath(path: string): string {
-  // Always use basePath for GitHub Pages
-  const basePath = '/durmusakkaya';
-  return `${basePath}${path}`;
+  if (!path) return "/og-image.png";
+  if (path.startsWith("http://") || path.startsWith("https://")) return path;
+  return path.startsWith("/") ? path : `/${path}`;
 }
