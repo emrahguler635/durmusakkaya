@@ -1,44 +1,13 @@
 "use client";
-import { useEffect, useRef } from "react";
 import { Facebook, Instagram, Twitter, ExternalLink } from "lucide-react";
 
 const FACEBOOK_URL = "https://www.facebook.com/DrDurmsAKKAYA";
 const INSTAGRAM_URL = "https://www.instagram.com/dr.durmusakkaya64/";
 const X_URL = "https://x.com/drdurmusakkaya";
+const X_EMBED_URL =
+  "https://syndication.twitter.com/srv/timeline-profile/screen-name/DrDurmusAkkaya?dnt=false&embed=1&showReplies=false&lang=tr&theme=light";
 
 export default function SocialFeeds() {
-  const xContainerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const loadWidgets = () => {
-      const tw = (window as any).twttr;
-      if (tw?.widgets?.load && xContainerRef.current) {
-        tw.widgets.load(xContainerRef.current);
-      }
-    };
-
-    if ((window as any).twttr?.widgets) {
-      loadWidgets();
-      return;
-    }
-
-    const existing = document.getElementById("x-widgets-js");
-    if (existing) {
-      existing.addEventListener("load", loadWidgets);
-      return () => existing.removeEventListener("load", loadWidgets);
-    }
-
-    const script = document.createElement("script");
-    script.id = "x-widgets-js";
-    script.src = "https://platform.twitter.com/widgets.js";
-    script.async = true;
-    script.charset = "utf-8";
-    script.onload = loadWidgets;
-    document.body.appendChild(script);
-  }, []);
-
   return (
     <section className="py-16 bg-white border-t border-gray-100">
       <div className="max-w-6xl mx-auto px-4">
@@ -118,7 +87,7 @@ export default function SocialFeeds() {
             </div>
           </div>
 
-          {/* X */}
+          {/* X - iframe syndication (widgets.js frame içinde çalışmıyor) */}
           <div className="bg-gray-50 rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
             <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-white">
               <div className="flex items-center gap-3">
@@ -139,27 +108,25 @@ export default function SocialFeeds() {
                 Git <ExternalLink size={12} />
               </a>
             </div>
-            <div ref={xContainerRef} className="p-3 bg-white min-h-[560px]">
-              <a
-                className="twitter-timeline"
-                data-height="560"
-                data-theme="light"
-                data-chrome="noheader nofooter"
-                href="https://twitter.com/DrDurmusAkkaya"
-              >
-                @DrDurmusAkkaya paylaşımları
-              </a>
-              <div className="mt-4 p-4 rounded-xl bg-gray-100 text-center">
-                <p className="text-sm text-gray-600 mb-3">
-                  X paylaşımları tarayıcıda engellenirse hesabı doğrudan açabilirsiniz.
-                </p>
+            <div className="bg-white min-h-[560px]">
+              <iframe
+                title="X Paylaşımları"
+                src={X_EMBED_URL}
+                width="100%"
+                height="560"
+                style={{ border: "none", overflow: "hidden", display: "block" }}
+                loading="lazy"
+                allow="encrypted-media; clipboard-write"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+              <div className="px-4 pb-4 -mt-2 text-center">
                 <a
                   href={X_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-black text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-gray-800"
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-black hover:underline"
                 >
-                  X’te Aç <ExternalLink size={14} />
+                  Tüm X paylaşımlarını gör <ExternalLink size={14} />
                 </a>
               </div>
             </div>
