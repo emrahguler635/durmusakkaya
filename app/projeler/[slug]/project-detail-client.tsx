@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Calendar, X, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, Calendar, MapPin, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
 import { adminProjectsData } from "@/lib/admin-data";
 
@@ -102,26 +102,36 @@ export default function ProjectDetailClient({ slug }: { slug: string }) {
       })
     : [];
 
+  const hasKunye = project.status || project.location || project.startYear;
+
   return (
     <div>
       <section className="bg-gradient-to-r from-blue-900 to-blue-800 py-16">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           <Link href="/projeler" className="inline-flex items-center gap-2 text-blue-200 hover:text-white mb-6 transition-colors">
             <ArrowLeft size={18} /> Projelere Dön
           </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{project.title}</h1>
-          <div className="flex items-center gap-2 text-blue-200">
-            <Calendar size={16} />
-            <span>{formattedDate}</span>
+          <div className="flex flex-wrap items-center gap-4 text-blue-200">
+            <div className="flex items-center gap-2">
+              <Calendar size={16} />
+              <span>{formattedDate}</span>
+            </div>
+            {project.location && (
+              <div className="flex items-center gap-2">
+                <MapPin size={16} />
+                <span>{project.location}</span>
+              </div>
+            )}
           </div>
         </div>
       </section>
 
       <section className="py-12 bg-white">
-        <div className="max-w-4xl mx-auto px-4">
+        <div className="max-w-6xl mx-auto px-4">
           {coverImage ? (
             <div 
-              className="relative aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden mb-8 shadow-lg cursor-pointer group"
+              className="relative aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden mb-10 shadow-lg cursor-pointer group"
               onClick={() => {
                 if (project.images && project.images.length > 0) {
                   const index = project.images.indexOf(coverImage);
@@ -145,43 +155,90 @@ export default function ProjectDetailClient({ slug }: { slug: string }) {
               </div>
             </div>
           ) : (
-            <div className="relative aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden mb-8 shadow-lg">
+            <div className="relative aspect-[16/9] bg-gray-100 rounded-xl overflow-hidden mb-10 shadow-lg">
               <Image src={getImagePath("/og-image.png")} alt={project.title} fill className="object-cover" />
             </div>
           )}
-          
-          <div className="prose prose-lg max-w-none text-gray-700">
-            <p className="text-xl text-gray-600 mb-6 font-medium">{project.summary}</p>
-            <div className="whitespace-pre-wrap">{project.content}</div>
-          </div>
-          
-          {galleryImages.length > 0 && (
-            <div className="mt-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Galeri</h2>
-              <div className="flex flex-wrap gap-4 overflow-x-auto pb-2">
-                {galleryImages.map((imgUrl: string, index: number) => {
-                  const originalIndex = project.images.indexOf(imgUrl);
-                  return (
-                    <div 
-                      key={index} 
-                      className="relative w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] lg:w-[calc(25%-0.75rem)] aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer flex-shrink-0"
-                      onClick={() => {
-                        setLightboxIndex(originalIndex);
-                        setLightboxOpen(true);
-                      }}
-                    >
-                      <Image 
-                        src={getImagePath(imgUrl)} 
-                        alt={`${project.title} - Görsel ${index + 1}`} 
-                        fill 
-                        className="object-cover group-hover:scale-105 transition-transform duration-300" 
-                      />
-                    </div>
-                  );
-                })}
+
+          <div className="grid lg:grid-cols-3 gap-10">
+            <div className="lg:col-span-2">
+              <div className="flex items-stretch gap-3 mb-6">
+                <div className="w-1.5 bg-blue-900 rounded-full shrink-0" />
+                <h2 className="text-2xl font-bold text-blue-900 tracking-wide">PROJE HAKKINDA</h2>
               </div>
+              <div className="prose prose-lg max-w-none text-gray-700">
+                <p className="text-xl text-gray-600 mb-6 font-medium">{project.summary}</p>
+                <div className="whitespace-pre-wrap">{project.content}</div>
+              </div>
+              
+              {galleryImages.length > 0 && (
+                <div className="mt-12">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Galeri</h2>
+                  <div className="flex flex-wrap gap-4 overflow-x-auto pb-2">
+                    {galleryImages.map((imgUrl: string, index: number) => {
+                      const originalIndex = project.images.indexOf(imgUrl);
+                      return (
+                        <div 
+                          key={index} 
+                          className="relative w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)] aspect-video bg-gray-100 rounded-xl overflow-hidden group cursor-pointer flex-shrink-0"
+                          onClick={() => {
+                            setLightboxIndex(originalIndex);
+                            setLightboxOpen(true);
+                          }}
+                        >
+                          <Image 
+                            src={getImagePath(imgUrl)} 
+                            alt={`${project.title} - Görsel ${index + 1}`} 
+                            fill 
+                            className="object-cover group-hover:scale-105 transition-transform duration-300" 
+                          />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+
+            <aside className="lg:col-span-1">
+              <div className="border border-gray-200 rounded-xl p-6 sticky top-32 bg-white shadow-sm">
+                <h3 className="text-xl font-bold text-blue-900 tracking-wide mb-6">PROJE KÜNYESİ</h3>
+                
+                <div className="space-y-5 mb-8">
+                  {project.status && (
+                    <div>
+                      <div className="text-xs font-semibold text-blue-400 tracking-wider mb-1">PROJE DURUMU</div>
+                      <div className="text-base font-bold text-blue-900">{project.status}</div>
+                    </div>
+                  )}
+                  {project.location && (
+                    <div>
+                      <div className="text-xs font-semibold text-blue-400 tracking-wider mb-1">LOKASYON</div>
+                      <div className="text-base font-bold text-blue-900">{project.location}</div>
+                    </div>
+                  )}
+                  {project.startYear && (
+                    <div>
+                      <div className="text-xs font-semibold text-blue-400 tracking-wider mb-1">BAŞLANGIÇ YILI</div>
+                      <div className="text-base font-bold text-blue-900">{project.startYear}</div>
+                    </div>
+                  )}
+                  {!hasKunye && (
+                    <p className="text-sm text-gray-500">Künye bilgileri henüz eklenmemiş.</p>
+                  )}
+                </div>
+
+                <a
+                  href="https://basakas.com.tr/iletisim/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block w-full text-center bg-blue-900 hover:bg-blue-800 text-white font-bold tracking-wider py-3.5 rounded-lg transition-colors"
+                >
+                  BİLGİ AL
+                </a>
+              </div>
+            </aside>
+          </div>
           
           {lightboxOpen && project.images && project.images.length > 0 && (
             <div 
