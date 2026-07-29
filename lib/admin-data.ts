@@ -173,4 +173,19 @@ export const adminNewsData: any = [
     "createdAt": "2026-01-01T20:18:27.575Z"
   }
 ];
-export const adminProjectsData: any = [];
+export const adminProjectsData: any = [
+  {
+    "title": "Başak Evler Intaya",
+    "summary": "Estetik mimari ve üstün mühendislik anlayışıyla hayata geçirdiğimiz; şehrin silüetine değer katan, sağlam zeminler üzerinde yükselen güvenli ve modern yaşam projelerimizi keşfedin.",
+    "content": "Şehrin Yeni İkonu: Başak Evler Intaya. Modern mimari, güvenli yapı ve konforlu bir yaşam standardı.  “Başak A.Ş. güvencesiyle hayata geçen Başak Evler Intaya, sadece dört duvardan ibaret bir ev değil, ailenizle huzurla yaşayabileceğiniz modern bir yaşam alanı sunuyor. Şehrin gürültüsünden uzak ama merkeze yakın / Şehrin tam kalbinde konumlanan projemiz, estetik detayları ve fonksiyonel mimarisiyle hayatınıza değer katmak için tasarlandı.",
+    "imageUrl": "/images/projects/project-1785308969279-llbtr6e.webp",
+    "images": [
+      "/images/projects/project-1785308969279-llbtr6e.webp",
+      "/images/projects/project-1785308978233-cym7xx1.webp"
+    ],
+    "published": true,
+    "id": "1785308989595",
+    "slug": "basak-evler-intaya",
+    "createdAt": "2026-07-29T07:09:49.595Z"
+  }
+];
