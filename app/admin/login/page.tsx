@@ -16,7 +16,7 @@ export default function AdminLoginPage() {
     setError("");
     
     // Simple authentication for static export (GitHub Pages)
-    if (email === "admin@basak.com.tr" && password === "admin123") {
+    if (email === "admin@basak.com.tr" && password === "Durmus199292**") {
       if (typeof window !== 'undefined' && typeof sessionStorage !== 'undefined') {
         try {
           sessionStorage.setItem("admin_authenticated", "true");
