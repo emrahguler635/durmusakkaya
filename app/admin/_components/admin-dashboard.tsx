@@ -37,6 +37,7 @@ interface Project {
   status?: string;
   location?: string;
   startYear?: string;
+  videoUrl?: string;
 }
 
 type TabType = "home" | "about" | "news" | "projects" | "contact" | "messages";
@@ -57,7 +58,7 @@ export default function AdminDashboard() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [showProjectForm, setShowProjectForm] = useState(false);
   const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
-  const [projectForm, setProjectForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true, status: "", location: "", startYear: "" });
+  const [projectForm, setProjectForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true, status: "", location: "", startYear: "", videoUrl: "" });
   const [showProjectImageSelector, setShowProjectImageSelector] = useState(false);
   
   // Home page state
@@ -359,7 +360,7 @@ export default function AdminDashboard() {
     
     setShowProjectForm(false);
     setEditingProjectId(null);
-    setProjectForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true, status: "", location: "", startYear: "" });
+    setProjectForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true, status: "", location: "", startYear: "", videoUrl: "" });
   };
 
   const handleProjectDelete = async (id: string) => {
@@ -393,7 +394,8 @@ export default function AdminDashboard() {
       published: item.published,
       status: item.status || "",
       location: item.location || "",
-      startYear: item.startYear || ""
+      startYear: item.startYear || "",
+      videoUrl: item.videoUrl || ""
     });
     setEditingProjectId(item.id);
     setShowProjectForm(true);
@@ -1736,7 +1738,7 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                 <button onClick={deleteAllProjects} className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                   🗑️ Tüm Projeleri Sil
                 </button>
-                <button onClick={() => { setShowProjectForm(true); setEditingProjectId(null); setProjectForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true, status: "", location: "", startYear: "" }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <button onClick={() => { setShowProjectForm(true); setEditingProjectId(null); setProjectForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true, status: "", location: "", startYear: "", videoUrl: "" }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
                   <Plus size={18} /> Yeni Proje Ekle
                 </button>
               </div>
@@ -1778,7 +1780,8 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                   </div>
 
                   <div className="p-4 bg-blue-50 rounded-lg border border-blue-100">
-                    <h4 className="text-sm font-semibold text-blue-900 mb-3">Proje Künyesi</h4>
+                    <h4 className="text-sm font-semibold text-blue-900 mb-1">Proje Künyesi</h4>
+                    <p className="text-xs text-gray-600 mb-4">Bu bilgiler proje detay sayfasında sağ taraftaki künye kutusunda gösterilir.</p>
                     <div className="grid md:grid-cols-3 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Proje Durumu</label>
@@ -1786,7 +1789,7 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                           type="text" 
                           value={projectForm.status}
                           onChange={(e) => setProjectForm({ ...projectForm, status: e.target.value })}
-                          className="w-full px-4 py-3 border rounded-lg"
+                          className="w-full px-4 py-3 border rounded-lg bg-white"
                           placeholder="Örn: Devam Eden Projeler"
                         />
                       </div>
@@ -1796,7 +1799,7 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                           type="text" 
                           value={projectForm.location}
                           onChange={(e) => setProjectForm({ ...projectForm, location: e.target.value })}
-                          className="w-full px-4 py-3 border rounded-lg"
+                          className="w-full px-4 py-3 border rounded-lg bg-white"
                           placeholder="Örn: Bağcılar, Güneşli"
                         />
                       </div>
@@ -1806,11 +1809,23 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                           type="text" 
                           value={projectForm.startYear}
                           onChange={(e) => setProjectForm({ ...projectForm, startYear: e.target.value })}
-                          className="w-full px-4 py-3 border rounded-lg"
+                          className="w-full px-4 py-3 border rounded-lg bg-white"
                           placeholder="Örn: 2025"
                         />
                       </div>
                     </div>
+                  </div>
+
+                  <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                    <h4 className="text-sm font-semibold text-gray-900 mb-1">Proje Tanıtım Videosu</h4>
+                    <p className="text-xs text-gray-600 mb-3">YouTube, Vimeo veya doğrudan video dosyası linki (mp4) girebilirsiniz.</p>
+                    <input 
+                      type="text" 
+                      value={projectForm.videoUrl}
+                      onChange={(e) => setProjectForm({ ...projectForm, videoUrl: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg bg-white"
+                      placeholder="Örn: https://www.youtube.com/watch?v=..."
+                    />
                   </div>
 
                   <div>
@@ -1978,7 +1993,9 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                   <thead>
                     <tr className="border-b">
                       <th className="text-left py-3 px-4">Başlık</th>
-                      <th className="text-left py-3 px-4">Durum</th>
+                      <th className="text-left py-3 px-4">Lokasyon</th>
+                      <th className="text-left py-3 px-4">Proje Durumu</th>
+                      <th className="text-left py-3 px-4">Yayın</th>
                       <th className="text-right py-3 px-4">İşlemler</th>
                     </tr>
                   </thead>
@@ -1986,6 +2003,8 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                     {projects.map((item) => (
                       <tr key={item.id} className="border-b">
                         <td className="py-3 px-4">{item.title}</td>
+                        <td className="py-3 px-4 text-sm text-gray-600">{item.location || "—"}</td>
+                        <td className="py-3 px-4 text-sm text-gray-600">{item.status || "—"}</td>
                         <td className="py-3 px-4">
                           <span className={`px-2 py-1 rounded text-sm ${item.published ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
                             {item.published ? "Yayında" : "Taslak"}

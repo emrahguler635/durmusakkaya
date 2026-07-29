@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Calendar, MapPin, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { getImagePath } from "@/lib/image-path";
+import { getEmbedVideoUrl } from "@/lib/utils";
 import { adminProjectsData } from "@/lib/admin-data";
 
 export default function ProjectDetailClient({ slug }: { slug: string }) {
@@ -103,6 +104,7 @@ export default function ProjectDetailClient({ slug }: { slug: string }) {
     : [];
 
   const hasKunye = project.status || project.location || project.startYear;
+  const embedVideo = project.videoUrl ? getEmbedVideoUrl(project.videoUrl) : null;
 
   return (
     <div>
@@ -170,6 +172,33 @@ export default function ProjectDetailClient({ slug }: { slug: string }) {
                 <p className="text-xl text-gray-600 mb-6 font-medium">{project.summary}</p>
                 <div className="whitespace-pre-wrap">{project.content}</div>
               </div>
+
+              {embedVideo && (
+                <div className="mt-12">
+                  <div className="flex items-stretch gap-3 mb-6">
+                    <div className="w-1.5 bg-blue-900 rounded-full shrink-0" />
+                    <h2 className="text-2xl font-bold text-blue-900 tracking-wide">PROJE TANITIM FİLMİ</h2>
+                  </div>
+                  <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-lg">
+                    {embedVideo.type === "file" ? (
+                      <video
+                        src={embedVideo.src}
+                        controls
+                        className="w-full h-full object-cover"
+                        title={`${project.title} tanıtım videosu`}
+                      />
+                    ) : (
+                      <iframe
+                        src={embedVideo.src}
+                        title={`${project.title} tanıtım videosu`}
+                        className="absolute inset-0 w-full h-full"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
               
               {galleryImages.length > 0 && (
                 <div className="mt-12">
