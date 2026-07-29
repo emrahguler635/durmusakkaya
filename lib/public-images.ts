@@ -13,11 +13,8 @@ export const publicImages = [
   { name: "Haber 4 - Dijital Dönüşüm Projesi", url: "/haber4.jpg" },
 ];
 
-// Helper function to get full path with basePath
 export function getPublicImagePath(path: string): string {
-  const basePath = '/durmusakkaya';
-  if (!path) return `${basePath}/og-image.png`;
+  if (!path) return "/og-image.png";
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${basePath}${cleanPath}`;
+  return path.startsWith("/") ? path : `/${path}`;
 }

@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  // github.io/durmusakkaya ve mevcut frame yönlendirmesi için gerekli
-  basePath: '/durmusakkaya',
-  assetPrefix: '/durmusakkaya',
+  // Custom domain (durmusakkaya.com) kök dizinde yayınlanır
   eslint: {
     ignoreDuringBuilds: true,
   },

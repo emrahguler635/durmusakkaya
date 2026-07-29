@@ -10,17 +10,17 @@ import Footer from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://emrahguler635.github.io/durmusakkaya"),
+  metadataBase: new URL("https://durmusakkaya.com"),
   title: "Dr. Durmuş AKKAYA | Başak A.Ş. Yönetim Kurulu Başkanı",
   description: "Dr. Durmuş AKKAYA - Başak A.Ş. Yönetim Kurulu Başkanı. Profesyonel deneyim, haberler ve iletişim.",
   icons: {
-    icon: "/durmusakkaya/favicon.svg",
-    shortcut: "/durmusakkaya/favicon.svg"
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg"
   },
   openGraph: {
     title: "Dr. Durmuş AKKAYA | Başak A.Ş. Yönetim Kurulu Başkanı",
     description: "Dr. Durmuş AKKAYA - Başak A.Ş. Yönetim Kurulu Başkanı",
-    images: ["/durmusakkaya/og-image.png"]
+    images: ["/og-image.png"]
   }
 };
 
@@ -28,11 +28,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="tr" suppressHydrationWarning>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `if(window.top!==window.self){try{window.top.location.replace(window.location.href);}catch(e){}}`,
-          }}
-        />
         <script src="https://apps.abacus.ai/chatllm/appllm-lib.js" />
       </head>
       <body className={`${inter.className} bg-gray-50`} suppressHydrationWarning>
