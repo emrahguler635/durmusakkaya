@@ -186,6 +186,10 @@ export const adminProjectsData: any = [
     "published": true,
     "id": "1785308989595",
     "slug": "basak-evler-intaya",
-    "createdAt": "2026-07-29T07:09:49.595Z"
+    "createdAt": "2026-07-29T07:09:49.595Z",
+    "status": "Devam Ediyor",
+    "location": "Güneşli",
+    "startYear": "2026",
+    "videoUrl": ""
   }
 ];
