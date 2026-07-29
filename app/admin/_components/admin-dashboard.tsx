@@ -476,7 +476,13 @@ export default function AdminDashboard() {
       } else {
         const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
         console.error('GitHub API error:', errorData);
-        alert(`Resim yüklenemedi: ${errorData.message || 'Bilinmeyen hata'}`);
+        const msg = errorData.message || 'Bilinmeyen hata';
+        if (msg.toLowerCase().includes('bad credentials') || response.status === 401) {
+          alert(`Resim yüklenemedi: GitHub token geçersiz veya süresi dolmuş.\n\nÇözüm:\n1. Üst menüden "Token Değiştir"e tıklayın\n2. Yeni Personal Access Token girin (repo izni gerekli)\n3. Kaydet'e basıp resmi tekrar yükleyin`);
+          setShowTokenInput(true);
+        } else {
+          alert(`Resim yüklenemedi: ${msg}`);
+        }
         return null;
       }
     } catch (error: any) {
@@ -957,7 +963,7 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
               <div className="flex gap-2 items-center">
                 <input
                   type="password"
-                  placeholder="GitHub Personal Access Token"
+                  placeholder="GitHub Personal Access Token (ghp_...)"
                   value={githubToken}
                   onChange={(e) => setGithubToken(e.target.value)}
                   className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-900"
@@ -966,22 +972,42 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                 <button
                   onClick={() => {
                     if (githubToken && typeof localStorage !== 'undefined') {
-                      localStorage.setItem("github_token", githubToken);
+                      localStorage.setItem("github_token", githubToken.trim());
+                      setGithubToken(githubToken.trim());
+                      alert("✅ Token kaydedildi. Şimdi resim yüklemeyi tekrar deneyin.");
                     }
                     setShowTokenInput(false);
                   }}
-                  className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
+                  className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm"
                 >
                   Kaydet
                 </button>
+                <button
+                  onClick={() => {
+                    setGithubToken("");
+                    if (typeof localStorage !== 'undefined') {
+                      localStorage.removeItem("github_token");
+                    }
+                    setShowTokenInput(false);
+                  }}
+                  className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm"
+                >
+                  Temizle
+                </button>
+                <button
+                  onClick={() => setShowTokenInput(false)}
+                  className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
+                >
+                  İptal
+                </button>
               </div>
             )}
-            {typeof window !== 'undefined' && !showTokenInput && !githubToken && (
+            {typeof window !== 'undefined' && !showTokenInput && (
               <button
                 onClick={() => setShowTokenInput(true)}
                 className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
               >
-                Token Ekle
+                {githubToken ? "Token Değiştir" : "Token Ekle"}
               </button>
             )}
             {typeof window !== 'undefined' && isSaving && (
