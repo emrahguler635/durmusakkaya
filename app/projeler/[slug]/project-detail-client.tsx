@@ -94,17 +94,12 @@ export default function ProjectDetailClient({ slug }: { slug: string }) {
   });
 
   const coverImage = project.imageUrl || (project.images && project.images.length > 0 ? project.images[0] : null);
-  
-  const galleryImages = project.images && Array.isArray(project.images) 
-    ? project.images.filter((img: string, index: number) => {
-        if (project.imageUrl && img === project.imageUrl) return false;
-        if (!project.imageUrl && index === 0) return false;
-        return true;
-      })
-    : [];
+  const embedVideo = project.videoUrl ? getEmbedVideoUrl(project.videoUrl, { autoplay: true }) : null;
+
+  // Tüm eklenen görselleri galeride göster
+  const galleryImages = project.images && Array.isArray(project.images) ? project.images : [];
 
   const hasKunye = project.status || project.location || project.startYear;
-  const embedVideo = project.videoUrl ? getEmbedVideoUrl(project.videoUrl, { autoplay: true }) : null;
 
   return (
     <div>
