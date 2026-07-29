@@ -45,6 +45,8 @@ type TabType = "home" | "about" | "news" | "projects" | "contact" | "messages";
 export default function AdminDashboard() {
   const router = useRouter();
   const [tab, setTab] = useState<TabType>("home");
+  const projectYearOptions = ["2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030"];
+  const projectStatusOptions = ["Devam Ediyor", "Bitti", "Proje Aşamasında"];
   
   // News state
   const [news, setNews] = useState<News[]>([]);
@@ -1860,13 +1862,18 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                     <div className="grid md:grid-cols-3 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Proje Durumu</label>
-                        <input 
-                          type="text" 
+                        <select
                           value={projectForm.status}
                           onChange={(e) => setProjectForm({ ...projectForm, status: e.target.value })}
                           className="w-full px-4 py-3 border rounded-lg bg-white"
-                          placeholder="Örn: Devam Eden Projeler"
-                        />
+                        >
+                          <option value="">Seçiniz</option>
+                          {projectStatusOptions.map((option) => (
+                            <option key={option} value={option}>
+                              {option}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Lokasyon</label>
@@ -1880,13 +1887,18 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">Başlangıç Yılı</label>
-                        <input 
-                          type="text" 
+                        <select
                           value={projectForm.startYear}
                           onChange={(e) => setProjectForm({ ...projectForm, startYear: e.target.value })}
                           className="w-full px-4 py-3 border rounded-lg bg-white"
-                          placeholder="Örn: 2025"
-                        />
+                        >
+                          <option value="">Seçiniz</option>
+                          {projectYearOptions.map((year) => (
+                            <option key={year} value={year}>
+                              {year}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     </div>
                   </div>
