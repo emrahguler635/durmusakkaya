@@ -53,6 +53,7 @@ export default function AdminDashboard() {
   const [newsForm, setNewsForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true });
   const [showImageSelector, setShowImageSelector] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
 
   // Projects state
   const [projects, setProjects] = useState<Project[]>([]);
@@ -560,6 +561,80 @@ export default function AdminDashboard() {
     }
 
     e.target.value = '';
+  };
+
+  const handleProjectVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 100 * 1024 * 1024) {
+      alert("Video boyutu 100MB'dan küçük olmalıdır. Daha büyük videolar için YouTube/Vimeo kullanın.");
+      return;
+    }
+
+    const allowedTypes = ['video/mp4', 'video/webm', 'video/ogg'];
+    if (!allowedTypes.includes(file.type)) {
+      alert("Lütfen mp4, webm veya ogg formatında bir video dosyası seçin.");
+      return;
+    }
+
+    if (!githubToken) {
+      alert("Lütfen önce GitHub Personal Access Token'ınızı girin.");
+      setShowTokenInput(true);
+      return;
+    }
+
+    setUploadingVideo(true);
+    try {
+      const reader = new FileReader();
+      const base64Promise = new Promise<string>((resolve, reject) => {
+        reader.onload = () => {
+          const result = reader.result as string;
+          const base64 = result.split(',')[1];
+          resolve(base64);
+        };
+        reader.onerror = reject;
+      });
+      reader.readAsDataURL(file);
+
+      const base64Content = await base64Promise;
+      
+      const timestamp = Date.now();
+      const random = Math.random().toString(36).substring(2, 9);
+      const extension = file.name.split('.').pop() || 'mp4';
+      const fileName = `project-video-${timestamp}-${random}.${extension}`;
+      const filePath = `public/videos/projects/${fileName}`;
+      const publicUrl = `/videos/projects/${fileName}`;
+
+      const repo = "emrahguler635/durmusakkaya";
+      const message = `Add project video: ${fileName}`;
+
+      const response = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${githubToken}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: message,
+          content: base64Content
+        })
+      });
+
+      if (response.ok) {
+        setProjectForm({ ...projectForm, videoUrl: publicUrl });
+        alert("✅ Video başarıyla yüklendi!");
+      } else {
+        const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
+        alert(`Video yüklenemedi: ${errorData.message || 'Bilinmeyen hata'}`);
+      }
+    } catch (error: any) {
+      alert(`Video yüklenirken hata oluştu: ${error.message || 'Bilinmeyen hata'}`);
+    } finally {
+      setUploadingVideo(false);
+      e.target.value = '';
+    }
   };
 
   // GitHub commit and deploy function (ONLY called from user actions, never during build)
@@ -1818,14 +1893,43 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
 
                   <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
                     <h4 className="text-sm font-semibold text-gray-900 mb-1">Proje Tanıtım Videosu</h4>
-                    <p className="text-xs text-gray-600 mb-3">YouTube, Vimeo veya doğrudan video dosyası linki (mp4) girebilirsiniz.</p>
-                    <input 
-                      type="text" 
-                      value={projectForm.videoUrl}
-                      onChange={(e) => setProjectForm({ ...projectForm, videoUrl: e.target.value })}
-                      className="w-full px-4 py-3 border rounded-lg bg-white"
-                      placeholder="Örn: https://www.youtube.com/watch?v=..."
-                    />
+                    <p className="text-xs text-gray-600 mb-3">YouTube/Vimeo linki yapıştırın veya doğrudan video dosyası yükleyin (max 100MB).</p>
+                    <div className="space-y-3">
+                      <input 
+                        type="text" 
+                        value={projectForm.videoUrl}
+                        onChange={(e) => setProjectForm({ ...projectForm, videoUrl: e.target.value })}
+                        className="w-full px-4 py-3 border rounded-lg bg-white"
+                        placeholder="Örn: https://www.youtube.com/watch?v=..."
+                      />
+                      <div className="flex items-center gap-3">
+                        <label className="flex-1 cursor-pointer">
+                          <input
+                            type="file"
+                            accept="video/mp4,video/webm,video/ogg"
+                            onChange={handleProjectVideoUpload}
+                            disabled={uploadingVideo}
+                            className="hidden"
+                            id="project-video-upload"
+                          />
+                          <div className="px-4 py-3 border-2 border-dashed border-gray-300 rounded-lg hover:bg-gray-100 transition-colors text-center">
+                            {uploadingVideo ? (
+                              <span className="text-gray-600">⏳ Video yükleniyor...</span>
+                            ) : (
+                              <span className="text-gray-700 flex items-center justify-center gap-2">
+                                🎬 Video Dosyası Yükle (mp4, webm - Max 100MB)
+                              </span>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      {projectForm.videoUrl && (
+                        <div className="flex items-center gap-2 text-sm text-green-700 bg-green-50 px-3 py-2 rounded-lg">
+                          <span>✅ Video: {projectForm.videoUrl.length > 60 ? projectForm.videoUrl.substring(0, 60) + '...' : projectForm.videoUrl}</span>
+                          <button type="button" onClick={() => setProjectForm({ ...projectForm, videoUrl: "" })} className="ml-auto text-red-500 hover:text-red-700 font-bold">✕</button>
+                        </div>
+                      )}
+                    </div>
                   </div>
 
                   <div>

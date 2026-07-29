@@ -182,7 +182,7 @@ export default function ProjectDetailClient({ slug }: { slug: string }) {
                   <div className="relative aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-lg">
                     {embedVideo.type === "file" ? (
                       <video
-                        src={embedVideo.src}
+                        src={embedVideo.src.startsWith('/') ? getImagePath(embedVideo.src) : embedVideo.src}
                         controls
                         className="w-full h-full object-cover"
                         title={`${project.title} tanıtım videosu`}
