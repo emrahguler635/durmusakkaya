@@ -128,14 +128,19 @@ export default function AdminDashboard() {
       const saved = localStorage.getItem("admin_news");
       if (saved) {
         const parsedNews = JSON.parse(saved);
-        if (parsedNews.length > 0) {
+        if (Array.isArray(parsedNews) && parsedNews.length > 0) {
           setNews(parsedNews);
           return;
         }
       }
-      // Fallback to published admin data
+      // Fallback to published admin data and sync to localStorage
       if (adminNewsData && Array.isArray(adminNewsData) && adminNewsData.length > 0) {
         setNews(adminNewsData);
+        try {
+          localStorage.setItem("admin_news", JSON.stringify(adminNewsData));
+        } catch {
+          // Silently fail
+        }
       } else {
         setNews([]);
       }
@@ -153,13 +158,18 @@ export default function AdminDashboard() {
       const saved = localStorage.getItem("admin_projects");
       if (saved) {
         const parsedProjects = JSON.parse(saved);
-        if (parsedProjects.length > 0) {
+        if (Array.isArray(parsedProjects) && parsedProjects.length > 0) {
           setProjects(parsedProjects);
           return;
         }
       }
       if (adminProjectsData && Array.isArray(adminProjectsData) && adminProjectsData.length > 0) {
         setProjects(adminProjectsData);
+        try {
+          localStorage.setItem("admin_projects", JSON.stringify(adminProjectsData));
+        } catch {
+          // Silently fail
+        }
       } else {
         setProjects([]);
       }
@@ -668,21 +678,38 @@ export default function AdminDashboard() {
         localStorage.setItem("github_token", githubToken);
       }
 
-      // Get all current data from localStorage
-      const homeDataToSave = getHomePageData();
-      const aboutDataToSave = getAboutPageData();
-      const contactDataToSave = getContactPageData();
-      let newsToSave: News[] = [];
-      let projectsToSave: Project[] = [];
+      // Use React state as source of truth so saving one section never wipes another.
+      const homeDataToSave = homeData;
+      const aboutDataToSave = aboutData;
+      const contactDataToSave = contactData;
+      let newsToSave: News[] = news;
+      let projectsToSave: Project[] = projects;
+
+      // If we're saving something other than news/projects, never overwrite
+      // published data with an empty array (e.g. localStorage was missing).
+      const savingNews = dataType.startsWith("news");
+      const savingProjects = dataType.startsWith("projects");
+      if (!savingNews && newsToSave.length === 0 && Array.isArray(adminNewsData) && adminNewsData.length > 0) {
+        newsToSave = adminNewsData;
+      }
+      if (!savingProjects && projectsToSave.length === 0 && Array.isArray(adminProjectsData) && adminProjectsData.length > 0) {
+        projectsToSave = adminProjectsData;
+      }
       if (typeof localStorage !== 'undefined') {
         try {
-          const savedNews = localStorage.getItem("admin_news");
-          if (savedNews) {
-            newsToSave = JSON.parse(savedNews);
+          if (!savingNews && newsToSave.length === 0) {
+            const savedNews = localStorage.getItem("admin_news");
+            if (savedNews) {
+              const parsed = JSON.parse(savedNews);
+              if (Array.isArray(parsed) && parsed.length > 0) newsToSave = parsed;
+            }
           }
-          const savedProjects = localStorage.getItem("admin_projects");
-          if (savedProjects) {
-            projectsToSave = JSON.parse(savedProjects);
+          if (!savingProjects && projectsToSave.length === 0) {
+            const savedProjects = localStorage.getItem("admin_projects");
+            if (savedProjects) {
+              const parsed = JSON.parse(savedProjects);
+              if (Array.isArray(parsed) && parsed.length > 0) projectsToSave = parsed;
+            }
           }
         } catch (e) {
           // Silently fail
