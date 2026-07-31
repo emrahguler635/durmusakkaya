@@ -212,5 +212,25 @@ export const adminProjectsData: any = [
     "id": "1785335886961",
     "slug": "basak-evler-2",
     "createdAt": "2026-07-29T14:38:06.961Z"
+  },
+  {
+    "title": "Başak Evler – 1",
+    "summary": "Estetik mimari ve üstün mühendislik anlayışıyla hayata geçirdiğimiz; şehrin silüetine değer katan, sağlam zeminler üzerinde yükselen güvenli ve modern yaşam projelerimizi keşfedin.",
+    "content": "Şehrin Yeni İkonu: Başak Evler 1 Modern mimari, güvenli yapı ve konforlu bir yaşam standardı. Metin: “Başak A.Ş. güvencesiyle hayata geçen Başak Evler 1, sadece dört duvardan ibaret bir ev değil, ailenizle huzurla yaşayabileceğiniz modern bir yaşam alanı sunuyor. Şehrin gürültüsünden uzak ama merkeze yakın / Şehrin tam kalbinde konumlanan projemiz, estetik detayları ve fonksiyonel mimarisiyle hayatınıza değer katmak için tasarlandı.",
+    "imageUrl": "/images/projects/project-1785501016348-3e2wv0r.jpeg",
+    "images": [
+      "/images/projects/project-1785501016348-3e2wv0r.jpeg",
+      "/images/projects/project-1785501026800-6jg9xq7.jpeg",
+      "/images/projects/project-1785501619501-5ik6nkm.webp",
+      "/images/projects/project-1785501625189-bfjoo39.webp"
+    ],
+    "published": true,
+    "status": "Bitti",
+    "location": "Yenimahalle",
+    "startYear": "2023",
+    "videoUrl": "",
+    "id": "1785501641881",
+    "slug": "basak-evler-1",
+    "createdAt": "2026-07-31T12:40:41.881Z"
   }
 ];
