@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket, Briefcase } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket, Briefcase, ChevronUp, ChevronDown } from "lucide-react";
 import { publicImages, getPublicImagePath } from "@/lib/public-images";
 import { getImagePath } from "@/lib/image-path";
 import { 
@@ -1021,6 +1021,22 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
     }
   };
 
+  const moveCareer = (index: number, direction: "up" | "down") => {
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (target < 0 || target >= aboutData.career.length) return;
+    const career = [...aboutData.career];
+    [career[index], career[target]] = [career[target], career[index]];
+    setAboutData({ ...aboutData, career });
+  };
+
+  const moveEducation = (index: number, direction: "up" | "down") => {
+    const target = direction === "up" ? index - 1 : index + 1;
+    if (target < 0 || target >= aboutData.education.length) return;
+    const education = [...aboutData.education];
+    [education[index], education[target]] = [education[target], education[index]];
+    setAboutData({ ...aboutData, education });
+  };
+
   const handleEducationAdd = () => {
     const newEducation = {
       id: Date.now().toString(),
@@ -1473,9 +1489,30 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
             {/* Career */}
             <div className="bg-white p-6 rounded-xl shadow-md">
               <h3 className="text-lg font-semibold mb-4">Kariyer Geçmişi</h3>
+              <p className="text-sm text-gray-500 mb-3">Sırayı değiştirmek için ▲ ▼ butonlarını kullanın. En üstteki kayıt sitede en üstte görünür.</p>
               <div className="space-y-4 mb-4">
-                {aboutData.career.map((career: any) => (
+                {aboutData.career.map((career: any, index: number) => (
                   <div key={career.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => moveCareer(index, "up")}
+                        disabled={index === 0}
+                        className="p-1.5 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Yukarı taşı"
+                      >
+                        <ChevronUp size={18} className="text-gray-700" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveCareer(index, "down")}
+                        disabled={index === aboutData.career.length - 1}
+                        className="p-1.5 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Aşağı taşı"
+                      >
+                        <ChevronDown size={18} className="text-gray-700" />
+                      </button>
+                    </div>
                     <div className="flex-1">
                       <div className="font-medium">{career.title}</div>
                       <div className="text-sm text-blue-600">
@@ -1547,9 +1584,30 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
             {/* Education */}
             <div className="bg-white p-6 rounded-xl shadow-md">
               <h3 className="text-lg font-semibold mb-4">Eğitim Geçmişi</h3>
+              <p className="text-sm text-gray-500 mb-3">Sırayı değiştirmek için ▲ ▼ butonlarını kullanın.</p>
               <div className="space-y-4 mb-4">
-                {aboutData.education.map((education) => (
+                {aboutData.education.map((education, index) => (
                   <div key={education.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
+                    <div className="flex flex-col gap-1">
+                      <button
+                        type="button"
+                        onClick={() => moveEducation(index, "up")}
+                        disabled={index === 0}
+                        className="p-1.5 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Yukarı taşı"
+                      >
+                        <ChevronUp size={18} className="text-gray-700" />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => moveEducation(index, "down")}
+                        disabled={index === aboutData.education.length - 1}
+                        className="p-1.5 rounded hover:bg-gray-200 disabled:opacity-30 disabled:cursor-not-allowed"
+                        title="Aşağı taşı"
+                      >
+                        <ChevronDown size={18} className="text-gray-700" />
+                      </button>
+                    </div>
                     <div className="flex-1">
                       <div className="font-medium">{education.degree}</div>
                       <div className="text-sm text-blue-600">{education.field} | {education.period}</div>

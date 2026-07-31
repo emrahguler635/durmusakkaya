@@ -64,44 +64,8 @@ export default function AboutPage() {
   // Use admin data if available, otherwise use static data
   const aboutData = (adminAboutData && Object.keys(adminAboutData).length > 0) ? adminAboutData : staticAboutData;
   const careerIcons = [Briefcase, Target, Award];
-
-  // Sort career by date (newest first)
-  const sortedCareer = [...(aboutData.career || [])].sort((a: any, b: any) => {
-    const parseDate = (dateStr: string): number => {
-      if (!dateStr || dateStr === "Halen" || dateStr === "Günümüz" || dateStr.toLowerCase().includes("halen")) {
-        return Infinity; // Current positions get highest priority
-      }
-      
-      // Parse Turkish month names
-      const monthMap: { [key: string]: number } = {
-        "oca": 1, "şub": 2, "mar": 3, "nis": 4, "may": 5, "haz": 6,
-        "tem": 7, "ağu": 8, "eyl": 9, "eki": 10, "kas": 11, "ara": 12
-      };
-      
-      const parts = dateStr.trim().split(" ");
-      if (parts.length === 2) {
-        const month = monthMap[parts[0].toLowerCase()] || 0;
-        const year = parseInt(parts[1]) || 0;
-        return year * 12 + month;
-      }
-      return 0;
-    };
-
-    const aEndDate = a.endDate || a.period?.split(" - ")[1] || "";
-    const bEndDate = b.endDate || b.period?.split(" - ")[1] || "";
-    
-    const aDate = parseDate(aEndDate);
-    const bDate = parseDate(bEndDate);
-    
-    // If both are current (Infinity), compare start dates
-    if (aDate === Infinity && bDate === Infinity) {
-      const aStartDate = a.startDate || a.period?.split(" - ")[0] || "";
-      const bStartDate = b.startDate || b.period?.split(" - ")[0] || "";
-      return parseDate(bStartDate) - parseDate(aStartDate);
-    }
-    
-    return bDate - aDate; // Descending order (newest first)
-  });
+  // Keep admin panel order (manual up/down) — do not auto-sort by date
+  const sortedCareer = aboutData.career || [];
 
   return (
     <div>
