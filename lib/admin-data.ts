@@ -53,7 +53,7 @@ export const adminAboutData: any = {
   "career": [
     {
       "id": "1785492563782",
-      "title": "ÖĞRETİM GÖREVLİSİ YÖNETİM ÜYESİ ",
+      "title": "ÖĞRETİM GÖREVLİSİ",
       "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
       "employmentType": "Tam zamanlı",
       "startDate": "2010",
