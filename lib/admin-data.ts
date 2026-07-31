@@ -234,3 +234,4 @@ export const adminProjectsData: any = [
     "createdAt": "2026-07-31T12:40:41.881Z"
   }
 ];
+export const adminPublicationsData: any = [];

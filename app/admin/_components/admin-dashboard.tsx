@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket, Briefcase, ChevronUp, ChevronDown } from "lucide-react";
+import { Plus, Trash2, Edit2, LogOut, Newspaper, Mail, Home, User, Phone, Image as ImageIcon, Rocket, Briefcase, ChevronUp, ChevronDown, BookOpen } from "lucide-react";
 import { publicImages, getPublicImagePath } from "@/lib/public-images";
 import { getImagePath } from "@/lib/image-path";
 import { 
@@ -10,7 +10,7 @@ import {
   getContactPageData, saveContactPageData, defaultContactPageData,
   type HomePageData, type AboutPageData, type ContactPageData
 } from "@/lib/page-data";
-import { adminProjectsData, adminNewsData } from "@/lib/admin-data";
+import { adminProjectsData, adminNewsData, adminPublicationsData } from "@/lib/admin-data";
 
 interface News {
   id: string;
@@ -40,7 +40,7 @@ interface Project {
   videoUrl?: string;
 }
 
-type TabType = "home" | "about" | "news" | "projects" | "contact" | "messages";
+type TabType = "home" | "about" | "news" | "publications" | "projects" | "contact" | "messages";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -56,6 +56,13 @@ export default function AdminDashboard() {
   const [showImageSelector, setShowImageSelector] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  // Publications state (Akademik Yayınlar)
+  const [publications, setPublications] = useState<News[]>([]);
+  const [showPublicationForm, setShowPublicationForm] = useState(false);
+  const [editingPublicationId, setEditingPublicationId] = useState<string | null>(null);
+  const [publicationForm, setPublicationForm] = useState({ title: "", summary: "", content: "", imageUrl: "", images: [] as string[], published: true });
+  const [showPublicationImageSelector, setShowPublicationImageSelector] = useState(false);
 
   // Projects state
   const [projects, setProjects] = useState<Project[]>([]);
@@ -103,6 +110,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     setMounted(true);
     loadNews();
+    loadPublications();
     loadProjects();
     loadMessages();
     loadHomeData();
@@ -181,6 +189,35 @@ export default function AdminDashboard() {
       }
     } catch {
       setNews([]);
+    }
+  };
+
+  const loadPublications = () => {
+    if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
+      setPublications([]);
+      return;
+    }
+    try {
+      const saved = localStorage.getItem("admin_publications");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setPublications(parsed);
+          return;
+        }
+      }
+      if (adminPublicationsData && Array.isArray(adminPublicationsData) && adminPublicationsData.length > 0) {
+        setPublications(adminPublicationsData);
+        try {
+          localStorage.setItem("admin_publications", JSON.stringify(adminPublicationsData));
+        } catch {
+          // Silently fail
+        }
+      } else {
+        setPublications([]);
+      }
+    } catch {
+      setPublications([]);
     }
   };
 
@@ -379,6 +416,68 @@ export default function AdminDashboard() {
     setShowNewsForm(true);
   };
 
+  // Publication handlers (Akademik Yayınlar)
+  const handlePublicationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const newSlug = editingPublicationId 
+      ? publications.find(n => n.id === editingPublicationId)?.slug || createSlug(publicationForm.title)
+      : createSlug(publicationForm.title);
+    
+    const updated = editingPublicationId
+      ? publications.map(n => n.id === editingPublicationId ? { ...n, ...publicationForm, slug: newSlug, id: editingPublicationId, images: publicationForm.images || [] } : n)
+      : [...publications, { ...publicationForm, id: Date.now().toString(), slug: newSlug, createdAt: new Date().toISOString(), images: publicationForm.images || [] }];
+    
+    setPublications(updated);
+    try {
+      localStorage.setItem("admin_publications", JSON.stringify(updated));
+    } catch {
+      // Silently fail
+    }
+    
+    if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+      const success = await commitToGitHubAndDeploy("publications");
+      if (!success) {
+        alert("Yayın localStorage'a kaydedildi, ancak GitHub'a yüklenemedi.");
+      }
+    }
+    
+    setShowPublicationForm(false);
+    setEditingPublicationId(null);
+    setPublicationForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true });
+  };
+
+  const handlePublicationDelete = async (id: string) => {
+    if (confirm("Bu yayını silmek istediğinizden emin misiniz?")) {
+      const updated = publications.filter(n => n.id !== id);
+      setPublications(updated);
+      try {
+        localStorage.setItem("admin_publications", JSON.stringify(updated));
+      } catch {
+        // Silently fail
+      }
+      
+      if (typeof window !== 'undefined' && typeof fetch !== 'undefined') {
+        const success = await commitToGitHubAndDeploy("publications (delete)");
+        if (!success) {
+          alert("Yayın localStorage'dan silindi, ancak GitHub'a yüklenemedi.");
+        }
+      }
+    }
+  };
+
+  const handlePublicationEdit = (item: News) => {
+    setPublicationForm({ 
+      title: item.title, 
+      summary: item.summary, 
+      content: item.content, 
+      imageUrl: item.imageUrl || "", 
+      images: item.images || [],
+      published: item.published 
+    });
+    setEditingPublicationId(item.id);
+    setShowPublicationForm(true);
+  };
+
   // Project handlers
   const handleProjectSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -474,7 +573,7 @@ export default function AdminDashboard() {
   };
 
   // Resim yükleme fonksiyonu (GitHub'a base64 olarak kaydet)
-  const uploadImageToGitHub = async (file: File, folder: "news" | "projects" = "news"): Promise<string | null> => {
+  const uploadImageToGitHub = async (file: File, folder: "news" | "projects" | "publications" = "news"): Promise<string | null> => {
     if (typeof window === 'undefined' || typeof fetch === 'undefined' || typeof btoa === 'undefined') {
       return null;
     }
@@ -505,13 +604,14 @@ export default function AdminDashboard() {
       const timestamp = Date.now();
       const random = Math.random().toString(36).substring(2, 9);
       const extension = file.name.split('.').pop() || 'jpg';
-      const fileName = `${folder === "projects" ? "project" : "news"}-${timestamp}-${random}.${extension}`;
+      const prefix = folder === "projects" ? "project" : folder === "publications" ? "publication" : "news";
+      const fileName = `${prefix}-${timestamp}-${random}.${extension}`;
       const imagePath = `public/images/${folder}/${fileName}`;
       const publicUrl = `/images/${folder}/${fileName}`;
 
       // GitHub API: Create file
       const repo = "emrahguler635/durmusakkaya";
-      const message = `Add ${folder === "projects" ? "project" : "news"} image: ${fileName}`;
+      const message = `Add ${prefix} image: ${fileName}`;
 
       const response = await fetch(`https://api.github.com/repos/${repo}/contents/${imagePath}`, {
         method: 'PUT',
@@ -578,6 +678,33 @@ export default function AdminDashboard() {
     }
 
     // Input'u temizle
+    e.target.value = '';
+  };
+
+  const handlePublicationImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Resim boyutu 5MB'dan küçük olmalıdır.");
+      return;
+    }
+
+    if (!file.type.startsWith('image/')) {
+      alert("Lütfen bir resim dosyası seçin.");
+      return;
+    }
+
+    const uploadedUrl = await uploadImageToGitHub(file, "publications");
+    if (uploadedUrl) {
+      if (!publicationForm.imageUrl) {
+        setPublicationForm({ ...publicationForm, imageUrl: uploadedUrl, images: [...publicationForm.images, uploadedUrl] });
+      } else {
+        setPublicationForm({ ...publicationForm, images: [...publicationForm.images, uploadedUrl] });
+      }
+      alert("✅ Resim başarıyla yüklendi!");
+    }
+
     e.target.value = '';
   };
 
@@ -715,14 +842,19 @@ export default function AdminDashboard() {
       const aboutDataToSave = aboutData;
       const contactDataToSave = contactData;
       let newsToSave: News[] = news;
+      let publicationsToSave: News[] = publications;
       let projectsToSave: Project[] = projects;
 
-      // If we're saving something other than news/projects, never overwrite
+      // If we're saving something other than news/projects/publications, never overwrite
       // published data with an empty array (e.g. localStorage was missing).
       const savingNews = dataType.startsWith("news");
+      const savingPublications = dataType.startsWith("publications");
       const savingProjects = dataType.startsWith("projects");
       if (!savingNews && newsToSave.length === 0 && Array.isArray(adminNewsData) && adminNewsData.length > 0) {
         newsToSave = adminNewsData;
+      }
+      if (!savingPublications && publicationsToSave.length === 0 && Array.isArray(adminPublicationsData) && adminPublicationsData.length > 0) {
+        publicationsToSave = adminPublicationsData;
       }
       if (!savingProjects && projectsToSave.length === 0 && Array.isArray(adminProjectsData) && adminProjectsData.length > 0) {
         projectsToSave = adminProjectsData;
@@ -734,6 +866,13 @@ export default function AdminDashboard() {
             if (savedNews) {
               const parsed = JSON.parse(savedNews);
               if (Array.isArray(parsed) && parsed.length > 0) newsToSave = parsed;
+            }
+          }
+          if (!savingPublications && publicationsToSave.length === 0) {
+            const savedPublications = localStorage.getItem("admin_publications");
+            if (savedPublications) {
+              const parsed = JSON.parse(savedPublications);
+              if (Array.isArray(parsed) && parsed.length > 0) publicationsToSave = parsed;
             }
           }
           if (!savingProjects && projectsToSave.length === 0) {
@@ -763,6 +902,7 @@ export const adminAboutData: any = ${safeStringify(aboutDataToSave)};
 export const adminContactData: any = ${safeStringify(contactDataToSave)};
 export const adminNewsData: any = ${safeStringify(newsToSave)};
 export const adminProjectsData: any = ${safeStringify(projectsToSave)};
+export const adminPublicationsData: any = ${safeStringify(publicationsToSave)};
 `;
 
       // GitHub API: Create or update file
@@ -1223,6 +1363,9 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
           </button>
           <button onClick={() => setTab("news")} className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${tab === "news" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
             <Newspaper size={18} /> Haberler
+          </button>
+          <button onClick={() => setTab("publications")} className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${tab === "publications" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
+            <BookOpen size={18} /> Akademik Yayınlar
           </button>
           <button onClick={() => setTab("projects")} className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${tab === "projects" ? "bg-blue-600 text-white" : "bg-white text-gray-700 hover:bg-gray-50"}`}>
             <Briefcase size={18} /> Projeler
@@ -1948,6 +2091,207 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
                 </table>
               ) : (
                 <p className="text-gray-500 text-center py-8">Henüz haber eklenmemiş.</p>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* Publications Tab */}
+        {tab === "publications" && (
+          <>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Akademik Yayınlar Yönetimi</h2>
+              <button onClick={() => { setShowPublicationForm(true); setEditingPublicationId(null); setPublicationForm({ title: "", summary: "", content: "", imageUrl: "", images: [], published: true }); }} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+                <Plus size={18} /> Yeni Yayın Ekle
+              </button>
+            </div>
+
+            {showPublicationForm && (
+              <div className="bg-white p-6 rounded-xl shadow-md mb-6">
+                <h3 className="text-lg font-semibold mb-4">{editingPublicationId ? "Yayın Düzenle" : "Yeni Yayın Ekle"}</h3>
+                <form onSubmit={handlePublicationSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Başlık</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={publicationForm.title}
+                      onChange={(e) => setPublicationForm({ ...publicationForm, title: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Özet</label>
+                    <textarea 
+                      rows={2}
+                      required
+                      value={publicationForm.summary}
+                      onChange={(e) => setPublicationForm({ ...publicationForm, summary: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">İçerik</label>
+                    <textarea 
+                      rows={6}
+                      required
+                      value={publicationForm.content}
+                      onChange={(e) => setPublicationForm({ ...publicationForm, content: e.target.value })}
+                      className="w-full px-4 py-3 border rounded-lg"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Ana Görsel (URL)</label>
+                    <div className="flex gap-2">
+                      <input 
+                        type="text" 
+                        value={publicationForm.imageUrl}
+                        onChange={(e) => setPublicationForm({ ...publicationForm, imageUrl: e.target.value })}
+                        className="flex-1 px-4 py-3 border rounded-lg"
+                        placeholder="/images/publications/..."
+                      />
+                      <button type="button" onClick={() => setShowPublicationImageSelector(!showPublicationImageSelector)} className="px-4 py-3 bg-gray-200 hover:bg-gray-300 rounded-lg">
+                        <ImageIcon size={18} />
+                      </button>
+                    </div>
+                    {showPublicationImageSelector && (
+                      <div className="mt-2 p-4 bg-gray-50 rounded-lg grid grid-cols-2 gap-2">
+                        {publicImages.map((img) => (
+                          <button
+                            key={img.url}
+                            type="button"
+                            onClick={() => { setPublicationForm({ ...publicationForm, imageUrl: img.url }); setShowPublicationImageSelector(false); }}
+                            className="p-2 text-left hover:bg-blue-50 rounded"
+                          >
+                            {img.name}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Görseller (Birden Fazla)</label>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <label className="flex-1 cursor-pointer">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handlePublicationImageUpload}
+                            disabled={uploadingImage}
+                            className="hidden"
+                            id="publication-image-upload"
+                          />
+                          <div className="px-4 py-3 border-2 border-dashed border-blue-300 rounded-lg hover:bg-blue-50 transition-colors text-center">
+                            {uploadingImage ? (
+                              <span className="text-blue-600">⏳ Yükleniyor...</span>
+                            ) : (
+                              <span className="text-blue-600 flex items-center justify-center gap-2">
+                                <ImageIcon size={18} /> Yeni Resim Yükle (Max 5MB)
+                              </span>
+                            )}
+                          </div>
+                        </label>
+                      </div>
+                      
+                      {publicationForm.images && publicationForm.images.length > 0 && (
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                          {publicationForm.images.map((imgUrl, index) => (
+                            <div key={index} className="relative group">
+                              <img 
+                                src={getImagePath(imgUrl)} 
+                                alt={`Görsel ${index + 1}`}
+                                className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  const newImages = publicationForm.images.filter((_, i) => i !== index);
+                                  if (publicationForm.imageUrl === imgUrl && newImages.length > 0) {
+                                    setPublicationForm({ ...publicationForm, images: newImages, imageUrl: newImages[0] });
+                                  } else if (publicationForm.imageUrl === imgUrl) {
+                                    setPublicationForm({ ...publicationForm, images: newImages, imageUrl: "" });
+                                  } else {
+                                    setPublicationForm({ ...publicationForm, images: newImages });
+                                  }
+                                }}
+                                className="absolute top-1 right-1 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                <Trash2 size={14} />
+                              </button>
+                              {publicationForm.imageUrl === imgUrl && (
+                                <div className="absolute bottom-1 left-1 bg-blue-600 text-white text-xs px-2 py-1 rounded">
+                                  Ana
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => setPublicationForm({ ...publicationForm, imageUrl: imgUrl })}
+                                className="absolute bottom-1 right-1 bg-blue-600 hover:bg-blue-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                              >
+                                Ana Yap
+                              </button>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input 
+                      type="checkbox" 
+                      checked={publicationForm.published}
+                      onChange={(e) => setPublicationForm({ ...publicationForm, published: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <label className="text-sm font-medium text-gray-700">Yayınla</label>
+                  </div>
+                  <div className="flex gap-2">
+                    <button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg">
+                      {editingPublicationId ? "Güncelle" : "Ekle"}
+                    </button>
+                    <button type="button" onClick={() => { setShowPublicationForm(false); setEditingPublicationId(null); }} className="bg-gray-200 hover:bg-gray-300 px-6 py-2 rounded-lg">
+                      İptal
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            <div className="bg-white p-6 rounded-xl shadow-md">
+              {publications.length > 0 ? (
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4">Başlık</th>
+                      <th className="text-left py-3 px-4">Durum</th>
+                      <th className="text-right py-3 px-4">İşlemler</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {publications.map((item) => (
+                      <tr key={item.id} className="border-b">
+                        <td className="py-3 px-4">{item.title}</td>
+                        <td className="py-3 px-4">
+                          <span className={`px-2 py-1 rounded text-sm ${item.published ? "bg-green-100 text-green-800" : "bg-gray-100 text-gray-800"}`}>
+                            {item.published ? "Yayında" : "Taslak"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4 text-right">
+                          <button onClick={() => handlePublicationEdit(item)} className="p-2 hover:bg-blue-50 rounded mr-2">
+                            <Edit2 size={16} className="text-blue-600" />
+                          </button>
+                          <button onClick={() => handlePublicationDelete(item.id)} className="p-2 hover:bg-red-50 rounded">
+                            <Trash2 size={16} className="text-red-600" />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p className="text-gray-500 text-center py-8">Henüz akademik yayın eklenmemiş.</p>
               )}
             </div>
           </>

@@ -10,6 +10,7 @@ const links = [
   { href: "/", label: "Ana Sayfa" },
   { href: "/hakkinda", label: "Hakkında" },
   { href: "/haberler", label: "Haberler" },
+  { href: "/akademik-yayinlar", label: "Akademik Yayınlar" },
   { href: "/projeler", label: "Projeler" },
   { href: "/iletisim", label: "İletişim" }
 ];
@@ -26,7 +27,7 @@ export default function Navbar() {
           </Link>
           <nav className="hidden md:flex items-center gap-2">
             {links.map((l) => (
-              <Link key={l.href} href={l.href} className="px-5 py-3 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors font-semibold text-lg">
+              <Link key={l.href} href={l.href} className="px-3 py-2 rounded-lg text-gray-700 hover:bg-blue-50 hover:text-blue-700 transition-colors font-semibold text-base whitespace-nowrap">
                 {l.label}
               </Link>
             ))}
