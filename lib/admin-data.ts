@@ -52,40 +52,25 @@ export const adminAboutData: any = {
   },
   "career": [
     {
-      "id": "1785492652040",
-      "title": "BAŞAK KENTSEL DÖNÜŞÜM PROJELERİ GELİŞTİRME A.Ş. YÖNETİM KURULU BAŞKANI",
-      "company": "BAĞCILAR BELEDİYESİ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2023",
-      "endDate": "Devam Ediyor.",
-      "duration": ""
+      "id": "1",
+      "title": "Genel Müdür",
+      "company": "Başak A.Ş.",
+      "period": "2018 - Günümüz",
+      "description": "Şirketin genel yönetimi, stratejik planlama ve büyüme hedeflerinin belirlenmesi"
     },
     {
-      "id": "1785492624926",
-      "title": "BELEDİYE BAŞKAN YARDIMCISI",
-      "company": "UŞAK BELEDİYESİ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2020",
-      "endDate": "2023",
-      "duration": ""
+      "id": "2",
+      "title": "Genel Müdür Yardımcısı",
+      "company": "Başak A.Ş.",
+      "period": "2014 - 2018",
+      "description": "Operasyonel süreçlerin yönetimi ve iyileştirilmesi"
     },
     {
-      "id": "1785492590011",
-      "title": "TUS GÖREVLİSİ MÜHENDİS ",
-      "company": "İBB KENTSEL DÖNÜŞÜM MÜDÜRLÜĞÜ ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2013",
-      "endDate": "2020",
-      "duration": ""
-    },
-    {
-      "id": "1785492563782",
-      "title": "ÖĞRETİM GÖREVLİSİ",
-      "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2010",
-      "endDate": "2013",
-      "duration": ""
+      "id": "3",
+      "title": "Bölüm Müdürü",
+      "company": "Başak A.Ş.",
+      "period": "2010 - 2014",
+      "description": "Satış ve pazarlama bölümünün yönetimi"
     }
   ],
   "education": [
@@ -100,30 +85,6 @@ export const adminAboutData: any = {
       "degree": "Yüksek Lisans",
       "field": "MBA - İşletme",
       "period": "2005 - 2007"
-    },
-    {
-      "id": "1785489089795",
-      "degree": "İNŞAAT MÜHENDİSİ ",
-      "field": "MEZUNİYET",
-      "period": "2010"
-    },
-    {
-      "id": "1785489108981",
-      "degree": "HARİTA MÜHENDİSİ",
-      "field": "MEZUNİYET",
-      "period": "2011"
-    },
-    {
-      "id": "1785489125070",
-      "degree": "İŞLETME MEZUNİYET",
-      "field": "",
-      "period": "2011"
-    },
-    {
-      "id": "1785489143986",
-      "degree": "YÜKSEK LİSANS",
-      "field": "",
-      "period": "2012"
     }
   ]
 };
@@ -133,8 +94,8 @@ export const adminContactData: any = {
     "subtitle": "Benimle iletişime geçin"
   },
   "contactInfo": {
-    "address": "Kirazlı Mahallesi, Merkez Cd.\nNo:68, 34210 Bağcılar / İstanbul",
-    "phone": "+90 (212) 430 70 00",
+    "address": "Başak A.Ş. Genel Müdürlük\nİstanbul, Türkiye",
+    "phone": "+90 (212) 000 00 00",
     "email": "info@basak.com.tr",
     "workingHours": "Pazartesi - Cuma: 09:00 - 18:00"
   }
@@ -236,13 +197,18 @@ export const adminProjectsData: any = [
     "title": "Başak Evler – 2",
     "summary": "Estetik mimari ve üstün mühendislik anlayışıyla hayata geçirdiğimiz; şehrin silüetine değer katan, sağlam zeminler üzerinde yükselen güvenli ve modern yaşam projelerimizi keşfedin.",
     "content": "Şehrin Yeni İkonu: Başak Evler 2 Modern mimari, güvenli yapı ve konforlu bir yaşam standardı. “Başak Kentsel Dönüşüm A.Ş. güvencesiyle hayata geçen Başak Evler 2, sadece dört duvardan ibaret bir ev değil, ailenizle huzurla yaşayabileceğiniz modern bir yaşam alanı sunuyor. Şehrin tam kalbinde konumlanan projemiz, estetik detayları ve fonksiyonel mimarisiyle hayatınıza değer katmak için tasarlandı.",
-    "imageUrl": "",
-    "images": [],
+    "imageUrl": "/images/projects/project-1785498654141-n49xp71.jpeg",
+    "images": [
+      "/images/projects/project-1785498654141-n49xp71.jpeg",
+      "/images/projects/project-1785498664361-qn8q0el.jpeg",
+      "/images/projects/project-1785498675521-x6owtpx.jpeg",
+      "/images/projects/project-1785498686522-z6u9zez.jpeg"
+    ],
     "published": true,
     "status": "Devam Ediyor",
     "location": "Bağlar",
     "startYear": "2024",
-    "videoUrl": "",
+    "videoUrl": "https://www.youtube.com/watch?v=PJyzYOwwGRQ",
     "id": "1785335886961",
     "slug": "basak-evler-2",
     "createdAt": "2026-07-29T14:38:06.961Z"
