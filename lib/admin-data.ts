@@ -84,7 +84,7 @@ export const adminAboutData: any = {
       "company": "BAĞCILAR BELEDİYESİ",
       "employmentType": "Tam zamanlı",
       "startDate": "2023",
-      "endDate": "",
+      "endDate": "Devam Ediyor.",
       "duration": ""
     }
   ],
