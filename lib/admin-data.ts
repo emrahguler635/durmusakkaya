@@ -52,40 +52,25 @@ export const adminAboutData: any = {
   },
   "career": [
     {
-      "id": "1785492652040",
-      "title": "BAŞAK KENTSEL DÖNÜŞÜM PROJELERİ GELİŞTİRME A.Ş. YÖNETİM KURULU BAŞKANI",
-      "company": "BAĞCILAR BELEDİYESİ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2023",
-      "endDate": "Devam Ediyor.",
-      "duration": ""
+      "id": "1",
+      "title": "Genel Müdür",
+      "company": "Başak A.Ş.",
+      "period": "2018 - Günümüz",
+      "description": "Şirketin genel yönetimi, stratejik planlama ve büyüme hedeflerinin belirlenmesi"
     },
     {
-      "id": "1785492624926",
-      "title": "BELEDİYE BAŞKAN YARDIMCISI",
-      "company": "UŞAK BELEDİYESİ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2020",
-      "endDate": "2023",
-      "duration": ""
+      "id": "2",
+      "title": "Genel Müdür Yardımcısı",
+      "company": "Başak A.Ş.",
+      "period": "2014 - 2018",
+      "description": "Operasyonel süreçlerin yönetimi ve iyileştirilmesi"
     },
     {
-      "id": "1785492590011",
-      "title": "TUS GÖREVLİSİ MÜHENDİS ",
-      "company": "İBB KENTSEL DÖNÜŞÜM MÜDÜRLÜĞÜ ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2013",
-      "endDate": "2020",
-      "duration": ""
-    },
-    {
-      "id": "1785492563782",
-      "title": "ÖĞRETİM GÖREVLİSİ",
-      "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2010",
-      "endDate": "2013",
-      "duration": ""
+      "id": "3",
+      "title": "Bölüm Müdürü",
+      "company": "Başak A.Ş.",
+      "period": "2010 - 2014",
+      "description": "Satış ve pazarlama bölümünün yönetimi"
     }
   ],
   "education": [
@@ -100,30 +85,6 @@ export const adminAboutData: any = {
       "degree": "Yüksek Lisans",
       "field": "MBA - İşletme",
       "period": "2005 - 2007"
-    },
-    {
-      "id": "1785489089795",
-      "degree": "İNŞAAT MÜHENDİSİ ",
-      "field": "MEZUNİYET",
-      "period": "2010"
-    },
-    {
-      "id": "1785489108981",
-      "degree": "HARİTA MÜHENDİSİ",
-      "field": "MEZUNİYET",
-      "period": "2011"
-    },
-    {
-      "id": "1785489125070",
-      "degree": "İŞLETME MEZUNİYET",
-      "field": "",
-      "period": "2011"
-    },
-    {
-      "id": "1785489143986",
-      "degree": "YÜKSEK LİSANS",
-      "field": "",
-      "period": "2012"
     }
   ]
 };
