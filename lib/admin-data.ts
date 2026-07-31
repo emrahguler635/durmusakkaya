@@ -52,27 +52,6 @@ export const adminAboutData: any = {
   },
   "career": [
     {
-      "id": "1",
-      "title": "Genel Müdür",
-      "company": "Başak A.Ş.",
-      "period": "2018 - Günümüz",
-      "description": "Şirketin genel yönetimi, stratejik planlama ve büyüme hedeflerinin belirlenmesi"
-    },
-    {
-      "id": "2",
-      "title": "Genel Müdür Yardımcısı",
-      "company": "Başak A.Ş.",
-      "period": "2014 - 2018",
-      "description": "Operasyonel süreçlerin yönetimi ve iyileştirilmesi"
-    },
-    {
-      "id": "3",
-      "title": "Bölüm Müdürü",
-      "company": "Başak A.Ş.",
-      "period": "2010 - 2014",
-      "description": "Satış ve pazarlama bölümünün yönetimi"
-    },
-    {
       "id": "1785492563782",
       "title": "ÖĞRETİM GÖREVLİSİ YÖNETİM ÜYESİ ",
       "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
@@ -92,7 +71,7 @@ export const adminAboutData: any = {
     },
     {
       "id": "1785492624926",
-      "title": "Belediye Başkan Yardımcısı",
+      "title": "BELEDİYE BAŞKAN YARDIMCISI",
       "company": "UŞAK BELEDİYESİ",
       "employmentType": "Tam zamanlı",
       "startDate": "2020",
