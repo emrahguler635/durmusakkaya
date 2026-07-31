@@ -52,21 +52,12 @@ export const adminAboutData: any = {
   },
   "career": [
     {
-      "id": "1785492563782",
-      "title": "ÖĞRETİM GÖREVLİSİ",
-      "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
+      "id": "1785492652040",
+      "title": "BAŞAK KENTSEL DÖNÜŞÜM PROJELERİ GELİŞTİRME A.Ş. YÖNETİM KURULU BAŞKANI",
+      "company": "BAĞCILAR BELEDİYESİ",
       "employmentType": "Tam zamanlı",
-      "startDate": "2010",
-      "endDate": "2013",
-      "duration": ""
-    },
-    {
-      "id": "1785492590011",
-      "title": "TUS GÖREVLİSİ MÜHENDİS ",
-      "company": "İBB KENTSEL DÖNÜŞÜM MÜDÜRLÜĞÜ ",
-      "employmentType": "Tam zamanlı",
-      "startDate": "2013",
-      "endDate": "2020",
+      "startDate": "2023",
+      "endDate": "Devam Ediyor.",
       "duration": ""
     },
     {
@@ -79,12 +70,21 @@ export const adminAboutData: any = {
       "duration": ""
     },
     {
-      "id": "1785492652040",
-      "title": "BAŞAK KENTSEL DÖNÜŞÜM PROJELERİ GELİŞTİRME A.Ş. YÖNETİM KURULU BAŞKANI",
-      "company": "BAĞCILAR BELEDİYESİ",
+      "id": "1785492590011",
+      "title": "TUS GÖREVLİSİ MÜHENDİS ",
+      "company": "İBB KENTSEL DÖNÜŞÜM MÜDÜRLÜĞÜ ",
       "employmentType": "Tam zamanlı",
-      "startDate": "2023",
-      "endDate": "Devam Ediyor.",
+      "startDate": "2013",
+      "endDate": "2020",
+      "duration": ""
+    },
+    {
+      "id": "1785492563782",
+      "title": "ÖĞRETİM GÖREVLİSİ",
+      "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2010",
+      "endDate": "2013",
       "duration": ""
     }
   ],
