@@ -71,6 +71,42 @@ export const adminAboutData: any = {
       "company": "Başak A.Ş.",
       "period": "2010 - 2014",
       "description": "Satış ve pazarlama bölümünün yönetimi"
+    },
+    {
+      "id": "1785492563782",
+      "title": "ÖĞRETİM GÖREVLİSİ YÖNETİM ÜYESİ ",
+      "company": "YILDIZ TEKNİK ÜNİVERSİTESİ",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2010",
+      "endDate": "2013",
+      "duration": ""
+    },
+    {
+      "id": "1785492590011",
+      "title": "TUS GÖREVLİSİ MÜHENDİS ",
+      "company": "İBB KENTSEL DÖNÜŞÜM MÜDÜRLÜĞÜ ",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2013",
+      "endDate": "2020",
+      "duration": ""
+    },
+    {
+      "id": "1785492624926",
+      "title": "Belediye Başkan Yardımcısı",
+      "company": "UŞAK BELEDİYESİ",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2020",
+      "endDate": "2023",
+      "duration": ""
+    },
+    {
+      "id": "1785492652040",
+      "title": "BAŞAK KENTSEL DÖNÜŞÜM PROJELERİ GELİŞTİRME A.Ş. YÖNETİM KURULU BAŞKANI",
+      "company": "BAĞCILAR BELEDİYESİ",
+      "employmentType": "Tam zamanlı",
+      "startDate": "2023",
+      "endDate": "",
+      "duration": ""
     }
   ],
   "education": [
