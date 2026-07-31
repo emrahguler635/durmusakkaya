@@ -10,7 +10,14 @@ import {
   getContactPageData, saveContactPageData, defaultContactPageData,
   type HomePageData, type AboutPageData, type ContactPageData
 } from "@/lib/page-data";
-import { adminProjectsData, adminNewsData, adminPublicationsData } from "@/lib/admin-data";
+import {
+  adminProjectsData,
+  adminNewsData,
+  adminPublicationsData,
+  adminHomeData,
+  adminAboutData,
+  adminContactData,
+} from "@/lib/admin-data";
 
 interface News {
   id: string;
@@ -265,19 +272,42 @@ export default function AdminDashboard() {
     }
   };
 
+  // A browser without a saved draft must start from what is published on the site,
+  // not from the built-in defaults, otherwise the next save overwrites live content.
+  const hasLocalDraft = (storageKey: string): boolean => {
+    if (typeof window === "undefined" || typeof localStorage === "undefined") return false;
+    try {
+      return !!localStorage.getItem(storageKey);
+    } catch {
+      return false;
+    }
+  };
+
   const loadHomeData = () => {
-    const data = getHomePageData();
-    setHomeData(data);
+    if (!hasLocalDraft("admin_homepage") && adminHomeData?.hero) {
+      setHomeData(adminHomeData);
+      saveHomePageData(adminHomeData);
+      return;
+    }
+    setHomeData(getHomePageData());
   };
 
   const loadAboutData = () => {
-    const data = getAboutPageData();
-    setAboutData(data);
+    if (!hasLocalDraft("admin_aboutpage") && adminAboutData?.bio) {
+      setAboutData(adminAboutData);
+      saveAboutPageData(adminAboutData);
+      return;
+    }
+    setAboutData(getAboutPageData());
   };
 
   const loadContactData = () => {
-    const data = getContactPageData();
-    setContactData(data);
+    if (!hasLocalDraft("admin_contactpage") && adminContactData?.contactInfo) {
+      setContactData(adminContactData);
+      saveContactPageData(adminContactData);
+      return;
+    }
+    setContactData(getContactPageData());
   };
 
   // Helper function to create a clean slug from title
@@ -838,9 +868,44 @@ export default function AdminDashboard() {
       }
 
       // Use React state as source of truth so saving one section never wipes another.
-      const homeDataToSave = homeData;
-      const aboutDataToSave = aboutData;
-      const contactDataToSave = contactData;
+      // For sections we are not editing right now, fall back to the local draft and then
+      // to the published data, so an unrelated save can never reset them to the defaults.
+      const keepSection = <T,>(
+        isEditing: boolean,
+        stateValue: T,
+        storageKey: string,
+        publishedValue: any
+      ): T => {
+        if (isEditing) return stateValue;
+        if (typeof localStorage !== "undefined") {
+          try {
+            const saved = localStorage.getItem(storageKey);
+            if (saved) return JSON.parse(saved) as T;
+          } catch {
+            // Silently fail
+          }
+        }
+        return publishedValue ?? stateValue;
+      };
+
+      const homeDataToSave = keepSection(
+        dataType.startsWith("home"),
+        homeData,
+        "admin_homepage",
+        adminHomeData?.hero ? adminHomeData : null
+      );
+      const aboutDataToSave = keepSection(
+        dataType.startsWith("about"),
+        aboutData,
+        "admin_aboutpage",
+        adminAboutData?.bio ? adminAboutData : null
+      );
+      const contactDataToSave = keepSection(
+        dataType.startsWith("contact"),
+        contactData,
+        "admin_contactpage",
+        adminContactData?.contactInfo ? adminContactData : null
+      );
       let newsToSave: News[] = news;
       let publicationsToSave: News[] = publications;
       let projectsToSave: Project[] = projects;
