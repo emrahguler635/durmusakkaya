@@ -95,10 +95,13 @@ export default function AdminDashboard() {
   // GitHub token state (client-side only, never accessed during build)
   const [githubToken, setGithubToken] = useState<string>("");
   const [showTokenInput, setShowTokenInput] = useState(false);
+  const [tokenDraft, setTokenDraft] = useState<string>("");
+  const [mounted, setMounted] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
   // Load all data
   useEffect(() => {
+    setMounted(true);
     loadNews();
     loadProjects();
     loadMessages();
@@ -118,6 +121,38 @@ export default function AdminDashboard() {
       }
     }
   }, []);
+
+  const openTokenModal = () => {
+    setTokenDraft(githubToken);
+    setShowTokenInput(true);
+  };
+
+  const saveGithubToken = () => {
+    const trimmed = tokenDraft.trim();
+    if (!trimmed) {
+      alert("Lütfen geçerli bir GitHub token girin (ghp_... ile başlar).");
+      return;
+    }
+    setGithubToken(trimmed);
+    try {
+      localStorage.setItem("github_token", trimmed);
+    } catch {
+      // Silently fail
+    }
+    setShowTokenInput(false);
+    alert("✅ Token kaydedildi. Artık haber ve proje kaydedebilirsiniz.");
+  };
+
+  const clearGithubToken = () => {
+    setGithubToken("");
+    setTokenDraft("");
+    try {
+      localStorage.removeItem("github_token");
+    } catch {
+      // Silently fail
+    }
+    setShowTokenInput(false);
+  };
 
   const loadNews = () => {
     if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
@@ -445,8 +480,7 @@ export default function AdminDashboard() {
     }
 
     if (!githubToken) {
-      alert("Lütfen önce GitHub Personal Access Token'ınızı girin.");
-      setShowTokenInput(true);
+      openTokenModal();
       return null;
     }
 
@@ -499,8 +533,8 @@ export default function AdminDashboard() {
         console.error('GitHub API error:', errorData);
         const msg = errorData.message || 'Bilinmeyen hata';
         if (msg.toLowerCase().includes('bad credentials') || response.status === 401) {
-          alert(`Resim yüklenemedi: GitHub token geçersiz veya süresi dolmuş.\n\nÇözüm:\n1. Üst menüden "Token Değiştir"e tıklayın\n2. Yeni Personal Access Token girin (repo izni gerekli)\n3. Kaydet'e basıp resmi tekrar yükleyin`);
-          setShowTokenInput(true);
+          alert(`Resim yüklenemedi: GitHub token geçersiz veya süresi dolmuş.\n\nLütfen yeni bir token girip tekrar deneyin.`);
+          openTokenModal();
         } else {
           alert(`Resim yüklenemedi: ${msg}`);
         }
@@ -592,8 +626,7 @@ export default function AdminDashboard() {
     }
 
     if (!githubToken) {
-      alert("Lütfen önce GitHub Personal Access Token'ınızı girin.");
-      setShowTokenInput(true);
+      openTokenModal();
       return;
     }
 
@@ -642,8 +675,8 @@ export default function AdminDashboard() {
         const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
         const errorMessage = errorData.message || "Bilinmeyen hata";
         if (response.status === 401 || String(errorMessage).toLowerCase().includes("bad credentials")) {
-          setShowTokenInput(true);
           alert("Video yüklenemedi: GitHub token geçersiz veya süresi dolmuş. Lütfen tokenı yenileyip tekrar deneyin.");
+          openTokenModal();
         } else if (response.status === 413 || response.status === 422) {
           alert("Video yüklenemedi: Dosya GitHub API için çok büyük. Lütfen videoyu 90MB altına düşürün veya YouTube/Vimeo linki kullanın.");
         } else {
@@ -666,8 +699,7 @@ export default function AdminDashboard() {
     }
     
     if (!githubToken) {
-      alert("Lütfen önce GitHub Personal Access Token'ınızı girin. Token eklemek için header'daki 'Token Ekle' butonuna tıklayın.");
-      setShowTokenInput(true);
+      openTokenModal();
       return false;
     }
 
@@ -809,7 +841,10 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
         const errorData = await response.json().catch(() => ({ message: 'Unknown error' }));
         console.error('GitHub API error:', errorData);
         const errorMessage = errorData.message || `HTTP ${response.status}: ${response.statusText}`;
-        alert(`❌ GitHub'a kaydedilemedi!\n\nHata: ${errorMessage}\n\nLütfen:\n1. Token'ın doğru olduğundan emin olun\n2. Browser konsolunu kontrol edin (F12)\n3. Token'ın 'repo' izinlerine sahip olduğundan emin olun`);
+        alert(`❌ GitHub'a kaydedilemedi!\n\nHata: ${errorMessage}\n\nLütfen:\n1. Token'ın doğru olduğundan emin olun\n2. Token'ın 'repo' izinlerine sahip olduğundan emin olun`);
+        if (response.status === 401 || String(errorMessage).toLowerCase().includes("bad credentials")) {
+          openTokenModal();
+        }
         return false;
       }
     } catch (error: any) {
@@ -1077,72 +1112,90 @@ export const adminProjectsData: any = ${safeStringify(projectsToSave)};
   return (
     <div className="min-h-screen bg-gray-100">
       <header className="bg-blue-900 text-white p-4">
-        <div className="max-w-6xl mx-auto flex justify-between items-center">
+        <div className="max-w-6xl mx-auto flex flex-wrap justify-between items-center gap-3">
           <h1 className="text-xl font-bold">Admin Panel</h1>
-          <div className="flex gap-2 items-center">
-            {typeof window !== 'undefined' && showTokenInput && (
-              <div className="flex gap-2 items-center">
-                <input
-                  type="password"
-                  placeholder="GitHub Personal Access Token (ghp_...)"
-                  value={githubToken}
-                  onChange={(e) => setGithubToken(e.target.value)}
-                  className="px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-900"
-                  style={{ minWidth: '250px' }}
-                />
-                <button
-                  onClick={() => {
-                    if (githubToken && typeof localStorage !== 'undefined') {
-                      localStorage.setItem("github_token", githubToken.trim());
-                      setGithubToken(githubToken.trim());
-                      alert("✅ Token kaydedildi. Şimdi resim yüklemeyi tekrar deneyin.");
-                    }
-                    setShowTokenInput(false);
-                  }}
-                  className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm"
-                >
-                  Kaydet
-                </button>
-                <button
-                  onClick={() => {
-                    setGithubToken("");
-                    if (typeof localStorage !== 'undefined') {
-                      localStorage.removeItem("github_token");
-                    }
-                    setShowTokenInput(false);
-                  }}
-                  className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-sm"
-                >
-                  Temizle
-                </button>
-                <button
-                  onClick={() => setShowTokenInput(false)}
-                  className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
-                >
-                  İptal
-                </button>
-              </div>
-            )}
-            {typeof window !== 'undefined' && !showTokenInput && (
+          <div className="flex flex-wrap gap-2 items-center">
+            {mounted && (
               <button
-                onClick={() => setShowTokenInput(true)}
-                className="px-3 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg text-sm"
+                onClick={openTokenModal}
+                className={`px-3 py-2 rounded-lg text-sm ${githubToken ? "bg-gray-600 hover:bg-gray-700" : "bg-orange-500 hover:bg-orange-600"} text-white`}
               >
                 {githubToken ? "Token Değiştir" : "Token Ekle"}
               </button>
             )}
-            {typeof window !== 'undefined' && isSaving && (
+            {mounted && isSaving && (
               <span className="text-sm text-yellow-300">Kaydediliyor...</span>
             )}
             <button onClick={handleDeploy} className="flex items-center gap-2 bg-green-600 hover:bg-green-700 px-4 py-2 rounded-lg transition-colors text-white">
               <Rocket size={18} /> Deploy Başlat
             </button>
             <button onClick={handleLogout} className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
-            <LogOut size={18} /> Çıkış
-          </button>
+              <LogOut size={18} /> Çıkış
+            </button>
           </div>
         </div>
       </header>
+
+      {showTokenInput && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6">
+            <h2 className="text-xl font-bold text-gray-900 mb-2">GitHub Token Gerekli</h2>
+            <p className="text-sm text-gray-600 mb-4">
+              Haber veya proje kaydetmek için GitHub Personal Access Token girin.
+              Token bu tarayıcıda saklanır; başka bilgisayarda bir kez daha girmeniz gerekir.
+            </p>
+            <ol className="text-sm text-gray-600 list-decimal list-inside mb-4 space-y-1">
+              <li>
+                <a
+                  href="https://github.com/settings/tokens"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 underline"
+                >
+                  github.com/settings/tokens
+                </a>
+                {" "}adresine gidin
+              </li>
+              <li><strong>Generate new token (classic)</strong> ile oluşturun</li>
+              <li><strong>repo</strong> iznini işaretleyin</li>
+              <li>Oluşan <code className="bg-gray-100 px-1 rounded">ghp_...</code> token’ı aşağıya yapıştırın</li>
+            </ol>
+            <input
+              type="password"
+              placeholder="ghp_..."
+              value={tokenDraft}
+              onChange={(e) => setTokenDraft(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-gray-900 mb-4"
+              autoFocus
+            />
+            <div className="flex flex-wrap gap-2 justify-end">
+              <button
+                type="button"
+                onClick={() => setShowTokenInput(false)}
+                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-lg text-gray-800"
+              >
+                İptal
+              </button>
+              {githubToken && (
+                <button
+                  type="button"
+                  onClick={clearGithubToken}
+                  className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg"
+                >
+                  Temizle
+                </button>
+              )}
+              <button
+                type="button"
+                onClick={saveGithubToken}
+                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+              >
+                Kaydet
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="flex gap-2 mb-6 flex-wrap">
