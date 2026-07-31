@@ -85,6 +85,30 @@ export const adminAboutData: any = {
       "degree": "Yüksek Lisans",
       "field": "MBA - İşletme",
       "period": "2005 - 2007"
+    },
+    {
+      "id": "1785489089795",
+      "degree": "İNŞAAT MÜHENDİSİ ",
+      "field": "MEZUNİYET",
+      "period": "2010"
+    },
+    {
+      "id": "1785489108981",
+      "degree": "HARİTA MÜHENDİSİ",
+      "field": "MEZUNİYET",
+      "period": "2011"
+    },
+    {
+      "id": "1785489125070",
+      "degree": "İŞLETME MEZUNİYET",
+      "field": "",
+      "period": "2011"
+    },
+    {
+      "id": "1785489143986",
+      "degree": "YÜKSEK LİSANS",
+      "field": "",
+      "period": "2012"
     }
   ]
 };
