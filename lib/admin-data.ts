@@ -215,7 +215,7 @@ export const adminNewsData: any = [
     "title": "KENTSEL DÖNÜŞÜM PROJESİ",
     "summary": "SDADSD",
     "content": "Kentsel dönüşümde devlet desteğinden yararlanmak istiyorsanız, dikkat! Yarısı Bizden kampanyasında birçok kişinin bilmediği önemli şartlar var. 1- İstanbul için yarısı bizden kampanyası, ",
-    "imageUrl": "/og-image.png",
+    "imageUrl": "https://basakas.com.tr/wp-content/uploads/2026/01/LOGOOs-scaled.jpg",
     "images": [
       "/images/news/news-1785935093957-slrlr32.jpg"
     ],
