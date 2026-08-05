@@ -135,7 +135,7 @@ export const adminContactData: any = {
   "contactInfo": {
     "address": "Kirazlı Mahallesi, Merkez Cd.\nNo:68, 34210 Bağcılar / İstanbul",
     "phone": "+90 (212) 430 70 00",
-    "email": "info@basak.com.tr",
+    "email": "akkayadurmus@gmail.com",
     "workingHours": "Pazartesi - Cuma: 09:00 - 18:00"
   }
 };
@@ -210,6 +210,19 @@ export const adminNewsData: any = [
     "id": "1767298707575",
     "slug": "deprem-gercegi-ve-kentsel-donusumde-yeni-donem-sehrin-gelecegini-yeniden-kurmak",
     "createdAt": "2026-01-01T20:18:27.575Z"
+  },
+  {
+    "title": "KENTSEL DÖNÜŞÜM PROJESİ",
+    "summary": "SDADSD",
+    "content": "Kentsel dönüşümde devlet desteğinden yararlanmak istiyorsanız, dikkat! Yarısı Bizden kampanyasında birçok kişinin bilmediği önemli şartlar var. 1- İstanbul için yarısı bizden kampanyası, ",
+    "imageUrl": "/og-image.png",
+    "images": [
+      "/images/news/news-1785935093957-slrlr32.jpg"
+    ],
+    "published": true,
+    "id": "1785935117408",
+    "slug": "kentsel-donusum-projesi",
+    "createdAt": "2026-08-05T13:05:17.408Z"
   }
 ];
 export const adminProjectsData: any = [
