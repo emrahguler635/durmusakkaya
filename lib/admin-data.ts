@@ -210,19 +210,6 @@ export const adminNewsData: any = [
     "id": "1767298707575",
     "slug": "deprem-gercegi-ve-kentsel-donusumde-yeni-donem-sehrin-gelecegini-yeniden-kurmak",
     "createdAt": "2026-01-01T20:18:27.575Z"
-  },
-  {
-    "title": "KENTSEL DÖNÜŞÜM PROJESİ",
-    "summary": "SDADSD",
-    "content": "Kentsel dönüşümde devlet desteğinden yararlanmak istiyorsanız, dikkat! Yarısı Bizden kampanyasında birçok kişinin bilmediği önemli şartlar var. 1- İstanbul için yarısı bizden kampanyası, ",
-    "imageUrl": "https://basakas.com.tr/wp-content/uploads/2026/01/LOGOOs-scaled.jpg",
-    "images": [
-      "/images/news/news-1785935093957-slrlr32.jpg"
-    ],
-    "published": true,
-    "id": "1785935117408",
-    "slug": "kentsel-donusum-projesi",
-    "createdAt": "2026-08-05T13:05:17.408Z"
   }
 ];
 export const adminProjectsData: any = [
@@ -284,6 +271,23 @@ export const adminProjectsData: any = [
     "id": "1785501641881",
     "slug": "basak-evler-1",
     "createdAt": "2026-07-31T12:40:41.881Z"
+  },
+  {
+    "title": "Hettaf – 2 Rezidans",
+    "summary": "Estetik mimari ve üstün mühendislik anlayışıyla hayata geçirdiğimiz; şehrin silüetine değer katan, sağlam zeminler üzerinde yükselen güvenli ve modern yaşam projelerimizi keşfedin.",
+    "content": "Hettaf 2 Rezidans, çağdaş mimari anlayışı ve işlevsel yaşam alanlarıyla modern şehir yaşamına uyumlu bir konut projesidir. Nitelikli yapı standartları, dengeli planlama ve özenli detaylarıyla sakinlerine konforlu ve düzenli bir yaşam ortamı sunar. Merkezi konumu ve mimari bütünlüğüyle Hettaf 2 Rezidans, uzun vadeli ve sürdürülebilir bir yaşam yaklaşımını temsil eder.",
+    "imageUrl": "/images/projects/project-1785501811479-83tylfq.webp",
+    "images": [
+      "/images/projects/project-1785501811479-83tylfq.webp"
+    ],
+    "published": true,
+    "status": "Bitti",
+    "location": "Yenimahalle",
+    "startYear": "2022",
+    "videoUrl": "",
+    "id": "1785501818465",
+    "slug": "hettaf-2-rezidans",
+    "createdAt": "2026-07-31T12:43:38.465Z"
   }
 ];
 export const adminPublicationsData: any = [];
