@@ -229,7 +229,7 @@ export const adminProjectsData: any = [
     "createdAt": "2026-07-29T07:09:49.595Z",
     "status": "Devam Ediyor",
     "location": "Güneşli",
-    "startYear": "2026",
+    "startYear": "",
     "videoUrl": "https://www.youtube.com/watch?v=yQGU-ogGvDE"
   },
   {
