@@ -71,7 +71,7 @@ export const adminAboutData: any = {
     },
     {
       "id": "1785492590011",
-      "title": "TUS GÖREVLİSİ MÜHENDİS ",
+      "title": "MÜHENDİSLİK KORDİNATÖRÜ",
       "company": "İBB KENTSEL DÖNÜŞÜM MÜDÜRLÜĞÜ ",
       "employmentType": "Tam zamanlı",
       "startDate": "2013",
@@ -266,7 +266,7 @@ export const adminProjectsData: any = [
     "published": true,
     "status": "Bitti",
     "location": "Yenimahalle",
-    "startYear": "2023",
+    "startYear": "",
     "videoUrl": "",
     "id": "1785501641881",
     "slug": "basak-evler-1",
