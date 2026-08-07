@@ -246,7 +246,7 @@ export const adminProjectsData: any = [
     "published": true,
     "status": "Devam Ediyor",
     "location": "Bağlar",
-    "startYear": "2024",
+    "startYear": "",
     "videoUrl": "https://www.youtube.com/watch?v=PJyzYOwwGRQ",
     "id": "1785335886961",
     "slug": "basak-evler-2",
