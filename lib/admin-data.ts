@@ -147,7 +147,7 @@ export const adminNewsData: any = [
     "imageUrl": "/images/news/news-1766418935119-30og3os.jpg",
     "published": true,
     "id": "1766310872714",
-    "slug": "aaaaa-aaaaaa",
+    "slug": "usak-universitesi-rektoru-prof-dr-ahmet-demire-ziyaret",
     "createdAt": "2025-12-21T09:54:32.714Z",
     "images": [
       "/images/news/news-1766418935119-30og3os.jpg"
@@ -176,7 +176,7 @@ export const adminNewsData: any = [
     ],
     "published": true,
     "id": "1766356601373",
-    "slug": "test",
+    "slug": "istanbul-usakllar-vakfndan-vali-dr-naci-aktasa-davet-ziyareti",
     "createdAt": "2025-12-21T22:36:41.373Z"
   },
   {
