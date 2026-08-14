@@ -210,6 +210,21 @@ export const adminNewsData: any = [
     "id": "1767298707575",
     "slug": "deprem-gercegi-ve-kentsel-donusumde-yeni-donem-sehrin-gelecegini-yeniden-kurmak",
     "createdAt": "2026-01-01T20:18:27.575Z"
+  },
+  {
+    "title": "Prof. Dr. Naci Görür sunumuyla İstanbul ve Türkiye Depremleri programında Bağcılar Belediyemiz ve Başak AŞ'mizin çalışmaları hakkında bilgi aktardık.",
+    "summary": "İşbirliği ve Proje Platformunun düzenlemiş olduğu Prof. Dr. Naci Görür sunumuyla İstanbul ve Türkiye Depremleri programı",
+    "content": "İşbirliği ve Proje Platformunun düzenlemiş olduğu Prof. Dr. Naci Görür sunumuyla İstanbul ve Türkiye Depremleri programına davetli olarak katılıp Bağcılar Belediyemiz ve Başak AŞ'mizin çalışmaları hakkında bilgi aktardık.",
+    "imageUrl": "/images/news/news-1786714465422-dvk6hi7.jpg",
+    "images": [
+      "/images/news/news-1786714445653-6s29lc4.jpg",
+      "/images/news/news-1786714456854-rqt9ly5.jpg",
+      "/images/news/news-1786714465422-dvk6hi7.jpg"
+    ],
+    "published": true,
+    "id": "1786714479105",
+    "slug": "prof-dr-naci-gorur-sunumuyla-istanbul-ve-turkiye-depremleri-programnda-bagclar-belediyemiz-ve-basak-asmizin-calsmalar-hakknda-bilgi-aktardk",
+    "createdAt": "2026-08-14T13:34:39.105Z"
   }
 ];
 export const adminProjectsData: any = [
