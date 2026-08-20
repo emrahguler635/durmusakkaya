@@ -232,7 +232,11 @@ export const adminNewsData: any = [
     "content": "Gayrimenkul Hukuku Enstitüsü tarafından düzenlenen Kentsel Dönüşüm Sohbetleri kapsamında gerçekleştirilen söyleşiye katılan Kentsel Dönüşüm Gönüllülerine ve değerli  Av. Dr. Ali Yüksel’e teşekkür ederiz.",
     "imageUrl": "/images/news/news-1787224144838-ltgtfcp.JPG",
     "images": [
-      "/images/news/news-1787224144838-ltgtfcp.JPG"
+      "/images/news/news-1787224144838-ltgtfcp.JPG",
+      "/images/news/news-1787224463488-fnv8u3o.jpg",
+      "/images/news/news-1787224578736-743aojt.jpg",
+      "/images/news/news-1787224586095-u1vamu7.jpg",
+      "/images/news/news-1787224591459-fek36q4.jpg"
     ],
     "published": true,
     "id": "1787224151893",
