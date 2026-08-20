@@ -215,7 +215,7 @@ export const adminNewsData: any = [
     "title": "Prof. Dr. Naci Görür sunumuyla İstanbul ve Türkiye Depremleri programında Bağcılar Belediyemiz ve Başak AŞ'mizin çalışmaları hakkında bilgi aktardık.",
     "summary": "İşbirliği ve Proje Platformunun düzenlemiş olduğu Prof. Dr. Naci Görür sunumuyla İstanbul ve Türkiye Depremleri programı",
     "content": "İşbirliği ve Proje Platformunun düzenlemiş olduğu Prof. Dr. Naci Görür sunumuyla İstanbul ve Türkiye Depremleri programına davetli olarak katılıp Bağcılar Belediyemiz ve Başak AŞ'mizin çalışmaları hakkında bilgi aktardık.",
-    "imageUrl": "/images/news/news-1786714465422-dvk6hi7.jpg",
+    "imageUrl": "/images/news/news-1786714526268-kl444nm.jpg",
     "images": [
       "/images/news/news-1786714445653-6s29lc4.jpg",
       "/images/news/news-1786714465422-dvk6hi7.jpg",
