@@ -225,6 +225,19 @@ export const adminNewsData: any = [
     "id": "1786714479105",
     "slug": "prof-dr-naci-gorur-sunumuyla-istanbul-ve-turkiye-depremleri-programnda-bagclar-belediyemiz-ve-basak-asmizin-calsmalar-hakknda-bilgi-aktardk",
     "createdAt": "2026-08-14T13:34:39.105Z"
+  },
+  {
+    "title": "Gayrimenkul Hukuku Enstitüsü tarafından düzenlenen Kentsel Dönüşüm Söyleşisi",
+    "summary": "Gayrimenkul Hukuku Enstitüsü tarafından düzenlenen Kentsel Dönüşüm Sohbetleri kapsamında gerçekleştirilen söyleşiye katılan Kentsel Dönüşüm Gönüllülerine ve değerli  Av. Dr. Ali Yüksel’e teşekkür ederiz.",
+    "content": "Gayrimenkul Hukuku Enstitüsü tarafından düzenlenen Kentsel Dönüşüm Sohbetleri kapsamında gerçekleştirilen söyleşiye katılan Kentsel Dönüşüm Gönüllülerine ve değerli  Av. Dr. Ali Yüksel’e teşekkür ederiz.",
+    "imageUrl": "/images/news/news-1787224144838-ltgtfcp.JPG",
+    "images": [
+      "/images/news/news-1787224144838-ltgtfcp.JPG"
+    ],
+    "published": true,
+    "id": "1787224151893",
+    "slug": "gayrimenkul-hukuku-enstitusu-tarafndan-duzenlenen-kentsel-donusum-soylesisi",
+    "createdAt": "2026-08-20T11:09:11.893Z"
   }
 ];
 export const adminProjectsData: any = [
